@@ -43,7 +43,7 @@
     const evidence = draft.opportunity?.evidence || [];
     const reviewed = !!draft.reviewedAt;
     let body = paragraph('Ravugo Consulting LLC', 'Metadata') + paragraph(title, 'Title') + paragraph('Product requirements document', 'Subtitle');
-    body += metadataTable([['Project', 'Onboarding experience'], ['Status', reviewed ? 'Reviewed' : 'Draft — needs review'], ['Owner', 'Ralph Ugboko'], ['Decision saved', date(draft.createdAt)], ['Reviewed', reviewed ? date(draft.reviewedAt) : 'Pending human review']]);
+    body += metadataTable([['Project', draft.projectName || 'Onboarding experience'], ['Status', reviewed ? 'Reviewed' : 'Draft — needs review'], ['Owner', 'Ralph Ugboko'], ['Decision saved', date(draft.createdAt)], ['Reviewed', reviewed ? date(draft.reviewedAt) : 'Pending human review']]);
     body += paragraph('This document records the selected product opportunity, the decision rationale, proposed requirements, and the questions to resolve before delivery. Product and engineering reviewers can use the source appendix to inspect the original interview passages.');
     const sections = [
       ['problem','Customer problem and evidence',false], ['decision','Product decision',false], ['solution','Proposed solution',false], ['requirements','Requirements and user story',true], ['criteria','Acceptance criteria',true], ['metrics','Success metrics and measurement',false], ['scope','Scope dependencies and open questions',false]

@@ -1,0 +1,13 @@
+{
+  "$schema": "https://raw.githubusercontent.com/cloudflare/workers-sdk/main/packages/wrangler/config-schema.json",
+  "name": "productpilot-api",
+  "main": "ai-worker.mjs",
+  "account_id": "b56a3550a0722f599ffef7a32fb37d27",
+  "compatibility_date": "2026-10-13",
+  "workers_dev": true,
+  "preview_urls": false,
+  "ai": { "binding": "AI" },
+  "d1_databases": [{"binding":"DB","database_name":"productpilot-ai-usage","database_id":"ff5d20c9-ff55-4f55-864f-f40aec600cee"}],
+  "triggers": { "crons": ["0 4 * * *"] },
+  "observability": { "enabled": false }
+}

@@ -6,19 +6,23 @@ Live demo: https://ralphugboko.dev/productpilot/
 
 Source repository: https://github.com/ralphug24/productpilot
 
-This is an in-development prototype. Live LLM synthesis is planned; current analysis uses local keyword rules. See [DEPLOYMENT.md](DEPLOYMENT.md) for hosting and update instructions.
+This is an in-development portfolio project. Cloudflare Workers AI provides live research synthesis and PRD drafting; explicit local onboarding rules and editable starter drafts are also available. See [DEPLOYMENT.md](DEPLOYMENT.md) for hosting and update instructions.
 
 ## Open the app
 
-Open `index.html` in a modern Chromium browser. The app and transcript readers are local files; no build step, server, API key, CDN, or external account is required.
+Open the public demo for live AI, or `index.html` in a modern Chromium browser for local rules, research reading, project management, and document exports. Live AI is available only from the allowed public website origins. No API key is exposed in browser code.
 
 Start in **Product workflow**:
 1. Select interview transcripts and choose **Analyze selected transcripts**.
 2. Read source quotes, edit opportunity wording, and select opportunities to compare.
-3. Optionally enter RICE estimates; explicitly choose one opportunity and write a rationale.
+3. Optionally enter RICE estimates for each opportunity; explicitly choose one to draft requirements and write a rationale.
 4. Save the decision, edit the PRD draft, and confirm the review before marking it reviewed.
 
-The Overview, Research library, and Decision log pages display the current workspace state and provide working navigation. The quick guide is optional; each workflow step describes its next action.
+The Overview, Research library, Opportunity backlog, and Decision log display the current project state. Create and switch projects from the sidebar, or the project controls above the content on mobile. New projects have empty research libraries. Each project has its own research, opportunities, decisions, and drafts.
+
+Overview counts are specific to the selected project and browser. Opportunities count the persistent backlog, including deferred and rejected records. Counts change on additions, saved decisions, and review actions; editing a reviewed PRD returns it to draft status. These are not company-wide or cross-device totals.
+
+Existing `productpilot-workspace-v2` records migrate into the Onboarding experience project in `productpilot-projects-v3`; the original storage key is retained. Analyses and saved decision snapshots populate its backlog. A new review or source change resets the current analysis and working selection without deleting backlog records or decision snapshots.
 
 ## Research sources
 
@@ -44,21 +48,27 @@ Use **Open source folder** to read files from a folder you choose. Selecting the
 
 Legacy Word `.doc` must be saved as `.docx`. Import is limited to 30 supported files per selection, 10 MB per file, 100 PDF pages, and 250,000 extracted characters per document. Existing imported documents with the same path are updated; unchanged copies are reported as unchanged.
 
-Uploaded text is processed on the device. Workspace sources, analysis, decisions, and PRDs persist in browser local storage when available. The save indicator switches to session-only storage if persistence fails. For a shared deployment, authentication and server storage will be needed.
+Text extraction runs on the device. Projects, sources, opportunities, decisions, and PRDs persist in browser local storage when available. The save indicator and Overview explanation switch to session-only storage if persistence fails. Selecting AI and running analysis sends extracted passages and the objective to Cloudflare Workers AI; AI drafting sends the chosen evidence, rationale, and objective. No research is collected by a company-wide workspace database. A shared authenticated service and cross-device synchronization are not implemented.
 
 ## Current analysis and decision behavior
 
-Analysis currently uses keyword rules for onboarding issues: account verification, saved progress, clarity, and profile editing. It is not an LLM and does not establish semantic correctness. Speaker labels help exclude interviewer prompts; unfamiliar transcript structures still require review.
+AI synthesis uses Llama 3.3 through Cloudflare's server-side AI binding. It receives stable excerpt IDs and returns proposed opportunities citing those IDs. The server validates the response structure and that every opportunity references supplied evidence, then attaches original source text itself. These checks establish citation provenance, not semantic accuracy. The prompt treats research content as untrusted data and requires uncertainty and assumptions to be identified.
+
+The explicitly selected local rules method groups four onboarding topics: account verification, saved progress, clarity, and profile editing. It is not an LLM. Speaker labels help exclude interviewer prompts; unfamiliar transcript structures still require review. Human-authored opportunities can also be added in the backlog by selecting an exact source passage.
 
 Evidence uses exact source passages, document IDs, timestamps or page/line references, and source modification dates. Opportunities are proposed interpretations. Source counts describe evidence coverage, not population reach or issue frequency.
 
-RICE estimates start incomplete instead of being invented. Scores are computed in code when the inputs are valid. The PM explicitly chooses the opportunity for the PRD; the app does not choose by highest score. Decisions retain a snapshot of their rationale, assumptions, and quoted evidence. Editing a reviewed PRD returns it to draft status. Starting a new review retains source documents and previous decisions.
+RICE estimates start incomplete instead of being invented. Reach is a nonnegative whole number of users/quarter; impact is an integer from 1–3; confidence is an integer from 1–100%; effort is positive person-weeks in 0.1 steps. Reach and effort have no upper cap. Score = reach × impact × (confidence / 100) / effort. Four-decimal display precision and scientific notation for very small values prevent nonzero scores from displaying as zero. The UI shows each calculation and optionally orders opportunities by score. The PM chooses the opportunity and records a rationale, including an explanation when an estimated alternative scores higher.
 
-PRD requirements are topic-specific template proposals, with unresolved baselines and targets clearly identified. They are editable and exportable as a formatted Word document (.docx). The export preserves edits and review status, uses named headings and bulleted requirements, adds page numbers, and moves original source passages into an evidence appendix. Previously saved drafts are supported.
+Opportunities have persistent Needs review, Prioritized, Deferred, or Rejected statuses with rationale/revisit notes. Starting a review and selecting one opportunity preserve the other backlog records. Saved decisions contain evidence, estimate, and rationale snapshots.
 
-## Next LLM increment
+PRD means Product Requirements Document. AI drafting prepares proposed solutions, requirements/user stories, acceptance criteria, metrics, and scope/questions from the saved choice and source evidence. Baselines and targets must remain unresolved until measured. Section citation IDs are validated, and assumptions are included in scope. The local starter assembles the opportunity's proposed sections for editing. Both paths require human review. DOCX exports preserve edits, project name, review status, headings, bullets, page numbers, and a source appendix. Previously saved drafts remain supported.
 
-A server-side synthesis endpoint should accept stable source IDs and excerpts, return structured opportunities with cited passages, and validate every citation against the input sources. It can draft PRD wording from a saved product decision. Keep scoring, choosing, approval, and decision history in application logic. Never include provider credentials in browser code.
+## AI service
+
+`ai-worker.mjs` implements status, analysis, and drafting endpoints. Cloudflare D1 stores only anonymous rate counters and conservative daily inference reservations. The project has a 3,500-neuron daily reservation ceiling; the account-wide Cloudflare free allowance is shared with AgentOps Studio and remains authoritative. Each operation makes one bounded call with no automatic retry or paid-provider fallback. Request bodies and provider payloads have explicit size limits. Oversized research is rejected, never silently truncated. No transcript or draft is stored in the usage database, and Worker observability logging is disabled.
+
+Browser calls use allowed-origin CORS, a per-browser anonymous throttle, and the durable daily reservation ceiling. Origin filtering and a browser ID are not authentication. Production tenancy, access control, semantic evaluation, and human research validation remain future work.
 
 ## Checks and bundled libraries
 

@@ -7,17 +7,19 @@
   <title>ProductPilot — Ravugo Consulting LLC workspace</title>
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="theme.css?v=teal-amber-04">
-  <link rel="stylesheet" href="workspace.css?v=workspace-10">
+  <link rel="stylesheet" href="workspace.css?v=workspace-11">
   <script src="feedback-config.js" defer></script>
   <script src="feedback.js" defer></script>
   <script src="vendor/jszip.min.js" defer></script>
   <script src="vendor/pdf-worker.js" defer></script>
   <script src="vendor/pdf.js" defer></script>
   <script src="research-data.js?v=company-06" defer></script>
-  <script src="domain.js" defer></script>
-  <script src="prd-export.js?v=docx-07" defer></script>
+  <script src="domain.js?v=workspace-11" defer></script>
+  <script src="projects.js?v=workspace-11" defer></script>
+  <script src="ai-client.js?v=workspace-11" defer></script>
+  <script src="prd-export.js?v=docx-11" defer></script>
   <script src="ingest.js" defer></script>
-  <script src="workspace.js?v=workspace-09" defer></script>
+  <script src="workspace.js?v=workspace-11" defer></script>
 </head>
 <body>
 <div class="app-shell">
@@ -29,10 +31,12 @@
       <a href="#overview" class="nav-item"><span>▦</span> Overview</a>
       <a href="#workflow" class="nav-item"><span>⌁</span> Product workflow</a>
       <a href="#research" class="nav-item"><span>▤</span> Research library</a>
+      <a href="#backlog" class="nav-item"><span>≡</span> Opportunity backlog</a>
       <a href="#decisions" class="nav-item"><span>◇</span> Decision log</a>
     </nav>
     <div class="side-label project-label">CURRENT PROJECT</div>
-    <a class="project-link" href="#workflow"><span class="project-dot"></span> Onboarding experience</a>
+    <label class="project-picker-label" for="project-picker">Switch project</label><select id="project-picker" aria-label="Current project"></select>
+    <button class="new-project-btn" data-new-project>＋ Create project</button>
     <div class="sidebar-bottom">
       <a class="portfolio-return" href="https://ralphugboko.dev/projects">← Portfolio projects</a>
       <div class="usage-card"><div class="usage-icon">?</div><div><b>Explore ProductPilot</b><p>Try a complete product review.</p><button class="text-action" data-guide>Quick walkthrough →</button></div></div>
@@ -40,15 +44,18 @@
     </div>
   </aside>
   <main class="main-content">
-    <header class="topbar"><div class="breadcrumbs"><span>Ravugo Consulting LLC</span><span>/</span><b>Onboarding experience</b></div><div class="top-actions"><a class="feedback-link" href="feedback.html" data-feedback target="_blank" rel="noopener">Give feedback ↗</a><button class="workspace-details-btn" id="source-details-top">Workspace details</button><span class="saved-state" id="save-state"><span></span> Saved on this device</span><button class="icon-btn" aria-label="Open quick guide" data-guide>?</button></div></header>
+    <header class="topbar"><div class="breadcrumbs"><span>Ravugo Consulting LLC</span><span>/</span><b id="breadcrumb-project">Onboarding experience</b></div><div class="top-actions"><a class="feedback-link" href="feedback.html" data-feedback target="_blank" rel="noopener">Give feedback ↗</a><button class="workspace-details-btn" id="source-details-top">Workspace details</button><span class="saved-state" id="save-state"><span></span> Saved on this device</span><button class="icon-btn" aria-label="Open quick guide" data-guide>?</button></div></header>
     <div class="page-wrap">
-      <div class="hero"><div><div class="eyebrow">ONBOARDING EXPERIENCE</div><h1 id="page-title">Product workspace</h1><p class="hero-copy" id="page-description"></p></div></div>
+      <div class="hero"><div><div class="eyebrow" id="project-eyebrow">ONBOARDING EXPERIENCE</div><h1 id="page-title">Product workspace</h1><p class="hero-copy" id="page-description"></p></div></div>
+      <div class="mobile-project-controls"><label for="mobile-project-picker">Project</label><select id="mobile-project-picker"></select><button class="quiet-btn" data-new-project>＋ Create project</button></div>
 
       <section class="workspace-view hidden" id="view-overview" aria-label="Overview">
+        <div class="project-scope-note"><b>Current project · saved in this browser</b><p>These totals reflect your work in the selected project on this device. They are not shared company-wide totals.</p></div>
         <div class="summary-grid" id="summary-grid"></div>
+        <div id="overview-health" class="overview-health"></div>
         <div class="overview-main">
           <div class="overview-start"><span class="mini-label">YOUR NEXT STEP</span><h2 id="overview-next-title"></h2><p id="overview-next-copy"></p><button class="primary-btn" id="resume-workflow">Start product review →</button></div>
-          <div class="overview-explainer"><h3>What will you produce?</h3><p>A reviewed PRD with a clear chain back to the interviews that informed it.</p><ol><li><b>Choose transcripts</b><span>Select the documents to include in your review.</span></li><li><b>Review opportunities</b><span>Inspect the quotes behind each proposed problem.</span></li><li><b>Choose a priority</b><span>Compare assumptions and explain your decision.</span></li><li><b>Review the PRD</b><span>Edit the draft before marking it reviewed.</span></li></ol></div>
+          <div class="overview-explainer" id="overview-priority"></div>
         </div>
         <div class="section-title"><h3>Latest workspace activity</h3></div><div id="overview-activity"></div>
       </section>
@@ -71,8 +78,8 @@
           <div class="list-toolbar"><div><b>Interview transcripts</b><span id="selection-receipt"></span></div><div class="toolbar-actions"><button class="quiet-btn" data-folder>Open source folder</button><button class="quiet-btn" data-paste>Paste transcript</button><button class="quiet-btn" data-upload>＋ Upload files</button></div></div>
           <div class="upload-inline" id="drop-zone"><span>Drop transcripts here, or use <b>Upload files</b>.</span><small>TXT · PDF with selectable text · DOCX · CSV</small></div>
           <div id="workflow-documents"></div>
+          <div class="analysis-options"><label for="analysis-mode">Analysis method</label><select id="analysis-mode"><option value="rules">Onboarding rules · runs on this device</option><option value="ai" disabled>AI research synthesis · checking availability…</option></select><p id="ai-status" role="status">Rules group predefined onboarding topics. AI can identify themes across other product areas.</p><p class="ai-disclosure hidden" id="ai-disclosure">AI analysis sends excerpts from the selected transcripts and the project objective to Cloudflare Workers AI. Use research you are authorized to share.</p></div>
           <div class="action-bar"><div><b id="analysis-selection"></b><span>Next: identify opportunities and inspect their supporting quotes.</span></div><button class="primary-btn" id="analyze-btn">Analyze selected transcripts →</button></div>
-          <details class="method-note"><summary>How are opportunities identified?</summary><p>This version groups relevant transcript excerpts with keyword rules. Quotes always link to their source. A live LLM is not connected yet; treat each opportunity as a proposal to review.</p></details>
         </section>
         <section class="stage-panel hidden" id="stage-2">
           <div class="guidance-strip"><span class="guidance-number">2</span><div><b>Check the quotes, then choose what to compare.</b><p>Open “Read source quotes” to inspect the evidence. Edit an opportunity if its wording needs refinement.</p></div></div>
@@ -80,14 +87,15 @@
           <div class="action-bar"><button class="quiet-btn" data-back="1">← Back to transcripts</button><div><span id="opportunity-selection"></span><button class="primary-btn" id="to-prioritize">Compare selected opportunities →</button></div></div>
         </section>
         <section class="stage-panel hidden" id="stage-3">
-          <div class="guidance-strip"><span class="guidance-number">3</span><div><b>Choose the opportunity you want to build.</b><p>Use the score to support your judgment. Select “Choose for PRD” and explain why you chose it.</p></div></div>
-          <details class="method-note"><summary>What do the RICE inputs mean?</summary><p><b>Reach:</b> estimated users affected per quarter. <b>Impact:</b> low (1), medium (2), high (3). <b>Confidence:</b> your confidence in the estimates, from 1–100%. <b>Effort:</b> estimated person-weeks. Score = reach × impact × confidence ÷ effort. Source counts are evidence coverage, not user reach.</p></details>
-          <div class="priority-layout"><div id="priority-list" class="priority-list"></div><aside class="decision-card"><span class="mini-label">YOUR PRODUCT DECISION</span><h3 id="decision-choice">Choose an opportunity</h3><p>Estimates can stay open. Record the reasoning that makes this the right investment now.</p><label for="decision-rationale">Why this opportunity?</label><textarea id="decision-rationale" rows="5" placeholder="Describe the customer problem, why it matters now, and what you are postponing."></textarea><button class="primary-btn full-btn" id="approve-decision">Save decision & draft PRD →</button></aside></div>
+          <div class="guidance-strip"><span class="guidance-number">3</span><div><b>Compare the opportunities, then choose what to specify.</b><p>Score each opportunity you want to compare. A higher RICE score suggests more estimated benefit per unit of effort. You can choose another option and explain why. Unselected opportunities stay in the backlog.</p></div></div>
+          <div class="rice-explainer"><h3>RICE = Reach × Impact × (Confidence ÷ 100) ÷ Effort</h3><p><b>Reach:</b> users affected per quarter, 0 or more. <b>Impact:</b> 1 low, 2 medium, 3 high. <b>Confidence:</b> 1–100%, so enter 80 for 80%. <b>Effort:</b> total person-weeks, 0.1 or more.</p><p>Example: 1 × 3 × (2 ÷ 100) ÷ 3 = <b>0.02</b>. Confidence of 2 means 2%, not a 1–3 rating. Source document counts are evidence coverage, not user reach. Reach and effort have no upper cap.</p></div>
+          <div class="comparison-toolbar"><span id="priority-estimate-count"></span><label><input type="checkbox" id="sort-rice"> Order by highest RICE score</label></div>
+          <div class="priority-layout"><div id="priority-list" class="priority-list"></div><aside class="decision-card"><span class="mini-label">YOUR PRODUCT DECISION</span><h3 id="decision-choice">Choose an opportunity</h3><p><b>PRD = Product Requirements Document.</b> It describes the customer problem, proposed solution, requirements, and success measures. This selection creates a draft for one opportunity.</p><div id="decision-score-note"></div><label for="decision-rationale">Why this opportunity?</label><textarea id="decision-rationale" rows="5" placeholder="Explain the evidence, trade-offs, and why this is the right priority—even if another option scores higher."></textarea><label for="draft-mode">Drafting method</label><select id="draft-mode"><option value="template">Editable starter template</option><option value="ai" disabled>AI draft · checking availability…</option></select><p id="draft-method-note">Template sections are proposed requirements, not research findings.</p><button class="primary-btn full-btn" id="approve-decision">Save decision & draft requirements →</button></aside></div>
           <button class="text-action" data-back="2">← Back to opportunities</button>
         </section>
         <section class="stage-panel hidden" id="stage-4">
           <div class="guidance-strip"><span class="guidance-number">4</span><div><b>Review the draft before sharing it.</b><p>The source-backed problem and your decision are included. Proposed requirements, estimates, and metrics need your review.</p></div><span class="draft-chip" id="prd-review-chip">Draft · Needs review</span></div>
-          <div id="prd-evidence" class="prd-evidence"></div><div class="prd-fields" id="prd-fields"></div>
+          <p class="prd-definition">PRD means <b>Product Requirements Document</b>. Review proposed requirements and measures before sharing them.</p><p id="prd-generation-note" class="generation-note"></p><div id="prd-evidence" class="prd-evidence"></div><div class="prd-fields" id="prd-fields"></div>
           <div class="review-gate"><label><input type="checkbox" id="review-confirm"> I checked the sources and requirements, and recorded unresolved questions.</label></div>
           <div class="action-bar"><button class="quiet-btn" id="export-prd">Download Word document (.docx)</button><div><span id="prd-status">Draft saved on this device</span><button class="primary-btn" id="mark-reviewed">Mark PRD reviewed ✓</button></div></div>
         </section>
@@ -97,6 +105,7 @@
         <div class="stage-panel"><div class="list-toolbar"><div><b>All source documents</b><span>Open a document to inspect the full transcript. Updates are included in your next analysis.</span></div><div class="toolbar-actions"><button class="quiet-btn" data-folder>Open source folder</button><button class="quiet-btn" data-paste>Paste transcript</button><button class="primary-btn" data-upload>Upload files</button></div></div><div id="research-documents"></div><button class="text-action" data-source-details>View library origin & processing details →</button></div>
       </section>
       <section class="workspace-view hidden" id="view-decisions" aria-label="Decision log"><div id="decision-history"></div></section>
+      <section class="workspace-view hidden" id="view-backlog" aria-label="Opportunity backlog"><div class="backlog-intro"><p>Opportunities remain here across reviews. Record a status and rationale, or bring an opportunity back into prioritization.</p><button class="quiet-btn" id="add-opportunity">＋ Add opportunity from evidence</button></div><div class="backlog-filters"><label for="backlog-filter">Show</label><select id="backlog-filter"><option value="all">All opportunities</option><option value="needs_review">Needs review</option><option value="prioritized">Prioritized</option><option value="deferred">Deferred</option><option value="rejected">Rejected</option></select><span id="backlog-count"></span></div><div id="backlog-list"></div></section>
       <footer class="page-footer"><span>RAVUGO CONSULTING LLC <span>·</span> PRODUCTPILOT</span><span id="footer-status">Research → decision → reviewed PRD</span></footer>
     </div>
   </main>
@@ -105,6 +114,7 @@
 <input id="transcript-folder" type="file" webkitdirectory multiple hidden>
 <dialog id="detail-dialog" class="workspace-dialog"><div class="dialog-top"><h2 id="detail-title"></h2><button class="icon-btn" data-close aria-label="Close dialog">×</button></div><div id="detail-body"></div></dialog>
 <dialog id="paste-dialog" class="workspace-dialog"><form id="paste-form"><div class="dialog-top"><h2>Add an interview transcript</h2><button type="button" class="icon-btn" data-close aria-label="Close">×</button></div><label for="transcript-title">Document name</label><input id="transcript-title" required placeholder="Interview · participant 07"><label for="transcript-text">Transcript</label><textarea id="transcript-text" required rows="10" placeholder="Paste the conversation, including speaker names and timestamps if available."></textarea><div class="dialog-actions"><button type="button" class="quiet-btn" data-close>Cancel</button><button class="primary-btn" type="submit">Add transcript</button></div></form></dialog>
+<dialog id="project-dialog" class="workspace-dialog"><form id="project-form"><div class="dialog-top"><h2>Create a project</h2><button type="button" class="icon-btn" data-close aria-label="Close">×</button></div><p>Each project has its own research, opportunity backlog, decisions, and PRDs. It is saved in this browser.</p><label for="project-name">Project name</label><input id="project-name" required maxlength="80" placeholder="Customer billing experience"><label for="project-objective">What do you want to improve?</label><textarea id="project-objective" required maxlength="800" rows="3" placeholder="Describe the customer problem or product objective."></textarea><div class="dialog-actions"><button type="button" class="quiet-btn" data-close>Cancel</button><button type="submit" class="primary-btn">Create project</button></div></form></dialog>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 </body>
 </html>

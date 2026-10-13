@@ -40,8 +40,13 @@
   function score(rice) {
     if (['reach', 'impact', 'confidence', 'effort'].some(key => rice[key] === '' || rice[key] == null)) return null;
     const { reach, impact, confidence, effort } = Object.fromEntries(Object.entries(rice).map(([k, v]) => [k, Number(v)]));
-    if (![reach, impact, confidence, effort].every(Number.isFinite) || reach < 0 || impact < 1 || impact > 3 || confidence <= 0 || confidence > 100 || effort <= 0) return null;
+    if (![reach, impact, confidence, effort].every(Number.isFinite) || reach < 0 || !Number.isInteger(reach) || impact < 1 || impact > 3 || !Number.isInteger(impact) || confidence < 1 || confidence > 100 || !Number.isInteger(confidence) || effort < 0.1 || Math.abs(effort * 10 - Math.round(effort * 10)) > 0.000001) return null;
     return reach * impact * confidence / 100 / effort;
+  }
+  function formatScore(value) {
+    if (value == null) return 'Not estimated';
+    if (value !== 0 && Math.abs(value) < 0.0001) return value.toExponential(2);
+    return new Intl.NumberFormat('en-US', { maximumFractionDigits: 4 }).format(value);
   }
 
   function draft(opportunity, rationale) {
@@ -51,12 +56,12 @@
       { key: 'problem', label: 'Customer problem & evidence', value: `${opportunity.problem}\n\nSupported by ${opportunity.documentCount} source documents.\n\n${sources}`, kind: 'Source quotes included' },
       { key: 'decision', label: 'Decision rationale', value: rationale, kind: 'Your decision' },
       { key: 'solution', label: 'Proposed solution', value: opportunity.proposal, kind: 'Proposal · confirm with team' },
-      { key: 'requirements', label: 'Requirements & user story', value: `As a customer, I want ${opportunity.title.toLowerCase()} so I can complete setup with less uncertainty.\n\n${opportunity.requirements}`, kind: 'Draft requirements' },
+      { key: 'requirements', label: 'Requirements & user story', value: `User story to refine: As a [customer segment], I want [capability that addresses this problem] so that [desired customer outcome].\n\n${opportunity.requirements}`, kind: 'Draft requirements' },
       { key: 'criteria', label: 'Acceptance criteria', value: opportunity.criteria, kind: 'Draft criteria' },
       { key: 'metrics', label: 'Success metrics & measurement', value: `${opportunity.metric}\n\nBaseline: not yet established.\nTarget: to be agreed after baseline measurement.\nEvaluation: confirm instrumentation and an appropriate evaluation plan with analytics.`, kind: 'Baseline & target needed' },
-      { key: 'scope', label: 'Scope, dependencies & open questions', value: 'Scope: the selected onboarding opportunity.\nConfirm: engineering estimate, accessibility requirements, data retention, and relevant privacy constraints.\nOpen questions: which user segment is affected, how frequent is the issue, what instrumentation exists, and what trade-offs remain?\nEvidence limits: these interviews describe experiences; they do not establish population frequency or causal product impact.', kind: 'Review needed' }
+      { key: 'scope', label: 'Scope, dependencies & open questions', value: `Scope: the selected product opportunity.\nConfirm: engineering estimate, accessibility requirements, data retention, and relevant privacy constraints.\nOpen questions: which user segment is affected, how frequent is the issue, what instrumentation exists, and what trade-offs remain?\n${opportunity.openQuestions?.length ? `Additional questions:\n${opportunity.openQuestions.join('\n')}\n` : ''}${opportunity.assumptions?.length ? `Assumptions requiring confirmation:\n${opportunity.assumptions.join('\n')}\n` : ''}Evidence limits: these interviews describe experiences; they do not establish population frequency or causal product impact.`, kind: 'Review needed' }
     ];
   }
 
-  globalThis.PilotDomain = { excerpts, synthesize, score, draft };
+  globalThis.PilotDomain = { excerpts, synthesize, score, formatScore, draft };
 })();

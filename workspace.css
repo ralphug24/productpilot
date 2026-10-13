@@ -1,4 +1,51 @@
 .page-wrap { max-width: 1260px; }
+.project-picker-label { display: block; margin: 0 10px 6px; color: #6c7f94; font-size: 10px; }
+#project-picker { display: block; width: calc(100% - 16px); margin: 0 8px; padding: 9px; border: 1px solid #d2dee5; border-radius: 4px; color: #385669; background: #fff; font-size: 11px; }
+.new-project-btn { display: block; margin: 8px 8px 0; padding: 8px; border: 0; color: #0e6672; background: transparent; text-align: left; font: 600 11px var(--sans); }
+.mobile-project-controls { display: none; }
+.project-scope-note { border-left: 3px solid #d99a22; background: #fff9ed; padding: 12px 15px; margin-bottom: 18px; color: #526a7d; font-size: 12px; }
+.project-scope-note p { margin: 5px 0 0; line-height: 1.6; }
+.summary-card small { display: block; margin-top: 12px; color: #62798e; font-size: 11px; line-height: 1.65; }
+.overview-health { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 12px; margin: 18px 0; }
+.overview-health a { display: flex; gap: 12px; align-items: center; padding: 15px; background: #fff; border: 1px solid #dce6eb; border-radius: 6px; color: #526a7d; text-decoration: none; font-size: 11px; }
+.overview-health b { color: #0e6672; font-size: 23px; }
+.overview-health a:hover { border-color: #137d88; }
+.overview-questions { background: white; border: 1px solid #dce6eb; border-radius: 6px; padding: 18px; margin: 18px 0; }
+.overview-questions h3 { margin: 0; font-size: 14px; color: #385669; }
+.overview-questions p { font-size: 11px; color: #62798e; }
+.overview-questions pre { white-space: pre-wrap; overflow-wrap: anywhere; font: 12px/1.7 var(--sans); color: #526a7d; margin-bottom: 0; }
+.overview-explainer .priority-score { font-size: 11px; }
+.rice-explainer { padding: 16px; margin: 16px 0; background: #f5fafb; border: 1px solid #d3e4e7; border-radius: 5px; }
+.rice-explainer h3 { margin: 0 0 8px; font-size: 13px; color: #0e6672; }
+.rice-explainer p { margin: 8px 0 0; color: #526a7d; font-size: 12px; line-height: 1.8; }
+.rice-grid label { font-size: 10px; }
+.rice-grid small { display: block; font-weight: 400; font-size: 10px; color: #62798e; line-height: 1.6; margin-top: 7px; }
+.rice-grid input { font-size: 12px; padding: 9px; }
+.rice-calculation { padding: 9px 10px; margin: 12px 0; background: #f6f8fb; color: #526a7d; font-size: 12px; line-height: 1.6; border-radius: 4px; }
+.comparison-toolbar { display: flex; justify-content: space-between; gap: 15px; color: #62798e; font-size: 11px; margin: 18px 0 4px; }
+.comparison-toolbar label { cursor: pointer; }
+#decision-score-note { font-size: 11px; color: #805d24; background: #fff8e9; padding: 10px; line-height: 1.6; }
+#decision-score-note:empty { display: none; }
+.analysis-options { margin-top: 18px; border-top: 1px solid #e2e8ef; padding-top: 15px; }
+.analysis-options label { display: block; font-size: 12px; font-weight: 600; margin-bottom: 8px; color: #385669; }
+.analysis-options p, .prd-definition, .generation-note { color: #62798e; font-size: 12px; line-height: 1.8; }
+select { max-width: 100%; border: 1px solid #d2dee5; border-radius: 4px; padding: 9px; background: white; color: #385669; font: 12px var(--sans); }
+.decision-card select { width: 100%; margin-top: 4px; }
+.backlog-intro, .backlog-filters { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 18px; color: #62798e; font-size: 12px; }
+.backlog-intro p { max-width: 680px; line-height: 1.7; }
+.backlog-filters { justify-content: flex-start; }
+.backlog-filters span { margin-left: auto; }
+.backlog-card { border: 1px solid #dce6eb; background: white; padding: 20px; border-radius: 6px; margin-bottom: 15px; }
+.backlog-card h3 { font-size: 14px; color: #385669; margin: 0; }
+.backlog-card p { font-size: 12px; line-height: 1.8; color: #62798e; }
+.backlog-card>small { font-size: 10px; color: #62798e; }
+.backlog-controls { display: flex; align-items: flex-end; gap: 15px; margin: 18px 0; }
+.backlog-controls label { font-size: 11px; color: #62798e; }
+.backlog-controls select { display: block; margin-top: 5px; }
+.backlog-note-label { display: block; font-size: 11px; color: #62798e; }
+.backlog-note-label textarea { display: block; width: 100%; border: 1px solid #d2dee5; border-radius: 4px; padding: 10px; color: #385669; background: white; font: 12px/1.7 var(--sans); margin-top: 7px; resize: vertical; }
+.workspace-dialog select { width: 100%; }
+@media(max-width:760px) { #project-picker, .project-picker-label, .new-project-btn { display: none; } .mobile-project-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding-bottom: 20px; font-size: 12px; color: #62798e; } .mobile-project-controls select { max-width: 55%; } .overview-health { grid-template-columns: 1fr; } .comparison-toolbar, .backlog-intro, .backlog-controls { flex-wrap: wrap; } .backlog-filters { flex-wrap: wrap; } .backlog-filters span { margin-left: 0; } .rice-grid { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 12px; } }
 .hero { padding-bottom: 22px; }
 .hero h1 { font-size: 28px; }
 .workspace-details-btn { border: 1px solid #dce5ed; background: white; color: #6c7f94; font-size: 10px; border-radius: 4px; padding: 5px 8px; cursor: pointer; }

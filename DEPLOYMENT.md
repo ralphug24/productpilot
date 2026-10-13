@@ -28,4 +28,20 @@ Wait for the GitHub Pages deployment to complete before checking the public demo
 
 ## Current release
 
-This is an in-development portfolio prototype using synthetic research, local keyword grouping, browser storage, and template PRDs. A live LLM and SharePoint connector are not implemented. Transcript text is processed locally; no backend collects visitor documents. Decisions and drafts are isolated by the visitor's browser storage and origin. The app is not an authenticated enterprise service.
+The static app includes projects, a persistent opportunity backlog, RICE guidance and calculations, reviewed Word PRDs, and project/browser-specific totals. Live AI uses Cloudflare Workers AI; explicit local rules and starter drafts are available. There is no SharePoint connector or authenticated company-wide workspace. Text extraction runs locally; excerpts are transmitted only for selected AI operations. Project records remain in browser storage.
+
+## Cloudflare Workers AI
+
+API service: https://productpilot-api.ralphugboko.workers.dev/api/productpilot
+
+`wrangler.jsonc` declares the `AI` binding and the dedicated `productpilot-ai-usage` D1 database. It contains resource IDs, not credentials. The database has only usage/rate counters, not transcripts, project contents, or generated drafts. `ai-schema.sql` initializes its tables; the daily cron expires old counters. Existing deployments do not need to rerun initialization when changing UI files.
+
+To publish backend changes from this repository, authorize Wrangler for account/user read, Workers and Worker scripts write, D1 write, and Workers AI write, then run:
+
+```powershell
+npx wrangler deploy
+```
+
+Each analysis or draft request makes one Llama 3.3 call. Output shape and cited excerpt IDs are checked before the app receives the result. The service reserves a conservative budget before inference, adjusts it only when token usage is provided, and keeps reservations when failed usage is unknown. ProductPilot’s 3,500-neuron daily ceiling resets at 00:00 UTC. Cloudflare’s shared account allowance remains authoritative; AgentOps Studio uses the same account. No paid fallback or plan upgrade is configured.
+
+The frontend contacts this API directly through allowed-origin CORS; no portfolio rewrite change is required. Status checks do not invoke the model. Source files, Wrangler configuration, and usage schema are excluded from Pages assets.
