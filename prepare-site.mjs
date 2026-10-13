@@ -4,7 +4,7 @@ import { resolve, join } from 'node:path';
 
 const root = fileURLToPath(new URL('./', import.meta.url));
 const output = resolve(root, 'docs');
-const runtimeFiles = ['index.html','styles.css','theme.css','workspace.css','workspace.js','domain.js','ingest.js','prd-export.js','research-data.js'];
+const runtimeFiles = ['index.html','styles.css','theme.css','workspace.css','workspace.js','domain.js','ingest.js','prd-export.js','research-data.js','testing-guide.html','guide.css','feedback.html','feedback-config.js','feedback.js'];
 await mkdir(output, { recursive: true });
 for (const filename of runtimeFiles) await copyFile(join(root, filename), join(output, filename));
 // Both the portfolio proxy and the standalone Pages site use this path.

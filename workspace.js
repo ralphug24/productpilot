@@ -86,7 +86,7 @@
     openDialog('Research source details', `<div class="detail-note"><b>Research data</b><p>The included interview transcripts are synthetic documents used to exercise the workflow. You can add your own research files; no live SharePoint connection is configured.</p></div><dl class="source-facts"><dt>Bundled source</dt><dd>research/manifest.json and six TXT transcripts</dd><dt>Library index</dt><dd>research-data.js — regenerated from the source documents</dd><dt>Last checked</dt><dd>${date(state.checkedAt)}</dd><dt>Your documents</dt><dd>Upload files, paste a transcript, or select a source folder. These are read locally and added to the workspace.</dd><dt>Refresh behavior</dt><dd>Reloads the bundled index and reports actual document changes. To reread files in a folder, choose “Open source folder” again.</dd><dt>Processing</dt><dd>TXT, DOCX, text PDF, and CSV extraction runs on this device. Scanned PDFs need OCR; legacy DOC files must be saved as DOCX.</dd><dt>Analysis</dt><dd>Keyword grouping for onboarding topics. No live LLM call. Exact source quotes are preserved for review.</dd><dt>Storage</dt><dd>Workspace data and drafts are stored in this browser when local storage is available.</dd></dl>`);
   }
   function showGuide() {
-    openDialog('Your first product review', `<p class="guide-intro">You are helping Ravugo Consulting LLC decide how to improve onboarding. The interviews are already available, so you can start immediately.</p><ol class="guide-list"><li><b>Select interviews</b><p>Open Product workflow. Read a transcript if you want context, then select “Analyze selected transcripts.”</p></li><li><b>Review opportunities</b><p>Read the supporting quotes, edit the wording if needed, and select opportunities to compare.</p></li><li><b>Choose your priority</b><p>Optionally add RICE estimates. Choose one opportunity for the PRD and write why it matters now.</p></li><li><b>Finish the PRD</b><p>Edit the draft, record open questions, and mark it reviewed. Your decision remains in the Decision log.</p></li></ol><button class="primary-btn" id="guide-start">Open product workflow →</button>`);
+    openDialog('Your first product review', `<p class="guide-intro">You are helping Ravugo Consulting LLC decide how to improve onboarding. The interviews are already available, so you can start immediately.</p><ol class="guide-list"><li><b>Select interviews</b><p>Open Product workflow. Read a transcript if you want context, then select “Analyze selected transcripts.”</p></li><li><b>Review opportunities</b><p>Read the supporting quotes, edit the wording if needed, and select opportunities to compare.</p></li><li><b>Choose your priority</b><p>Optionally add RICE estimates. Choose one opportunity for the PRD and write why it matters now.</p></li><li><b>Finish the PRD</b><p>Edit the draft, record open questions, and mark it reviewed. Your decision remains in the Decision log.</p></li></ol><div class="guide-actions"><button class="primary-btn" id="guide-start">Open product workflow →</button><a class="text-action help-link" href="testing-guide.html" target="_blank" rel="noopener">Open testing guide ↗</a></div><p class="dialog-dismiss-hint">Click outside this window or press Esc to close.</p>`);
     $('#guide-start').onclick = () => { $('#detail-dialog').close(); location.hash = '#workflow'; navigate(); };
   }
 
@@ -218,6 +218,22 @@
     if (target.matches('[data-step]')) goStep(Number(target.dataset.step));
     if (target.matches('[data-back]')) goStep(Number(target.dataset.back));
     if (target.matches('[data-open-decision]')) { state.draft = structuredClone(state.decisions.find(d => d.id === target.dataset.openDecision)); state.step = 4; location.hash = '#workflow'; navigate(); }
+  });
+  // Only dismiss a gesture that both starts and ends on the backdrop.
+  // Clicking dialog padding or dragging selected transcript text stays inside.
+  $$('.workspace-dialog').forEach(dialog => {
+    let startedOutside = false;
+    const onBackdrop = event => {
+      const rect = dialog.getBoundingClientRect();
+      return event.target === dialog && (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom);
+    };
+    dialog.addEventListener('pointerdown', event => { startedOutside = event.button === 0 && onBackdrop(event); });
+    dialog.addEventListener('pointercancel', () => { startedOutside = false; });
+    dialog.addEventListener('click', event => {
+      if (startedOutside && onBackdrop(event)) dialog.close();
+      startedOutside = false;
+    });
+    dialog.addEventListener('close', () => { startedOutside = false; });
   });
   $('#transcript-files').onchange = event => { importFiles(event.target.files); event.target.value = ''; };
   $('#transcript-folder').onchange = event => { importFiles(event.target.files); event.target.value = ''; };

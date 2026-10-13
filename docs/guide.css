@@ -1,0 +1,39 @@
+:root { color-scheme: light; --teal: #137d88; --ink: #243b50; --muted: #526a7d; --line: #dfe7ed; }
+* { box-sizing: border-box; }
+body { margin: 0; font: 15px/1.65 "Segoe UI", Arial, sans-serif; background: #f7f9fb; color: var(--ink); }
+a { color: var(--teal); text-underline-offset: 3px; }
+button, a.primary { font: inherit; }
+a:focus-visible, button:focus-visible, summary:focus-visible { outline: 3px solid #d99a22; outline-offset: 4px; }
+.guide-header { display: flex; justify-content: space-between; align-items: center; gap: 20px; padding: 20px max(24px, calc((100vw - 920px) / 2)); background: #fff; border-bottom: 1px solid var(--line); }
+.guide-header>a { text-decoration: none; font-size: 13px; }
+.guide-header .wordmark { font-size: 20px; font-weight: 700; color: var(--ink); display: flex; align-items: center; gap: 9px; }
+.wordmark span { display: grid; place-items: center; width: 31px; height: 31px; background: var(--teal); color: white; border-radius: 6px; font-size: 17px; }
+main { max-width: 920px; margin: 44px auto; padding: 0 24px; }
+.eyebrow { font-size: 11px; font-weight: 700; letter-spacing: 1.4px; color: var(--teal); }
+h1 { font-size: clamp(30px, 5vw, 44px); line-height: 1.2; letter-spacing: -1.4px; margin: 14px 0; }
+h2 { font-size: 20px; line-height: 1.35; margin: 0 0 10px; }
+p { margin: 0 0 12px; color: var(--muted); }
+.lead { max-width: 720px; font-size: 17px; }
+.guide-meta { display: flex; flex-wrap: wrap; gap: 8px; margin: 20px 0; }
+.guide-meta span { font-size: 12px; border: 1px solid var(--line); border-radius: 4px; padding: 5px 10px; background: white; }
+.actions { display: flex; flex-wrap: wrap; gap: 12px; margin: 24px 0; }
+.primary, button { display: inline-block; padding: 10px 16px; border-radius: 5px; text-decoration: none; font-size: 14px; cursor: pointer; border: 1px solid var(--line); background: white; color: var(--ink); }
+a.primary { background: var(--teal); color: white; border-color: var(--teal); font-weight: 600; }
+a.primary:hover { background: #0e6672; }
+.intro { border-left: 3px solid #d99a22; background: #fff9ed; padding: 22px; margin: 28px 0; }
+.intro p:last-child { margin-bottom: 0; }
+.task { display: grid; grid-template-columns: 44px minmax(0, 1fr); gap: 18px; padding: 26px; margin-bottom: 16px; background: white; border: 1px solid var(--line); border-radius: 8px; }
+.task-number { width: 40px; height: 40px; display: grid; place-items: center; background: #eaf5f6; color: #0e6672; border-radius: 6px; font-weight: 700; }
+.done { font-size: 13px; }
+details { margin-top: 16px; border-top: 1px solid var(--line); padding-top: 12px; }
+summary { color: var(--teal); cursor: pointer; font-size: 13px; font-weight: 600; }
+details p { margin: 12px 0 0; font-size: 14px; }
+.finish { background: #eaf5f6; border: 1px solid #c8dfe2; padding: 28px; border-radius: 8px; margin-top: 30px; }
+.finish h2 { margin-top: 10px; }
+.notes { margin: 30px 0; padding: 24px; background: white; border: 1px solid var(--line); border-radius: 8px; font-size: 13px; }
+.notes div { margin-top: 18px; }
+.write-line { display: block; border-bottom: 1px solid #b9c7d1; height: 26px; }
+footer { max-width: 920px; margin: 0 auto; padding: 22px 24px; border-top: 1px solid var(--line); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 15px; color: var(--muted); font-size: 11px; }
+[hidden] { display: none !important; }
+@media(max-width:560px) { main { margin-top: 28px; padding: 0 18px; } .guide-header { padding: 18px; } .guide-header .wordmark { font-size: 17px; } .task { padding: 20px 16px; gap: 12px; grid-template-columns: 34px minmax(0,1fr); } .task-number { width: 32px; height: 32px; font-size: 12px; } .finish { padding: 22px; } }
+@media print { @page { margin: 18mm; } body { background: white; font-size: 11pt; } .guide-header, .actions, footer, .finish .primary { display: none; } main { max-width: none; margin: 0; padding: 0; } h1 { font-size: 27pt; } h2 { font-size: 15pt; } .task, .intro, .finish, .notes { break-inside: avoid; background: white; padding: 15px; } .lead { font-size: 12pt; } .task { margin-bottom: 12px; } details:not([open]) { display: none; } a { color: var(--ink); } }
