@@ -18,7 +18,7 @@ Start in **Product workflow**:
 3. Optionally enter RICE estimates for each opportunity; explicitly choose one to draft requirements and write a rationale.
 4. Save the decision, edit the PRD draft, and confirm the review before marking it reviewed.
 
-The Overview, Research library, Opportunity backlog, and Decision log display the current project state. The interface uses a white, graphite, and copper palette with sans-serif typography and sidebar navigation. **Testing guide** and **Give feedback** stay together in the top header across all workspace views. Create and switch projects from the sidebar, or the project controls above the content on mobile. New projects have empty research libraries. Each project has its own research, opportunities, decisions, and drafts.
+The Overview, Research library, Opportunity backlog, and Decision log display the current project state. The interface uses a white, blue, cyan, mango, and orange palette with sans-serif typography and sidebar navigation. **Testing guide** and **Give feedback** stay together in the top header across all workspace views. Create and switch projects from the sidebar, or the project controls above the content on mobile. New projects have empty research libraries. Each project has its own research, opportunities, decisions, and drafts.
 
 Overview starts with a state-aware next action and the latest priority or project objective. The four-stage current-review strip links to available workflow steps; unavailable steps explain their prerequisite. Compact project totals link to the relevant library or log, with expandable counting explanations. Review queues and recent activity reflect saved records in the current visitor profile.
 
