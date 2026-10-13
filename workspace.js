@@ -68,7 +68,7 @@
     const note = $('.project-scope-note');
     try {
       PilotProjects.persist(localStorage, workspace); $('#save-state').innerHTML = '<span></span> Saved in this browser';
-      note.querySelector('b').textContent = 'Your visitor workspace · current project';
+      note.querySelector('b').textContent = 'Your totals · current visitor and project · saved in this browser';
       note.querySelector('p').textContent = 'These totals belong to the current visitor profile and selected project in this browser. They are not shared company-wide totals. Use your profile menu to switch visitors.';
       return true;
     } catch {
@@ -233,22 +233,30 @@
 
   function renderOverview() {
     $('#summary-grid').innerHTML = [
-      ['Source documents',state.documents.length,'Increases when you add a document. Updating an existing import keeps the same count.'],
-      ['Opportunities',state.opportunities.length,'All opportunities retained in this project’s backlog, including deferred and rejected items.'],
-      ['Saved decisions',state.decisions.length,'Each saved choice and rationale creates a decision record, even for a previously selected opportunity.'],
-      ['Reviewed PRDs',state.decisions.filter(d => d.reviewedAt).length,'Increases after review. Editing a reviewed document returns it to draft until reviewed again.']
-    ].map(([label,count,description]) => `<div class="summary-card"><span>${label}</span><b>${count}</b><small>${description}</small></div>`).join('');
+      ['Source documents',state.documents.length,'Increases when you add a document. Updating an existing import keeps the same count.','#research'],
+      ['Opportunities',state.opportunities.length,'All opportunities retained in this project’s backlog, including deferred and rejected items.','#backlog'],
+      ['Saved decisions',state.decisions.length,'Each saved choice and rationale creates a decision record, even for a previously selected opportunity.','#decisions'],
+      ['Reviewed PRDs',state.decisions.filter(d => d.reviewedAt).length,'PRD means Product Requirements Document. The count increases after review. Editing a reviewed document returns it to draft until reviewed again.','#decisions']
+    ].map(([label,count,description,href]) => `<div class="summary-card"><a href="${href}"><span>${label} ↗</span><b>${count}</b></a><details><summary>How this is counted</summary><small>${description}</small></details></div>`).join('');
     $('#overview-health').innerHTML = [
-      ['Needs an opportunity review',state.opportunities.filter(o => o.status === 'needs_review').length,'#backlog'],
+      ['Opportunities to review',state.opportunities.filter(o => o.status === 'needs_review').length,'#backlog'],
       ['Deferred for later',state.opportunities.filter(o => o.status === 'deferred').length,'#backlog'],
       ['PRDs awaiting review',pendingCount(),'#decisions']
     ].map(([label,count,href]) => `<a href="${href}"><b>${count}</b><span>${label} →</span></a>`).join('');
     const latest = state.decisions[0];
     $('#overview-priority').innerHTML = latest ? `<span class="mini-label">LATEST PRODUCT PRIORITY</span><h3>${esc(latest.opportunity.title)}</h3><p>${esc(latest.rationale)}</p><span class="draft-chip ${latest.reviewedAt ? 'reviewed' : ''}">${latest.reviewedAt ? 'PRD reviewed' : 'PRD awaits review'}</span><p class="priority-score">${esc(scoreText(latest.opportunity))} · ${latest.opportunity.documentCount} source documents</p><button class="quiet-btn" data-open-decision="${esc(latest.id)}">Open requirements document →</button>` : `<span class="mini-label">PROJECT OBJECTIVE</span><h3>${esc(state.name)}</h3><p>${esc(state.objective)}</p><p>No priority selected yet. Review the customer evidence and compare opportunities to make your first decision.</p><a class="help-link text-action" href="#backlog">View opportunity backlog →</a>`;
     const step = state.draft ? 4 : candidates().length ? 3 : state.analysis ? 2 : 1;
+    $('#overview-step-label').textContent = state.draft?.reviewedAt ? 'Ready to share' : `Step ${step} of 4`;
+    const reviewStages = [
+      ['Customer feedback',state.analysis ? 'Analyzed · sources retained' : selectedDocs().length ? `${selectedDocs().length} selected · ready to analyze` : 'Add or choose transcripts',!!state.analysis],
+      ['Opportunities',state.analysis ? `${state.analysis.opportunities.length} found · inspect the quotes` : 'Analyze feedback to begin',candidates().length > 0],
+      ['Prioritization',state.draft ? 'Decision saved with rationale' : candidates().length ? `${candidates().length} to compare · choose a priority` : 'Select opportunities to compare',!!state.draft],
+      ['Reviewed PRD',state.draft?.reviewedAt ? 'Reviewed · ready to download' : state.draft ? 'Draft ready for your review' : 'Save a decision to create a draft',!!state.draft?.reviewedAt]
+    ];
+    $('#overview-workflow').innerHTML = reviewStages.map(([label,status,complete],index) => `<button class="overview-stage ${step === index + 1 && !complete ? 'current' : ''}" data-overview-step="${index + 1}" ${ready(index + 1) ? '' : 'disabled'} ${step === index + 1 ? 'aria-current="step"' : ''}><span class="overview-stage-number">${String(index + 1).padStart(2,'0')}${complete ? ' · Done' : ''}</span><b>${label}</b><small>${esc(status)}</small></button>`).join('');
     const next = { 1: [state.documents.length ? 'Review the interview library' : 'Add customer research', state.documents.length ? 'Choose which interviews to include and look for customer problems. Previous opportunities remain in your backlog.' : 'Upload TXT, DOCX, or text PDF transcripts, paste an interview, or choose a source folder.', state.documents.length ? 'Start product review →' : 'Add transcripts →'], 2: ['Inspect the proposed opportunities', 'The analysis is ready. Read the source quotes and choose what to compare.', 'Review opportunities →'], 3: ['Choose an opportunity to invest in', 'Compare the evidence and estimates, then write your decision rationale.', 'Continue prioritization →'], 4: [state.draft?.reviewedAt ? 'Your PRD has been reviewed' : 'Review your PRD draft', 'Your decision and evidence are recorded. Open the draft to edit or download it.', 'Open product brief →'] }[step];
     $('#overview-next-title').textContent = next[0]; $('#overview-next-copy').textContent = next[1]; $('#resume-workflow').textContent = next[2]; $('#resume-workflow').onclick = () => { state.step = step; location.hash = '#workflow'; navigate(); };
-    $('#overview-activity').innerHTML = state.activity.length ? `<div class="activity-list">${state.activity.slice(0, 5).map(a => `<div><span>${esc(a.message)}</span><small>${a.actorName ? `${esc(a.actorName)} · ` : ''}${date(a.at)}</small></div>`).join('')}</div>` : '<div class="empty-state compact"><p>No review activity yet. Start with the interviews in Product workflow.</p></div>';
+    $('#overview-activity').innerHTML = state.activity.length ? `<div class="activity-list">${state.activity.slice(0, 3).map(a => `<div><span>${esc(a.message)}</span><small>${a.actorName ? `${esc(a.actorName)} · ` : ''}${date(a.at)}</small></div>`).join('')}</div>` : '<div class="empty-state compact"><p>Your research reviews and saved decisions will appear here.</p><a class="text-action" href="#research">Explore the research library →</a></div>';
     $('#overview-questions')?.remove();
     const scope = latest?.fields.find(field => field.key === 'scope')?.value;
     if (scope) {
@@ -271,7 +279,7 @@
     const requested = location.hash.slice(1); route = ['overview','workflow','research','decisions','backlog'].includes(requested) ? requested : 'workflow';
     $$('.workspace-view').forEach(view => view.classList.toggle('hidden', view.id !== `view-${route}`));
     $$('.nav-item').forEach(link => { const active = link.getAttribute('href') === `#${route}`; link.classList.toggle('active', active); if (active) link.setAttribute('aria-current','page'); else link.removeAttribute('aria-current'); });
-    const labels = { overview: ['Project overview','Track this project’s research, opportunity backlog, decisions, and requirements.'], workflow: ['Product workflow','Choose transcripts → review opportunities → make a decision → review a Product Requirements Document (PRD).'], research: ['Research library','Keep the original interviews close. Add documents and inspect the full conversation.'], decisions: ['Decision log','See what was chosen, why it was chosen, and the evidence behind each product decision.'], backlog: ['Opportunity backlog','Keep every opportunity, its evidence, and your prioritization rationale across reviews.'] };
+    const labels = { overview: ['Project overview','See where your review stands and what to work on next.'], workflow: ['Product workflow','Choose transcripts → review opportunities → make a decision → review a Product Requirements Document (PRD).'], research: ['Research library','Keep the original interviews close. Add documents and inspect the full conversation.'], decisions: ['Decision log','See what was chosen, why it was chosen, and the evidence behind each product decision.'], backlog: ['Opportunity backlog','Keep every opportunity, its evidence, and your prioritization rationale across reviews.'] };
     $('#page-title').textContent = labels[route][0]; $('#page-description').textContent = labels[route][1];
     if (route === 'workflow') goStep(ready(state.step) ? state.step : 1, false);
     if (route === 'overview') renderOverview();
@@ -339,6 +347,7 @@
     if (target.matches('[data-doc]')) showDocument(target.dataset.doc);
     if (target.matches('[data-quote]')) { const passage = state.analysis?.records?.find(e => e.id === target.dataset.quote) || state.opportunities.flatMap(o => o.evidence).find(e => e.id === target.dataset.quote); if (passage) showDocument(passage.docId, passage.text); }
     if (target.matches('[data-step]') && !busy) goStep(Number(target.dataset.step));
+    if (target.matches('[data-overview-step]') && !busy && ready(Number(target.dataset.overviewStep))) { state.step = Number(target.dataset.overviewStep); location.hash = '#workflow'; navigate(); }
     if (target.matches('[data-back]') && !busy) goStep(Number(target.dataset.back));
     if (target.matches('[data-backlog-compare]') && !busy) { PilotProjects.activateBacklog(state, target.dataset.backlogCompare); location.hash = '#workflow'; navigate(); save(); }
     if (target.matches('[data-open-decision]') && !busy) { state.draft = structuredClone(state.decisions.find(d => d.id === target.dataset.openDecision)); state.step = 4; location.hash = '#workflow'; navigate(); }

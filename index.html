@@ -3,13 +3,13 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#f7f4ee">
+  <meta name="theme-color" content="#f7f6f4">
   <title>ProductPilot — Elevate Consulting workspace</title>
-  <link rel="icon" href="brand-mark.svg" type="image/svg+xml">
+  <link rel="icon" href="brand-mark.svg?v=graphite-copper-01" type="image/svg+xml">
   <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="theme.css?v=teal-amber-04">
-  <link rel="stylesheet" href="workspace.css?v=workspace-11">
-  <link rel="stylesheet" href="studio.css?v=studio-02">
+  <link rel="stylesheet" href="theme.css?v=graphite-copper-01">
+  <link rel="stylesheet" href="workspace.css?v=graphite-copper-01">
+  <link rel="stylesheet" href="studio.css?v=graphite-copper-01">
   <script src="feedback-config.js" defer></script>
   <script src="feedback.js" defer></script>
   <script src="vendor/jszip.min.js" defer></script>
@@ -22,52 +22,48 @@
   <script src="ai-client.js?v=workspace-11" defer></script>
   <script src="prd-export.js?v=docx-12" defer></script>
   <script src="ingest.js" defer></script>
-  <script src="workspace.js?v=studio-02" defer></script>
+  <script src="workspace.js?v=graphite-copper-01" defer></script>
 </head>
 <body>
 <div class="app-shell">
-  <header class="sidebar">
-    <div class="studio-masthead">
-    <a class="brand" href="#overview" aria-label="ProductPilot overview"><img class="brand-mark" src="brand-mark.svg" alt=""><span>productpilot</span></a>
-    <div class="workspace-switch"><span><b>Elevate Consulting</b><small>Product studio</small></span></div>
-    <div class="studio-utilities"><a class="portfolio-return" href="https://ralphugboko.dev/projects">← Portfolio</a><button class="text-action" data-guide>Quick walkthrough</button><button class="profile profile-control" id="visitor-profile" aria-label="Visitor profile"><div class="profile-avatar" id="visitor-avatar">?</div><div><b id="visitor-display-name">Guest visitor</b><small>Your local workspace ▾</small></div></button></div>
-    </div>
-    <div class="studio-navigation">
+  <aside class="sidebar">
+    <a class="brand" href="#overview" aria-label="ProductPilot overview"><img class="brand-mark" src="brand-mark.svg?v=graphite-copper-01" alt=""><span>productpilot</span></a>
+    <div class="workspace-switch"><span class="workspace-avatar" aria-hidden="true">E</span><span><b>Elevate Consulting</b><small>Product workspace</small></span></div>
+    <div class="side-label">WORKSPACE</div>
     <nav class="side-nav" aria-label="Main navigation">
-      <a href="#overview" class="nav-item"><span>▦</span> Overview</a>
-      <a href="#workflow" class="nav-item"><span>⌁</span> Product workflow</a>
-      <a href="#research" class="nav-item"><span>▤</span> Research library</a>
-      <a href="#backlog" class="nav-item"><span>≡</span> Opportunity backlog</a>
-      <a href="#decisions" class="nav-item"><span>◇</span> Decision log</a>
+      <a href="#overview" class="nav-item" aria-label="Overview" title="Overview"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg><span class="nav-label">Overview</span></a>
+      <a href="#workflow" class="nav-item" aria-label="Product workflow" title="Product workflow"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h14M14 2l4 4-4 4M20 18H6M10 14l-4 4 4 4"/></svg><span class="nav-label">Product workflow</span></a>
+      <a href="#research" class="nav-item" aria-label="Research library" title="Research library"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h9l4 4v14H7zM16 3v5h4M4 6v15M10 12h7M10 16h7"/></svg><span class="nav-label">Research library</span></a>
+      <a href="#backlog" class="nav-item" aria-label="Opportunity backlog" title="Opportunity backlog"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6h12M9 12h12M9 18h12M3 6h1M3 12h1M3 18h1"/></svg><span class="nav-label">Opportunity backlog</span></a>
+      <a href="#decisions" class="nav-item" aria-label="Decision log" title="Decision log"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4h10l3 3v14H4V4h3M9 4V2h6v2M8 12l3 3 5-6"/></svg><span class="nav-label">Decision log</span></a>
     </nav>
-    <div class="studio-project-controls"><label class="project-picker-label" for="project-picker">Project</label><select id="project-picker" aria-label="Current project"></select>
+    <div class="side-label project-label">CURRENT PROJECT</div>
+    <div class="sidebar-project-controls"><label class="project-picker-label" for="project-picker">Switch project</label><select id="project-picker" aria-label="Current project"></select>
     <button class="new-project-btn" data-new-project>＋ Create project</button>
     </div>
+    <div class="sidebar-bottom">
+      <a class="portfolio-return" href="https://ralphugboko.dev/projects">← Portfolio projects</a>
+      <button class="text-action sidebar-walkthrough" data-guide>Quick walkthrough →</button>
+      <button class="profile profile-control" id="visitor-profile" aria-label="Visitor profile"><div class="profile-avatar" id="visitor-avatar">?</div><div><b id="visitor-display-name">Guest visitor</b><small>Your local workspace ▾</small></div></button>
     </div>
-  </header>
+  </aside>
   <main class="main-content">
-    <header class="topbar"><div class="breadcrumbs"><span>Elevate Consulting</span><span>/</span><b id="breadcrumb-project">Onboarding experience</b></div><div class="top-actions"><a class="feedback-link" href="feedback.html" data-feedback target="_blank" rel="noopener">Give feedback ↗</a><button class="workspace-details-btn" id="source-details-top">Workspace details</button><span class="saved-state" id="save-state"><span></span> Saved on this device</span><button class="icon-btn" aria-label="Open quick guide" data-guide>?</button></div></header>
+    <header class="topbar"><div class="breadcrumbs"><span>Elevate Consulting</span><span>/</span><b id="breadcrumb-project">Onboarding experience</b></div><div class="top-actions"><a class="testing-guide-link" href="testing-guide.html" target="_blank" rel="noopener">Testing guide ↗</a><a class="feedback-link" href="feedback.html" data-feedback target="_blank" rel="noopener">Give feedback ↗</a><button class="workspace-details-btn" id="source-details-top">Workspace details</button></div></header>
     <div class="page-wrap">
       <div class="hero"><div><div class="eyebrow" id="project-eyebrow">ONBOARDING EXPERIENCE</div><h1 id="page-title">Product workspace</h1><p class="hero-copy" id="page-description"></p></div></div>
       <div class="mobile-project-controls"><label for="mobile-project-picker">Project</label><select id="mobile-project-picker"></select><button class="quiet-btn" data-new-project>＋ Create project</button></div>
 
       <section class="workspace-view hidden" id="view-overview" aria-label="Overview">
-        <div class="project-scope-note"><b>Current project · saved in this browser</b><p>These totals reflect your work in the selected project on this device. They are not shared company-wide totals.</p></div>
-        <div class="summary-grid" id="summary-grid"></div>
-        <div id="overview-health" class="overview-health"></div>
         <div class="overview-main">
-          <div class="overview-start"><span class="mini-label">YOUR NEXT STEP</span><h2 id="overview-next-title"></h2><p id="overview-next-copy"></p><button class="primary-btn" id="resume-workflow">Start product review →</button></div>
+          <div class="overview-start"><div class="overview-start-heading"><span class="mini-label">YOUR NEXT STEP</span><span class="next-step-label" id="overview-step-label"></span></div><h2 id="overview-next-title"></h2><p id="overview-next-copy"></p><button class="primary-btn" id="resume-workflow">Start product review →</button></div>
           <div class="overview-explainer" id="overview-priority"></div>
         </div>
-        <div class="section-title"><h3>Latest workspace activity</h3></div><div id="overview-activity"></div>
+        <section class="overview-journey" aria-labelledby="overview-journey-title"><div class="overview-section-heading"><h2 id="overview-journey-title">Evidence to requirements</h2><span>Current review</span></div><div id="overview-workflow" class="overview-workflow"></div></section>
+        <section class="overview-totals" aria-labelledby="overview-totals-title"><div class="overview-section-heading"><h2 id="overview-totals-title">Project totals</h2><span class="saved-state" id="save-state"><span></span> Saved in this browser</span></div><div class="summary-grid" id="summary-grid"></div><details class="project-scope-note"><summary><b>Current project · saved in this browser</b></summary><p>These totals reflect your work in the selected project on this device. They are not shared company-wide totals.</p></details></section>
+        <div class="overview-bottom"><section class="overview-queue" aria-labelledby="overview-queue-title"><div class="overview-section-heading"><h2 id="overview-queue-title">Needs your attention</h2></div><div id="overview-health" class="overview-health"></div></section><section class="overview-recent" aria-labelledby="overview-recent-title"><div class="overview-section-heading"><h2 id="overview-recent-title">Recent activity</h2></div><div id="overview-activity"></div></section></div>
       </section>
 
       <section class="workspace-view hidden" id="view-workflow" aria-label="Product workflow">
-        <aside class="workflow-guide" aria-label="Testing guide">
-          <span class="workflow-guide-icon" aria-hidden="true">?</span>
-          <div><strong>Trying ProductPilot?</strong><p>Follow the four-task testing guide, then share your feedback.</p></div>
-          <a class="primary-btn link-btn" href="testing-guide.html" target="_blank" rel="noopener">Testing guide ↗</a>
-        </aside>
         <nav class="workflow-progress" aria-label="Product review steps">
           <button class="progress-step" data-step="1"><span class="step-number">01</span><span><b>Customer feedback</b><small>Choose transcripts</small></span></button>
           <button class="progress-step" data-step="2"><span class="step-number">02</span><span><b>Opportunities</b><small>Review source quotes</small></span></button>
