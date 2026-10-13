@@ -38,6 +38,7 @@
     $('#visitor-guest').hidden = action === 'rename';
     $('#visitor-save').textContent = action === 'rename' ? 'Save display name' : 'Enter workspace →';
     $('#visitor-dialog').showModal();
+    $('#visitor-name').focus();
   }
   function acceptVisitor(name) {
     if (busy) return;
