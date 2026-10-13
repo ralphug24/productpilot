@@ -1,0 +1,11 @@
+{
+  "name": "productpilot",
+  "version": "0.2.0",
+  "private": true,
+  "description": "An evidence-grounded product research and decision workspace",
+  "scripts": {
+    "prepare:library": "node prepare-library.mjs",
+    "build": "node prepare-library.mjs && node prepare-site.mjs",
+    "test": "node --test domain.test.mjs prd-export.test.mjs"
+  }
+}

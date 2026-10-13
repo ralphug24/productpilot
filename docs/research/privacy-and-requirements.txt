@@ -1,0 +1,15 @@
+Ravugo Consulting LLC Research — Onboarding experience
+Interview INT-005 · Participant 05
+Research focus: confidence in providing personal information
+
+[00:00] Interviewer: How did you feel about the information requested?
+[00:17] Participant: I didn't understand why my date of birth was required so early. The page didn't explain how that information would be used or whether it would be shared with the clinic.
+[01:06] Interviewer: Did that affect your progress?
+[01:14] Participant: I hesitated to continue. I would feel more comfortable if the form explained the purpose of each sensitive field and who could see the information.
+[02:02] Interviewer: What else was unclear?
+[02:09] Participant: I couldn't tell whether insurance details were required to browse appointments. I wanted to check if my plan was accepted first. A clear required or optional label would help.
+[03:10] Interviewer: Did you have trouble accessing the account?
+[03:18] Participant: My password was rejected without explaining the requirements. I had to guess several times before it was accepted. The verification email arrived normally after that.
+[04:01] Interviewer: What should the team prioritize?
+[04:12] Participant: Clear explanations before asking for personal details. I can complete the form, but I need to understand what I am agreeing to and what I can leave until later.
+

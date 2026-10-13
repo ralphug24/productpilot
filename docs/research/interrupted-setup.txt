@@ -1,0 +1,15 @@
+Ravugo Consulting LLC Research — Onboarding experience
+Interview INT-002 · Participant 02
+Research focus: continuing setup after an interruption
+
+[00:00] Interviewer: Describe how you approached onboarding.
+[00:12] Participant: I started on my phone during my lunch break. I didn't have my insurance card with me, so I put the phone away and planned to finish that evening.
+[01:10] Interviewer: What happened when you returned?
+[01:18] Participant: None of my answers were saved. I had to repeat my address and contact information. I couldn't tell which parts I had already completed.
+[02:14] Interviewer: Did anything else make the process harder?
+[02:23] Participant: I tried again on my laptop. I expected to continue where I left off, but the setup form started from the beginning. I would have finished earlier if there had been a save and resume option.
+[03:11] Interviewer: What did you expect to see?
+[03:19] Participant: A list of the remaining steps and an accurate estimate of how long it would take. The progress bar looked nearly complete, but several more screens appeared.
+[04:02] Interviewer: What was working well?
+[04:10] Participant: The labels were readable on my phone. Once I had the information ready, each individual form was manageable. Keeping my progress would have made the biggest difference.
+

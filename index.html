@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f7f8">
+  <title>ProductPilot — Ravugo Consulting LLC workspace</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="theme.css?v=teal-amber-04">
+  <link rel="stylesheet" href="workspace.css?v=company-06">
+  <script src="vendor/jszip.min.js" defer></script>
+  <script src="vendor/pdf-worker.js" defer></script>
+  <script src="vendor/pdf.js" defer></script>
+  <script src="research-data.js?v=company-06" defer></script>
+  <script src="domain.js" defer></script>
+  <script src="prd-export.js?v=docx-07" defer></script>
+  <script src="ingest.js" defer></script>
+  <script src="workspace.js?v=docx-07" defer></script>
+</head>
+<body>
+<div class="app-shell">
+  <aside class="sidebar">
+    <a class="brand" href="#overview"><span class="brand-mark">P</span><span>productpilot</span></a>
+    <div class="workspace-switch"><span class="workspace-avatar">R</span><span><b>Ravugo Consulting LLC</b><small>Product workspace</small></span></div>
+    <div class="side-label">WORKSPACE</div>
+    <nav class="side-nav" aria-label="Main navigation">
+      <a href="#overview" class="nav-item"><span>▦</span> Overview</a>
+      <a href="#workflow" class="nav-item"><span>⌁</span> Product workflow</a>
+      <a href="#research" class="nav-item"><span>▤</span> Research library</a>
+      <a href="#decisions" class="nav-item"><span>◇</span> Decision log</a>
+    </nav>
+    <div class="side-label project-label">CURRENT PROJECT</div>
+    <a class="project-link" href="#workflow"><span class="project-dot"></span> Onboarding experience</a>
+    <div class="sidebar-bottom">
+      <a class="portfolio-return" href="https://ralphugboko.dev/projects">← Portfolio projects</a>
+      <div class="usage-card"><div class="usage-icon">?</div><div><b>New to ProductPilot?</b><p>See how a product review works.</p><button class="text-action" data-guide>Quick guide →</button></div></div>
+      <div class="profile"><div class="profile-avatar">R</div><div><b>Ralph Ugboko</b><small>Product manager</small></div></div>
+    </div>
+  </aside>
+  <main class="main-content">
+    <header class="topbar"><div class="breadcrumbs"><span>Ravugo Consulting LLC</span><span>/</span><b>Onboarding experience</b></div><div class="top-actions"><button class="example-chip" id="source-details-top">Example workspace</button><span class="saved-state" id="save-state"><span></span> Saved on this device</span><button class="icon-btn" aria-label="Open quick guide" data-guide>?</button></div></header>
+    <div class="page-wrap">
+      <div class="hero"><div><div class="eyebrow">ONBOARDING EXPERIENCE</div><h1 id="page-title">Product workspace</h1><p class="hero-copy" id="page-description"></p></div></div>
+
+      <section class="workspace-view hidden" id="view-overview" aria-label="Overview">
+        <div class="summary-grid" id="summary-grid"></div>
+        <div class="overview-main">
+          <div class="overview-start"><span class="mini-label">YOUR NEXT STEP</span><h2 id="overview-next-title"></h2><p id="overview-next-copy"></p><button class="primary-btn" id="resume-workflow">Start product review →</button></div>
+          <div class="overview-explainer"><h3>What will you produce?</h3><p>A reviewed PRD with a clear chain back to the interviews that informed it.</p><ol><li><b>Choose transcripts</b><span>Select the documents to include in your review.</span></li><li><b>Review opportunities</b><span>Inspect the quotes behind each proposed problem.</span></li><li><b>Choose a priority</b><span>Compare assumptions and explain your decision.</span></li><li><b>Review the PRD</b><span>Edit the draft before marking it reviewed.</span></li></ol></div>
+        </div>
+        <div class="section-title"><h3>Latest workspace activity</h3></div><div id="overview-activity"></div>
+      </section>
+
+      <section class="workspace-view hidden" id="view-workflow" aria-label="Product workflow">
+        <nav class="workflow-progress" aria-label="Product review steps">
+          <button class="progress-step" data-step="1"><span class="step-number">01</span><span><b>Customer feedback</b><small>Choose transcripts</small></span></button>
+          <button class="progress-step" data-step="2"><span class="step-number">02</span><span><b>Opportunities</b><small>Review source quotes</small></span></button>
+          <button class="progress-step" data-step="3"><span class="step-number">03</span><span><b>Prioritization</b><small>Choose one opportunity</small></span></button>
+          <button class="progress-step" data-step="4"><span class="step-number">04</span><span><b>Product brief</b><small>Edit & review PRD</small></span></button>
+        </nav>
+        <div class="content-heading"><div><div class="section-kicker" id="stage-kicker"></div><h2 id="stage-title"></h2><p id="stage-description"></p></div><button class="text-action" id="new-review">Start new review</button></div>
+        <section class="stage-panel" id="stage-1">
+          <div class="source-connection"><div class="source-folder-icon">▤</div><div class="source-heading"><strong id="source-name">Ravugo Consulting LLC Research</strong><span id="source-path">Product / Onboarding / Interviews</span><small id="library-status"></small></div><div class="source-actions"><button class="quiet-btn" id="refresh-library">Refresh library</button><button class="text-action" data-source-details>Source details ↗</button></div></div>
+          <div class="list-toolbar"><div><b>Interview transcripts</b><span id="selection-receipt"></span></div><div class="toolbar-actions"><button class="quiet-btn" data-folder>Open source folder</button><button class="quiet-btn" data-paste>Paste transcript</button><button class="quiet-btn" data-upload>＋ Upload files</button></div></div>
+          <div class="upload-inline" id="drop-zone"><span>Drop transcripts here, or use <b>Upload files</b>.</span><small>TXT · PDF with selectable text · DOCX · CSV</small></div>
+          <div id="workflow-documents"></div>
+          <div class="action-bar"><div><b id="analysis-selection"></b><span>Next: identify opportunities and inspect their supporting quotes.</span></div><button class="primary-btn" id="analyze-btn">Analyze selected transcripts →</button></div>
+          <details class="method-note"><summary>How are opportunities identified?</summary><p>This version groups relevant transcript excerpts with keyword rules. Quotes always link to their source. A live LLM is not connected yet; treat each opportunity as a proposal to review.</p></details>
+        </section>
+        <section class="stage-panel hidden" id="stage-2">
+          <div class="guidance-strip"><span class="guidance-number">2</span><div><b>Check the quotes, then choose what to compare.</b><p>Open “Read source quotes” to inspect the evidence. Edit an opportunity if its wording needs refinement.</p></div></div>
+          <div id="opportunity-list" class="opportunity-list"></div>
+          <div class="action-bar"><button class="quiet-btn" data-back="1">← Back to transcripts</button><div><span id="opportunity-selection"></span><button class="primary-btn" id="to-prioritize">Compare selected opportunities →</button></div></div>
+        </section>
+        <section class="stage-panel hidden" id="stage-3">
+          <div class="guidance-strip"><span class="guidance-number">3</span><div><b>Choose the opportunity you want to build.</b><p>Use the score to support your judgment. Select “Choose for PRD” and explain why you chose it.</p></div></div>
+          <details class="method-note"><summary>What do the RICE inputs mean?</summary><p><b>Reach:</b> estimated users affected per quarter. <b>Impact:</b> low (1), medium (2), high (3). <b>Confidence:</b> your confidence in the estimates, from 1–100%. <b>Effort:</b> estimated person-weeks. Score = reach × impact × confidence ÷ effort. Source counts are evidence coverage, not user reach.</p></details>
+          <div class="priority-layout"><div id="priority-list" class="priority-list"></div><aside class="decision-card"><span class="mini-label">YOUR PRODUCT DECISION</span><h3 id="decision-choice">Choose an opportunity</h3><p>Estimates can stay open. Record the reasoning that makes this the right investment now.</p><label for="decision-rationale">Why this opportunity?</label><textarea id="decision-rationale" rows="5" placeholder="Describe the customer problem, why it matters now, and what you are postponing."></textarea><button class="primary-btn full-btn" id="approve-decision">Save decision & draft PRD →</button></aside></div>
+          <button class="text-action" data-back="2">← Back to opportunities</button>
+        </section>
+        <section class="stage-panel hidden" id="stage-4">
+          <div class="guidance-strip"><span class="guidance-number">4</span><div><b>Review the draft before sharing it.</b><p>The source-backed problem and your decision are included. Proposed requirements, estimates, and metrics need your review.</p></div><span class="draft-chip" id="prd-review-chip">Draft · Needs review</span></div>
+          <div id="prd-evidence" class="prd-evidence"></div><div class="prd-fields" id="prd-fields"></div>
+          <div class="review-gate"><label><input type="checkbox" id="review-confirm"> I checked the sources and requirements, and recorded unresolved questions.</label></div>
+          <div class="action-bar"><button class="quiet-btn" id="export-prd">Download Word document (.docx)</button><div><span id="prd-status">Draft saved on this device</span><button class="primary-btn" id="mark-reviewed">Mark PRD reviewed ✓</button></div></div>
+        </section>
+      </section>
+
+      <section class="workspace-view hidden" id="view-research" aria-label="Research library">
+        <div class="stage-panel"><div class="list-toolbar"><div><b>All source documents</b><span>Open a document to inspect the full transcript. Updates are included in your next analysis.</span></div><div class="toolbar-actions"><button class="quiet-btn" data-folder>Open source folder</button><button class="quiet-btn" data-paste>Paste transcript</button><button class="primary-btn" data-upload>Upload files</button></div></div><div id="research-documents"></div><button class="text-action" data-source-details>View library origin & processing details →</button></div>
+      </section>
+      <section class="workspace-view hidden" id="view-decisions" aria-label="Decision log"><div id="decision-history"></div></section>
+      <footer class="page-footer"><span>RAVUGO CONSULTING LLC <span>·</span> PRODUCTPILOT</span><span id="footer-status">Research → decision → reviewed PRD</span></footer>
+    </div>
+  </main>
+</div>
+<input id="transcript-files" type="file" accept=".txt,.pdf,.docx,.csv" multiple hidden>
+<input id="transcript-folder" type="file" webkitdirectory multiple hidden>
+<dialog id="detail-dialog" class="workspace-dialog"><div class="dialog-top"><h2 id="detail-title"></h2><button class="icon-btn" data-close aria-label="Close dialog">×</button></div><div id="detail-body"></div></dialog>
+<dialog id="paste-dialog" class="workspace-dialog"><form id="paste-form"><div class="dialog-top"><h2>Add an interview transcript</h2><button type="button" class="icon-btn" data-close aria-label="Close">×</button></div><label for="transcript-title">Document name</label><input id="transcript-title" required placeholder="Interview · participant 07"><label for="transcript-text">Transcript</label><textarea id="transcript-text" required rows="10" placeholder="Paste the conversation, including speaker names and timestamps if available."></textarea><div class="dialog-actions"><button type="button" class="quiet-btn" data-close>Cancel</button><button class="primary-btn" type="submit">Add transcript</button></div></form></dialog>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+</body>
+</html>
+

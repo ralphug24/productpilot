@@ -1,0 +1,15 @@
+Ravugo Consulting LLC Research — Onboarding experience
+Interview INT-006 · Participant 06
+Research focus: finishing an account across multiple sessions
+
+[00:00] Interviewer: Tell me about finishing your account setup.
+[00:16] Participant: I registered after work but was interrupted halfway through. I looked for a save option and couldn't find one, so I left the tab open.
+[01:05] Interviewer: What did you see when you returned?
+[01:14] Participant: The page had timed out. I had to restart the form and repeat the same contact details. I couldn't see a record of what I had completed.
+[02:04] Interviewer: How did you know when setup was finished?
+[02:13] Participant: The progress indicator wasn't clear about the steps remaining. After the last screen, I wasn't sure whether the account was ready or whether I still needed to verify something.
+[03:00] Interviewer: Were you able to update your preferences?
+[03:08] Participant: I couldn't find where to change the preferred clinic I selected during registration. I expected to edit it from my profile without going through setup again.
+[04:01] Interviewer: What would help most?
+[04:10] Participant: Save my answers and let me resume. Show a clear checklist with completed steps, remaining steps, and a confirmation when everything is ready.
+

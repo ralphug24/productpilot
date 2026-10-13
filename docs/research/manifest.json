@@ -1,0 +1,14 @@
+{
+  "name": "Ravugo Consulting LLC Research",
+  "folder": "Product / Onboarding / Interviews",
+  "provenance": "Synthetic interviews authored for this portfolio workspace; bundled locally. No SharePoint connection.",
+  "documents": [
+    {"id":"INT-001","file":"account-verification.txt","title":"Account verification · participant 01","modified":"2026-10-08T14:20:00-04:00","owner":"Product Research"},
+    {"id":"INT-002","file":"interrupted-setup.txt","title":"Interrupted setup · participant 02","modified":"2026-10-08T11:35:00-04:00","owner":"Product Research"},
+    {"id":"INT-003","file":"first-visit.txt","title":"First visit · participant 03","modified":"2026-10-07T15:10:00-04:00","owner":"Product Research"},
+    {"id":"INT-004","file":"mobile-registration.txt","title":"Mobile registration · participant 04","modified":"2026-10-07T09:45:00-04:00","owner":"Product Research"},
+    {"id":"INT-005","file":"privacy-and-requirements.txt","title":"Privacy & requirements · participant 05","modified":"2026-10-06T16:30:00-04:00","owner":"Product Research"},
+    {"id":"INT-006","file":"returning-to-onboarding.txt","title":"Returning to onboarding · participant 06","modified":"2026-10-06T10:15:00-04:00","owner":"Product Research"}
+  ]
+}
+

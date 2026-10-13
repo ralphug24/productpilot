@@ -1,0 +1,15 @@
+Ravugo Consulting LLC Research — Onboarding experience
+Interview INT-003 · Participant 03
+Research focus: understanding what is needed to book a first visit
+
+[00:00] Interviewer: What brought you to the product?
+[00:15] Participant: I wanted to see available appointments before deciding whether to register. I couldn't preview much until I finished setup.
+[01:02] Interviewer: What felt unclear during setup?
+[01:10] Participant: I wasn't sure which fields were required and which were optional. I stopped to look for details I didn't actually need to enter. Some healthcare terms on the welcome screen were unfamiliar.
+[02:05] Interviewer: What happened after completing the form?
+[02:13] Participant: I finished onboarding but didn't know what to do next. I expected a clear way to schedule my first visit. I also wasn't sure whether I needed a payment method before booking.
+[03:01] Interviewer: Was account access straightforward?
+[03:10] Participant: The verification code expired while I switched between my email app and the browser. I got a new code eventually, but the message didn't explain how long a code would be valid.
+[04:00] Interviewer: What would you change first?
+[04:08] Participant: Use plain language and make the next step obvious. Let me see enough of the booking experience to understand why I am entering all this information.
+

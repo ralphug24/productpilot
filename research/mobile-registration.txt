@@ -1,0 +1,15 @@
+Ravugo Consulting LLC Research — Onboarding experience
+Interview INT-004 · Participant 04
+Research focus: registration on a mobile device
+
+[00:00] Interviewer: Walk me through registration on your phone.
+[00:14] Participant: I entered my name and address first. Typing my insurance information was frustrating because I couldn't upload a photo of my card.
+[01:04] Interviewer: Were you able to correct mistakes?
+[01:13] Participant: I accidentally entered the wrong phone number. I couldn't find a way to edit it without restarting registration. I was worried I would lose the information I had already entered.
+[02:06] Interviewer: What happened when you took a break?
+[02:15] Participant: The page timed out while I looked for the card. My answers weren't saved, so I had to type them again. I wanted to pause and return when I had everything ready.
+[03:01] Interviewer: How did appointment booking compare?
+[03:10] Participant: It asked for my name and contact details again even though they were in my profile. I expected those details to be reused.
+[04:08] Interviewer: What worked well?
+[04:16] Participant: The text was easy to read and the buttons were large enough. The problem was repeating work and not being able to change an answer easily.
+

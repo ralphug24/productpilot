@@ -1,0 +1,15 @@
+Ravugo Consulting LLC Research — Onboarding experience
+Interview INT-001 · Participant 01
+Research focus: completing account setup before a first appointment
+
+[00:00] Interviewer: Tell me about the last time you tried to create an account.
+[00:18] Participant: I registered after finding a clinic I wanted to visit. The first screen was straightforward. I entered my details and expected to start booking right away.
+[01:04] Interviewer: What happened after submitting those details?
+[01:16] Participant: The verification email took a while to arrive. I requested another link, then opened the first email by mistake. The page said the link had expired but didn't explain whether I needed to start over.
+[02:02] Interviewer: What did you do next?
+[02:11] Participant: I went back to signup and typed everything again. The verification message ended up in spam. I didn't see any guidance telling me to check there.
+[03:15] Interviewer: How did you know you were ready to book?
+[03:24] Participant: I wasn't sure my account was verified. There was no clear confirmation or next step. I opened the dashboard in another tab to check whether it worked.
+[04:08] Interviewer: What would have helped?
+[04:16] Participant: Show whether the email is sent, which address it went to, and how to request a replacement. After verification, take me directly to the next thing I need to do.
+
