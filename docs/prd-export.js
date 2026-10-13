@@ -42,8 +42,9 @@
     const title = fields.get('title')?.trim() || draft.opportunity?.title || 'Product requirements';
     const evidence = draft.opportunity?.evidence || [];
     const reviewed = !!draft.reviewedAt;
-    let body = paragraph('Ravugo Consulting LLC', 'Metadata') + paragraph(title, 'Title') + paragraph('Product requirements document', 'Subtitle');
-    body += metadataTable([['Project', draft.projectName || 'Onboarding experience'], ['Status', reviewed ? 'Reviewed' : 'Draft — needs review'], ['Owner', 'Ralph Ugboko'], ['Decision saved', date(draft.createdAt)], ['Reviewed', reviewed ? date(draft.reviewedAt) : 'Pending human review']]);
+    const owner = draft.ownerName || 'Previous visitor (name not recorded)';
+    let body = paragraph('Elevate Consulting', 'Metadata') + paragraph(title, 'Title') + paragraph('Product requirements document', 'Subtitle');
+    body += metadataTable([['Project', draft.projectName || 'Onboarding experience'], ['Status', reviewed ? 'Reviewed' : 'Draft — needs review'], ['Owner', owner], ['Decision saved', date(draft.createdAt)], ['Reviewed', reviewed ? date(draft.reviewedAt) : 'Pending human review'], ...(draft.reviewedBy ? [['Reviewed by',draft.reviewedBy]] : [])]);
     body += paragraph('This document records the selected product opportunity, the decision rationale, proposed requirements, and the questions to resolve before delivery. Product and engineering reviewers can use the source appendix to inspect the original interview passages.');
     const sections = [
       ['problem','Customer problem and evidence',false], ['decision','Product decision',false], ['solution','Proposed solution',false], ['requirements','Requirements and user story',true], ['criteria','Acceptance criteria',true], ['metrics','Success metrics and measurement',false], ['scope','Scope dependencies and open questions',false]
@@ -82,13 +83,13 @@
     zip.file('word/numbering.xml', '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:numbering xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:abstractNum w:abstractNumId="0"><w:multiLevelType w:val="singleLevel"/><w:lvl w:ilvl="0"><w:start w:val="1"/><w:numFmt w:val="bullet"/><w:lvlText w:val="•"/><w:lvlJc w:val="left"/><w:pPr><w:tabs><w:tab w:val="num" w:pos="360"/></w:tabs><w:ind w:left="360" w:hanging="180"/></w:pPr><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/></w:rPr></w:lvl></w:abstractNum><w:num w:numId="1"><w:abstractNumId w:val="0"/></w:num></w:numbering>');
     zip.file('word/_rels/document.xml.rels', '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rIdStyles" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/><Relationship Id="rIdNumbering" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/numbering" Target="numbering.xml"/><Relationship Id="rIdFooter" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/footer" Target="footer1.xml"/></Relationships>');
     zip.file('word/footer1.xml', '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:ftr xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:p><w:pPr><w:jc w:val="right"/></w:pPr><w:r><w:rPr><w:color w:val="000000"/><w:sz w:val="16"/></w:rPr><w:t>Page </w:t></w:r><w:fldSimple w:instr="PAGE"><w:r><w:rPr><w:color w:val="000000"/><w:sz w:val="16"/></w:rPr><w:t>1</w:t></w:r></w:fldSimple></w:p></w:ftr>');
-    zip.file('docProps/core.xml', `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><cp:coreProperties xmlns:cp="http://schemas.openxmlformats.org/package/2006/metadata/core-properties" xmlns:dc="http://purl.org/dc/elements/1.1/"><dc:title>${xml(title)}</dc:title><dc:creator>Ravugo Consulting LLC</dc:creator><dc:description>Product requirements document exported from ProductPilot</dc:description></cp:coreProperties>`);
+    zip.file('docProps/core.xml', `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><cp:coreProperties xmlns:cp="http://schemas.openxmlformats.org/package/2006/metadata/core-properties" xmlns:dc="http://purl.org/dc/elements/1.1/"><dc:title>${xml(title)}</dc:title><dc:creator>${xml(owner)}</dc:creator><dc:description>Product requirements document exported from ProductPilot — Elevate Consulting</dc:description></cp:coreProperties>`);
     return zip;
   }
   function filename(draft) {
     const title = draft.fields.find(field => field.key === 'title')?.value || 'product-requirements';
     const slug = String(title).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 80) || 'product-requirements';
-    return `ravugo-consulting-llc-${slug}.docx`;
+    return `elevate-consulting-${slug}.docx`;
   }
   globalThis.PilotPrdExport = { buildPackage, filename, mainProblem, exportDocx: draft => buildPackage(draft).generateAsync({ type: 'blob', mimeType: MIME, compression: 'DEFLATE' }) };
 })();

@@ -1,6 +1,8 @@
 (function () {
   'use strict';
   const key = 'productpilot-projects-v3';
+  const visitorKey = id => `productpilot-projects-v4-${id}`;
+  const migrationKey = 'productpilot-visitor-migration-v1';
   const clone = value => structuredClone(value);
   const timestamp = () => new Date().toISOString();
   function create(name, objective, documents = [], focus = 'general') {
@@ -26,29 +28,39 @@
       }
       decision.projectName ||= project.name;
       decision.projectId ||= project.id;
+      decision.ownerName ||= 'Previous visitor (name not recorded)';
     }
     if (project.analysis) project.analysis.opportunities = project.analysis.opportunities.map(opportunity => project.opportunities.find(o => o.id === opportunity.id) || retain(project, [opportunity], project.analysis.method || 'Rules baseline')[0]);
-    if (project.draft) { project.draft.projectName ||= project.name; project.draft.projectId ||= project.id; }
+    if (project.draft) { project.draft.projectName ||= project.name; project.draft.projectId ||= project.id; project.draft.ownerName ||= 'Previous visitor (name not recorded)'; }
     return project;
   }
-  function load(storage, documents) {
+  function load(storage, documents, visitorId, migrateLegacy = true) {
     let saved;
-    try { saved = JSON.parse(storage.getItem(key)); } catch { /* recover from the previous workspace below */ }
+    let allowLegacy = migrateLegacy && !visitorId;
+    try {
+      allowLegacy = migrateLegacy && (!visitorId || !storage.getItem(migrationKey));
+      saved = JSON.parse(storage.getItem(visitorId ? visitorKey(visitorId) : key));
+      if (!saved && allowLegacy) saved = JSON.parse(storage.getItem(key));
+    } catch { /* recover from the previous workspace below */ }
     if (saved?.version === 3 && saved.projects?.length) {
       saved.projects.forEach(normalize);
       if (!saved.projects.some(p => p.id === saved.activeProjectId)) saved.activeProjectId = saved.projects[0].id;
+      if (visitorId) saved.visitorId = visitorId;
       return saved;
     }
     const project = create('Onboarding experience', 'Improve onboarding using customer interview evidence.', documents, 'onboarding');
     let legacy;
-    try { legacy = JSON.parse(storage.getItem('productpilot-workspace-v2')); } catch { /* start from the included research */ }
+    try { if (allowLegacy) legacy = JSON.parse(storage.getItem('productpilot-workspace-v2')); } catch { /* start from the included research */ }
     if (legacy?.version === 2 && Array.isArray(legacy.documents)) {
       for (const field of ['documents','included','analysis','comparison','chosen','rationale','draft','decisions','activity','step','checkedAt']) if (field in legacy) project[field] = clone(legacy[field]);
     }
     normalize(project);
-    return { version: 3, activeProjectId: project.id, projects: [project] };
+    return { version: 3, ...(visitorId ? {visitorId} : {}), activeProjectId: project.id, projects: [project] };
   }
-  function persist(storage, workspace) { storage.setItem(key, JSON.stringify(workspace)); }
+  function persist(storage, workspace) {
+    storage.setItem(workspace.visitorId ? visitorKey(workspace.visitorId) : key, JSON.stringify(workspace));
+    if (workspace.visitorId) storage.setItem(migrationKey, 'done');
+  }
   function activateBacklog(project, id) {
     const opportunity = project.opportunities.find(o => o.id === id);
     if (!opportunity) return;

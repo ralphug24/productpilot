@@ -1,4 +1,4 @@
-# ProductPilot — Ravugo Consulting LLC workspace
+# ProductPilot — Elevate Consulting workspace
 
 A product research workflow that keeps interview evidence, product decisions, and a reviewed PRD connected.
 
@@ -22,11 +22,17 @@ The Overview, Research library, Opportunity backlog, and Decision log display th
 
 Overview counts are specific to the selected project and browser. Opportunities count the persistent backlog, including deferred and rejected records. Counts change on additions, saved decisions, and review actions; editing a reviewed PRD returns it to draft status. These are not company-wide or cross-device totals.
 
-Existing `productpilot-workspace-v2` records migrate into the Onboarding experience project in `productpilot-projects-v3`; the original storage key is retained. Analyses and saved decision snapshots populate its backlog. A new review or source change resets the current analysis and working selection without deleting backlog records or decision snapshots.
+Visitors are prompted for a preferred display name on first use; they can explore as a guest. The profile menu changes the display name or starts a separate visitor workspace. Current identity is stored in `productpilot-visitor-v1`; project roots are partitioned by an unguessable local profile ID under `productpilot-projects-v4-{visitorId}`. A name is not a password or authenticated identity. Another visitor profile starts with only the bundled onboarding research and does not receive the previous profile’s projects, imports, decisions, or activity.
+
+Existing `productpilot-workspace-v2` and `productpilot-projects-v3` records migrate once into the first local visitor profile. Old keys are retained; the migration marker prevents the old workspace being copied to later visitors. Existing decision records without captured authors show “Previous visitor (name not recorded)” instead of attributing them to the current tester. Future decisions capture owner ID/name, activity captures the acting visitor, and Word exports use the recorded owner and reviewer. Changing a display name does not rewrite historical authorship.
+
+Local profiles are convenience separation, not enterprise access control. Anyone with access to the browser and its storage can inspect local records. An enterprise version should use server-authenticated accounts, project membership, shared research and approved decisions, private personal drafts, and a permission-checked audit trail. Company-wide history should never be available to every user by default.
+
+A new review or source change resets the current analysis and working selection without deleting backlog records or decision snapshots.
 
 ## Research sources
 
-The included library is backed by six TXT transcripts and `research/manifest.json`. These are synthetic interviews authored for the portfolio project. Ravugo Consulting LLC is the workspace name. Dataset provenance is explained in Workspace details and Source details. No SharePoint connection, live customer feed, or real customer research is claimed.
+The included library is backed by six TXT transcripts and `research/manifest.json`. These are synthetic interviews authored for the portfolio project. Elevate Consulting is the workspace name. Dataset provenance is explained in Workspace details and Source details. No SharePoint connection, live customer feed, or real customer research is claimed.
 
 `research-data.js` is generated from the actual source files so the app can also work in a local file preview. To update the bundled library after editing transcripts:
 

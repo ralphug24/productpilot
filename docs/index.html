@@ -4,30 +4,36 @@
   <base href="/productpilot/">
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#f5f7f8">
-  <title>ProductPilot — Ravugo Consulting LLC workspace</title>
+  <meta name="theme-color" content="#f7f4ee">
+  <title>ProductPilot — Elevate Consulting workspace</title>
+  <link rel="icon" href="brand-mark.svg" type="image/svg+xml">
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="theme.css?v=teal-amber-04">
   <link rel="stylesheet" href="workspace.css?v=workspace-11">
+  <link rel="stylesheet" href="studio.css?v=studio-01">
   <script src="feedback-config.js" defer></script>
   <script src="feedback.js" defer></script>
   <script src="vendor/jszip.min.js" defer></script>
   <script src="vendor/pdf-worker.js" defer></script>
   <script src="vendor/pdf.js" defer></script>
-  <script src="research-data.js?v=company-06" defer></script>
+  <script src="research-data.js?v=company-12" defer></script>
   <script src="domain.js?v=workspace-11" defer></script>
-  <script src="projects.js?v=workspace-11" defer></script>
+  <script src="projects.js?v=visitors-01" defer></script>
+  <script src="visitor.js?v=visitors-01" defer></script>
   <script src="ai-client.js?v=workspace-11" defer></script>
-  <script src="prd-export.js?v=docx-11" defer></script>
+  <script src="prd-export.js?v=docx-12" defer></script>
   <script src="ingest.js" defer></script>
-  <script src="workspace.js?v=workspace-11" defer></script>
+  <script src="workspace.js?v=studio-01" defer></script>
 </head>
 <body>
 <div class="app-shell">
-  <aside class="sidebar">
-    <a class="brand" href="#overview"><span class="brand-mark">P</span><span>productpilot</span></a>
-    <div class="workspace-switch"><span class="workspace-avatar">R</span><span><b>Ravugo Consulting LLC</b><small>Product workspace</small></span></div>
-    <div class="side-label">WORKSPACE</div>
+  <header class="sidebar">
+    <div class="studio-masthead">
+    <a class="brand" href="#overview" aria-label="ProductPilot overview"><img class="brand-mark" src="brand-mark.svg" alt=""><span>productpilot</span></a>
+    <div class="workspace-switch"><span><b>Elevate Consulting</b><small>Product studio</small></span></div>
+    <div class="studio-utilities"><a class="portfolio-return" href="https://ralphugboko.dev/projects">← Portfolio</a><button class="text-action" data-guide>Quick walkthrough</button><button class="profile profile-control" id="visitor-profile" aria-label="Visitor profile"><div class="profile-avatar" id="visitor-avatar">?</div><div><b id="visitor-display-name">Guest visitor</b><small>Your local workspace ▾</small></div></button></div>
+    </div>
+    <div class="studio-navigation">
     <nav class="side-nav" aria-label="Main navigation">
       <a href="#overview" class="nav-item"><span>▦</span> Overview</a>
       <a href="#workflow" class="nav-item"><span>⌁</span> Product workflow</a>
@@ -35,17 +41,13 @@
       <a href="#backlog" class="nav-item"><span>≡</span> Opportunity backlog</a>
       <a href="#decisions" class="nav-item"><span>◇</span> Decision log</a>
     </nav>
-    <div class="side-label project-label">CURRENT PROJECT</div>
-    <label class="project-picker-label" for="project-picker">Switch project</label><select id="project-picker" aria-label="Current project"></select>
+    <div class="studio-project-controls"><label class="project-picker-label" for="project-picker">Project</label><select id="project-picker" aria-label="Current project"></select>
     <button class="new-project-btn" data-new-project>＋ Create project</button>
-    <div class="sidebar-bottom">
-      <a class="portfolio-return" href="https://ralphugboko.dev/projects">← Portfolio projects</a>
-      <div class="usage-card"><div class="usage-icon">?</div><div><b>Explore ProductPilot</b><p>Try a complete product review.</p><button class="text-action" data-guide>Quick walkthrough →</button></div></div>
-      <div class="profile"><div class="profile-avatar">R</div><div><b>Ralph Ugboko</b><small>Product manager</small></div></div>
     </div>
-  </aside>
+    </div>
+  </header>
   <main class="main-content">
-    <header class="topbar"><div class="breadcrumbs"><span>Ravugo Consulting LLC</span><span>/</span><b id="breadcrumb-project">Onboarding experience</b></div><div class="top-actions"><a class="feedback-link" href="feedback.html" data-feedback target="_blank" rel="noopener">Give feedback ↗</a><button class="workspace-details-btn" id="source-details-top">Workspace details</button><span class="saved-state" id="save-state"><span></span> Saved on this device</span><button class="icon-btn" aria-label="Open quick guide" data-guide>?</button></div></header>
+    <header class="topbar"><div class="breadcrumbs"><span>Elevate Consulting</span><span>/</span><b id="breadcrumb-project">Onboarding experience</b></div><div class="top-actions"><a class="feedback-link" href="feedback.html" data-feedback target="_blank" rel="noopener">Give feedback ↗</a><button class="workspace-details-btn" id="source-details-top">Workspace details</button><span class="saved-state" id="save-state"><span></span> Saved on this device</span><button class="icon-btn" aria-label="Open quick guide" data-guide>?</button></div></header>
     <div class="page-wrap">
       <div class="hero"><div><div class="eyebrow" id="project-eyebrow">ONBOARDING EXPERIENCE</div><h1 id="page-title">Product workspace</h1><p class="hero-copy" id="page-description"></p></div></div>
       <div class="mobile-project-controls"><label for="mobile-project-picker">Project</label><select id="mobile-project-picker"></select><button class="quiet-btn" data-new-project>＋ Create project</button></div>
@@ -75,7 +77,7 @@
         </nav>
         <div class="content-heading"><div><div class="section-kicker" id="stage-kicker"></div><h2 id="stage-title"></h2><p id="stage-description"></p></div><button class="text-action" id="new-review">Start new review</button></div>
         <section class="stage-panel" id="stage-1">
-          <div class="source-connection"><div class="source-folder-icon">▤</div><div class="source-heading"><strong id="source-name">Ravugo Consulting LLC Research</strong><span id="source-path">Product / Onboarding / Interviews</span><small id="library-status"></small></div><div class="source-actions"><button class="quiet-btn" id="refresh-library">Refresh library</button><button class="text-action" data-source-details>Source details ↗</button></div></div>
+          <div class="source-connection"><div class="source-folder-icon">▤</div><div class="source-heading"><strong id="source-name">Elevate Consulting Research</strong><span id="source-path">Product / Onboarding / Interviews</span><small id="library-status"></small></div><div class="source-actions"><button class="quiet-btn" id="refresh-library">Refresh library</button><button class="text-action" data-source-details>Source details ↗</button></div></div>
           <div class="list-toolbar"><div><b>Interview transcripts</b><span id="selection-receipt"></span></div><div class="toolbar-actions"><button class="quiet-btn" data-folder>Open source folder</button><button class="quiet-btn" data-paste>Paste transcript</button><button class="quiet-btn" data-upload>＋ Upload files</button></div></div>
           <div class="upload-inline" id="drop-zone"><span>Drop transcripts here, or use <b>Upload files</b>.</span><small>TXT · PDF with selectable text · DOCX · CSV</small></div>
           <div id="workflow-documents"></div>
@@ -107,7 +109,7 @@
       </section>
       <section class="workspace-view hidden" id="view-decisions" aria-label="Decision log"><div id="decision-history"></div></section>
       <section class="workspace-view hidden" id="view-backlog" aria-label="Opportunity backlog"><div class="backlog-intro"><p>Opportunities remain here across reviews. Record a status and rationale, or bring an opportunity back into prioritization.</p><button class="quiet-btn" id="add-opportunity">＋ Add opportunity from evidence</button></div><div class="backlog-filters"><label for="backlog-filter">Show</label><select id="backlog-filter"><option value="all">All opportunities</option><option value="needs_review">Needs review</option><option value="prioritized">Prioritized</option><option value="deferred">Deferred</option><option value="rejected">Rejected</option></select><span id="backlog-count"></span></div><div id="backlog-list"></div></section>
-      <footer class="page-footer"><span>RAVUGO CONSULTING LLC <span>·</span> PRODUCTPILOT</span><span id="footer-status">Research → decision → reviewed PRD</span></footer>
+      <footer class="page-footer"><span>ELEVATE CONSULTING <span>·</span> PRODUCTPILOT</span><span id="footer-status">Research → decision → reviewed PRD</span></footer>
     </div>
   </main>
 </div>
@@ -116,6 +118,7 @@
 <dialog id="detail-dialog" class="workspace-dialog"><div class="dialog-top"><h2 id="detail-title"></h2><button class="icon-btn" data-close aria-label="Close dialog">×</button></div><div id="detail-body"></div></dialog>
 <dialog id="paste-dialog" class="workspace-dialog"><form id="paste-form"><div class="dialog-top"><h2>Add an interview transcript</h2><button type="button" class="icon-btn" data-close aria-label="Close">×</button></div><label for="transcript-title">Document name</label><input id="transcript-title" required placeholder="Interview · participant 07"><label for="transcript-text">Transcript</label><textarea id="transcript-text" required rows="10" placeholder="Paste the conversation, including speaker names and timestamps if available."></textarea><div class="dialog-actions"><button type="button" class="quiet-btn" data-close>Cancel</button><button class="primary-btn" type="submit">Add transcript</button></div></form></dialog>
 <dialog id="project-dialog" class="workspace-dialog"><form id="project-form"><div class="dialog-top"><h2>Create a project</h2><button type="button" class="icon-btn" data-close aria-label="Close">×</button></div><p>Each project has its own research, opportunity backlog, decisions, and PRDs. It is saved in this browser.</p><label for="project-name">Project name</label><input id="project-name" required maxlength="80" placeholder="Customer billing experience"><label for="project-objective">What do you want to improve?</label><textarea id="project-objective" required maxlength="800" rows="3" placeholder="Describe the customer problem or product objective."></textarea><div class="dialog-actions"><button type="button" class="quiet-btn" data-close>Cancel</button><button type="submit" class="primary-btn">Create project</button></div></form></dialog>
+<dialog id="visitor-dialog" class="workspace-dialog visitor-dialog"><form id="visitor-form"><div class="dialog-top"><div><span class="mini-label">ELEVATE CONSULTING · PRODUCT STUDIO</span><h2 id="visitor-title">Welcome to ProductPilot</h2></div><button type="button" class="icon-btn" data-close aria-label="Close">×</button></div><p id="visitor-description">What should we call you? Your name appears on your decisions and requirements documents.</p><label for="visitor-name">Your name</label><input id="visitor-name" autocomplete="given-name" maxlength="80" required placeholder="Your first name or preferred display name"><p class="visitor-privacy">This is a local visitor profile, not a signed-in company account. Your name stays in this browser. Team sharing requires accounts and project permissions.</p><div class="dialog-actions"><button type="button" class="quiet-btn" id="visitor-guest">Explore as guest</button><button type="submit" class="primary-btn" id="visitor-save">Enter workspace →</button></div></form></dialog>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 </body>
 </html>

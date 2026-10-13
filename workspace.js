@@ -5,18 +5,59 @@
   const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const now = () => new Date().toISOString();
   const date = value => new Date(value).toLocaleString('en-US', { timeZone: 'America/New_York', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
+  let visitor;
+  try { visitor = PilotVisitor.load(localStorage); }
+  catch { visitor = PilotVisitor.fresh(); }
   let workspace;
-  try { workspace = PilotProjects.load(localStorage, PilotResearch.documents); }
-  catch { workspace = PilotProjects.load({ getItem: () => null }, PilotResearch.documents); }
+  try { workspace = PilotProjects.load(localStorage, PilotResearch.documents, visitor.id); }
+  catch { workspace = PilotProjects.load({ getItem: () => null }, PilotResearch.documents, visitor.id); }
   let state = workspace.projects.find(project => project.id === workspace.activeProjectId);
   // Update bundled document branding in an already-saved workspace.
   // Uploaded documents and historical decisions retain their original content.
-  for (const doc of state.documents) {
-    if (doc.origin === 'Bundled research library' && doc.text.startsWith('Ravugo Research')) {
-      doc.text = doc.text.replace(/^Ravugo Research/, 'Ravugo Consulting LLC Research');
+  function updateBundledBranding() {
+    for (const project of workspace.projects) for (const doc of project.documents) {
+      if (doc.origin === 'Bundled research library') doc.text = doc.text.replace(/^(?:Ravugo Consulting LLC|Ravugo) Research/, 'Elevate Consulting Research');
+      if (doc.owner === 'Added by Ralph Ugboko') doc.owner = 'Added on this browser (name not recorded)';
     }
   }
+  updateBundledBranding();
   let route = 'workflow', busy = false;
+  let visitorAction = 'welcome';
+  function renderVisitor() {
+    $('#visitor-display-name').textContent = visitor.name;
+    $('#visitor-avatar').textContent = PilotVisitor.initials(visitor.name);
+    $('#visitor-profile').setAttribute('aria-label', `${visitor.name}: visitor profile`);
+  }
+  function saveVisitor() { try { PilotVisitor.save(localStorage,visitor); } catch { /* local workspace save indicator covers unavailable storage */ } }
+  function showVisitorPrompt(action) {
+    if (busy) { toast('Finish the current operation before changing visitors.'); return; }
+    visitorAction = action;
+    $('#visitor-title').textContent = action === 'switch' ? 'Start a visitor workspace' : action === 'rename' ? 'Your display name' : 'Welcome to ProductPilot';
+    $('#visitor-description').textContent = action === 'switch' ? 'Enter the next visitor’s name. They will start with a separate local workspace; your existing records are retained on this device.' : action === 'rename' ? 'Update your display name for future decisions and documents. Previously saved records keep the author name recorded at the time.' : 'What should we call you? Your name appears on your decisions and requirements documents.';
+    $('#visitor-name').value = action === 'rename' ? visitor.name : '';
+    $('#visitor-guest').hidden = action === 'rename';
+    $('#visitor-save').textContent = action === 'rename' ? 'Save display name' : 'Enter workspace →';
+    $('#visitor-dialog').showModal();
+  }
+  function acceptVisitor(name) {
+    if (busy) return;
+    const cleaned = PilotVisitor.clean(name); if (!cleaned) { $('#visitor-name').focus(); return; }
+    if (visitorAction === 'switch') {
+      if (!save()) { toast('Browser storage is unavailable. Keep this visitor workspace open so your current session is not lost.'); return; }
+      visitor = PilotVisitor.fresh(cleaned); saveVisitor();
+      try { workspace = PilotProjects.load(localStorage, PilotResearch.documents, visitor.id, false); }
+      catch { workspace = PilotProjects.load({getItem:()=>null},PilotResearch.documents,visitor.id,false); }
+      state = workspace.projects.find(project => project.id === workspace.activeProjectId); updateBundledBranding();
+      $('#paste-form').reset(); $('#backlog-filter').value = 'all'; $('#sort-rice').checked = false;
+    } else { visitor.name = cleaned; visitor.introduced = true; saveVisitor(); }
+    renderVisitor(); $('#visitor-dialog').close(); navigate(); save(); toast(`Welcome, ${visitor.name}.`);
+  }
+  function showVisitorSettings() {
+    if (busy) return;
+    openDialog('Your visitor workspace', `<p>You are using ProductPilot as <b>${esc(visitor.name)}</b>.</p><p>This profile’s research, opportunities, decisions, and PRDs stay in this browser. Switch visitor to start a separate workspace for another tester.</p><div class="guide-actions"><button class="primary-btn" id="edit-visitor-name">Change my display name</button><button class="quiet-btn" id="switch-visitor">Switch visitor →</button></div><div class="detail-note visitor-history-note"><b>How would a team use this?</b><p>An enterprise version should use authenticated accounts and project membership. Team members can share project research and approved decisions; personal drafts can stay private. This local profile is not access control: someone with access to this browser can inspect its stored data.</p></div>`);
+    $('#edit-visitor-name').onclick = () => { $('#detail-dialog').close(); showVisitorPrompt('rename'); };
+    $('#switch-visitor').onclick = () => { $('#detail-dialog').close(); showVisitorPrompt('switch'); };
+  }
 
   function toast(message) {
     $('#toast').textContent = message; $('#toast').classList.add('show');
@@ -26,15 +67,17 @@
     const note = $('.project-scope-note');
     try {
       PilotProjects.persist(localStorage, workspace); $('#save-state').innerHTML = '<span></span> Saved in this browser';
-      note.querySelector('b').textContent = 'Current project · saved in this browser';
-      note.querySelector('p').textContent = 'These totals reflect your work in the selected project on this device. They are not shared company-wide totals.';
+      note.querySelector('b').textContent = 'Your visitor workspace · current project';
+      note.querySelector('p').textContent = 'These totals belong to the current visitor profile and selected project in this browser. They are not shared company-wide totals. Use your profile menu to switch visitors.';
+      return true;
     } catch {
       $('#save-state').textContent = 'Session only · storage unavailable';
-      note.querySelector('b').textContent = 'Current project · session only';
+      note.querySelector('b').textContent = 'Your visitor workspace · session only';
       note.querySelector('p').textContent = 'Browser storage is unavailable or full. These project totals reflect this session; recent changes may be lost when you close the page. They are not shared company-wide totals.';
+      return false;
     }
   }
-  function log(message) { state.activity.unshift({ message, at: now() }); state.activity = state.activity.slice(0, 30); }
+  function log(message) { state.activity.unshift({ message, at: now(), actorId: visitor.id, actorName: visitor.name }); state.activity = state.activity.slice(0, 30); }
   function invalidate() { state.analysis = null; state.comparison = []; state.chosen = null; state.rationale = ''; state.draft = null; state.step = 1; }
   const selectedDocs = () => state.documents.filter(doc => state.included.includes(doc.id));
   const candidates = () => state.analysis?.opportunities.filter(o => state.comparison.includes(o.id)) || [];
@@ -110,7 +153,7 @@
     openDialog(doc.title, `<div class="document-receipt"><b>${esc(doc.file)}</b><span>${esc(doc.origin)} · ${date(doc.modified)}</span><small>${esc(doc.path)}</small></div>${quotedText ? `<div class="source-quote"><b>Passage used in this opportunity</b><p>${esc(quotedText)}</p></div>` : ''}<h3 class="transcript-label">Full transcript</h3><pre class="transcript-content">${esc(doc.text)}</pre>`);
   }
   function showSourceDetails() {
-    openDialog('Research source details', `<div class="detail-note"><b>${esc(state.name)} · Research data</b><p>The onboarding project includes six synthetic interviews. New projects start with an empty library for your research. No live SharePoint connection is configured.</p></div><dl class="source-facts"><dt>Current project</dt><dd>${esc(state.name)}</dd><dt>Your documents</dt><dd>Upload files, paste a transcript, or select a source folder. Text extraction runs locally.</dd><dt>Refresh behavior</dt><dd>The onboarding library reloads its bundled index and reports actual changes. Choose a source folder again to reread your own files.</dd><dt>Processing</dt><dd>TXT, DOCX, text PDF, and CSV extraction runs on this device. Scanned PDFs need OCR; legacy DOC files must be saved as DOCX.</dd><dt>Local rules</dt><dd>Groups four predefined onboarding topics on this device. Exact quotes are preserved.</dd><dt>AI method</dt><dd>Cloudflare Workers AI analyzes selected excerpts or drafts sections from a chosen opportunity and rationale. Project context and excerpts are sent only when you select the AI method and run it. Citation IDs are validated against supplied evidence; this does not prove every interpretation is correct.</dd><dt>Storage</dt><dd>Project research, opportunities, decisions, and drafts are stored in this browser. They are not shared company-wide or synced across devices. The AI database stores rate and daily-usage counters, not transcripts or generated drafts.</dd></dl>`);
+    openDialog('Research source details', `<div class="detail-note"><b>${esc(state.name)} · Research data</b><p>The onboarding project includes six synthetic interviews. New projects start with an empty library for your research. No live SharePoint connection is configured.</p></div><dl class="source-facts"><dt>Current visitor</dt><dd>${esc(visitor.name)} · Local profile, not a signed-in account</dd><dt>Current project</dt><dd>${esc(state.name)}</dd><dt>Your documents</dt><dd>Upload files, paste a transcript, or select a source folder. Text extraction runs locally.</dd><dt>Refresh behavior</dt><dd>The onboarding library reloads its bundled index and reports actual changes. Choose a source folder again to reread your own files.</dd><dt>Processing</dt><dd>TXT, DOCX, text PDF, and CSV extraction runs on this device. Scanned PDFs need OCR; legacy DOC files must be saved as DOCX.</dd><dt>Local rules</dt><dd>Groups four predefined onboarding topics on this device. Exact quotes are preserved.</dd><dt>AI method</dt><dd>Cloudflare Workers AI analyzes selected excerpts or drafts sections from a chosen opportunity and rationale. Project context and excerpts are sent only when you select the AI method and run it. Citation IDs are validated against supplied evidence; this does not prove every interpretation is correct.</dd><dt>Storage</dt><dd>Project research, opportunities, decisions, and drafts are stored under this visitor profile in this browser. They are not shared company-wide or synced across devices. Switch visitor to start another local workspace. Local profiles are not secure access control. The AI database stores rate and daily-usage counters, not transcripts or generated drafts.</dd></dl>`);
   }
   function showGuide() {
     openDialog('Your first product review', `<p class="guide-intro">Your current project is <b>${esc(state.name)}</b>. ${state.documents.length ? 'Research documents are available to review.' : 'Add transcripts to begin.'}</p><ol class="guide-list"><li><b>Select interviews</b><p>Open Product workflow. Read a transcript for context, choose an analysis method, then analyze selected transcripts.</p></li><li><b>Review opportunities</b><p>Read the supporting quotes, edit the wording if needed, and select opportunities to compare. All opportunities remain in the backlog across reviews.</p></li><li><b>Choose your priority</b><p>Optionally estimate RICE for each opportunity. Select one to draft requirements and record your trade-off. A higher score does not automatically make the decision.</p></li><li><b>Finish the PRD</b><p>PRD means Product Requirements Document. Edit the draft, record open questions, and mark it reviewed. Your decision remains in the Decision log.</p></li></ol><div class="guide-actions"><button class="primary-btn" id="guide-start">Open product workflow →</button><a class="text-action help-link" href="testing-guide.html" target="_blank" rel="noopener">Open testing guide ↗</a></div><p class="dialog-dismiss-hint">Click outside this window or press Esc to close.</p>`);
@@ -204,7 +247,7 @@
     const step = state.draft ? 4 : candidates().length ? 3 : state.analysis ? 2 : 1;
     const next = { 1: [state.documents.length ? 'Review the interview library' : 'Add customer research', state.documents.length ? 'Choose which interviews to include and look for customer problems. Previous opportunities remain in your backlog.' : 'Upload TXT, DOCX, or text PDF transcripts, paste an interview, or choose a source folder.', state.documents.length ? 'Start product review →' : 'Add transcripts →'], 2: ['Inspect the proposed opportunities', 'The analysis is ready. Read the source quotes and choose what to compare.', 'Review opportunities →'], 3: ['Choose an opportunity to invest in', 'Compare the evidence and estimates, then write your decision rationale.', 'Continue prioritization →'], 4: [state.draft?.reviewedAt ? 'Your PRD has been reviewed' : 'Review your PRD draft', 'Your decision and evidence are recorded. Open the draft to edit or download it.', 'Open product brief →'] }[step];
     $('#overview-next-title').textContent = next[0]; $('#overview-next-copy').textContent = next[1]; $('#resume-workflow').textContent = next[2]; $('#resume-workflow').onclick = () => { state.step = step; location.hash = '#workflow'; navigate(); };
-    $('#overview-activity').innerHTML = state.activity.length ? `<div class="activity-list">${state.activity.slice(0, 5).map(a => `<div><span>${esc(a.message)}</span><small>${date(a.at)}</small></div>`).join('')}</div>` : '<div class="empty-state compact"><p>No review activity yet. Start with the interviews in Product workflow.</p></div>';
+    $('#overview-activity').innerHTML = state.activity.length ? `<div class="activity-list">${state.activity.slice(0, 5).map(a => `<div><span>${esc(a.message)}</span><small>${a.actorName ? `${esc(a.actorName)} · ` : ''}${date(a.at)}</small></div>`).join('')}</div>` : '<div class="empty-state compact"><p>No review activity yet. Start with the interviews in Product workflow.</p></div>';
     $('#overview-questions')?.remove();
     const scope = latest?.fields.find(field => field.key === 'scope')?.value;
     if (scope) {
@@ -220,7 +263,7 @@
     $('#backlog-list').innerHTML = list.length ? list.map(o => `<article class="backlog-card"><div class="priority-card-head"><h3>${esc(o.title)}</h3><span class="score-pill">${esc(scoreText(o))}</span></div><p>${esc(o.problem)}</p><small>${o.documentCount} source documents · ${esc(o.method || 'Rules baseline')} · Updated ${date(o.updatedAt)}</small><div class="backlog-controls"><label>Status<select data-backlog-status="${esc(o.id)}">${Object.entries(statuses).map(([value,label]) => `<option value="${value}" ${value === o.status ? 'selected' : ''}>${label}</option>`).join('')}</select></label><button class="quiet-btn" data-backlog-compare="${esc(o.id)}">Bring into prioritization →</button></div><label class="backlog-note-label">Status rationale / revisit conditions<textarea data-backlog-note="${esc(o.id)}" rows="2" placeholder="Why is this prioritized, deferred, or rejected? When should it be revisited?">${esc(o.notes)}</textarea></label><details class="evidence-details"><summary>Inspect retained evidence (${o.evidence.length} passages)</summary>${o.evidence.map(e => `<div class="evidence-passage"><b>${esc(e.title)} · ${esc(e.location)}</b><blockquote>${esc(e.text)}</blockquote><button class="text-action" data-quote="${esc(e.id)}">Open full transcript ↗</button></div>`).join('')}</details></article>`).join('') : `<div class="empty-state"><h3>${state.opportunities.length ? 'No opportunities match this status' : 'Your opportunity backlog starts here'}</h3><p>Analyze transcripts or add an opportunity from a source passage. Selecting a priority or starting another review keeps these records.</p><a class="primary-btn link-btn" href="#workflow">Open product workflow →</a></div>`;
   }
   function renderDecisions() {
-    $('#decision-history').innerHTML = state.decisions.length ? state.decisions.map(d => `<article class="decision-history-card"><div class="decision-history-top"><span class="mini-label">PRODUCT DECISION · ${date(d.createdAt)}</span><span class="draft-chip ${d.reviewedAt ? 'reviewed' : ''}">${d.reviewedAt ? 'PRD reviewed' : 'PRD needs review'}</span></div><h3>${esc(d.opportunity.title)}</h3><p>${esc(d.rationale)}</p><div class="decision-history-footer"><span>${d.opportunity.documentCount} source documents · ${scoreText(d.opportunity)} · Ralph Ugboko</span><button class="quiet-btn" data-open-decision="${esc(d.id)}">Open PRD →</button></div><details class="evidence-details"><summary>Read the evidence used for this decision</summary>${d.opportunity.evidence.map(e => `<div class="evidence-passage"><b>${esc(e.title)} · ${esc(e.location)}</b><blockquote>${esc(e.text)}</blockquote></div>`).join('')}</details></article>`).join('') : '<div class="empty-state"><h3>No product decisions yet</h3><p>After reviewing opportunities, choose one and save your rationale. The decision and its evidence will appear here.</p><a class="primary-btn link-btn" href="#workflow">Start a product review →</a></div>';
+    $('#decision-history').innerHTML = state.decisions.length ? state.decisions.map(d => `<article class="decision-history-card"><div class="decision-history-top"><span class="mini-label">PRODUCT DECISION · ${date(d.createdAt)}</span><span class="draft-chip ${d.reviewedAt ? 'reviewed' : ''}">${d.reviewedAt ? 'PRD reviewed' : 'PRD needs review'}</span></div><h3>${esc(d.opportunity.title)}</h3><p>${esc(d.rationale)}</p><div class="decision-history-footer"><span>${d.opportunity.documentCount} source documents · ${scoreText(d.opportunity)} · ${esc(d.ownerName || 'Previous visitor (name not recorded)')}</span><button class="quiet-btn" data-open-decision="${esc(d.id)}">Open PRD →</button></div><details class="evidence-details"><summary>Read the evidence used for this decision</summary>${d.opportunity.evidence.map(e => `<div class="evidence-passage"><b>${esc(e.title)} · ${esc(e.location)}</b><blockquote>${esc(e.text)}</blockquote></div>`).join('')}</details></article>`).join('') : '<div class="empty-state"><h3>No product decisions yet</h3><p>After reviewing opportunities, choose one and save your rationale. The decision and its evidence will appear here.</p><a class="primary-btn link-btn" href="#workflow">Start a product review →</a></div>';
   }
   function navigate() {
     updateProjectControls();
@@ -246,6 +289,7 @@
     for (const file of supported) {
       try {
         const doc = await PilotIngest.readFile(file);
+        doc.owner = `Imported by ${visitor.name}`; doc.ownerId = visitor.id;
         const existing = state.documents.findIndex(item => item.origin !== 'Bundled research library' && item.path === doc.path);
         if (existing >= 0 && state.documents[existing].text === doc.text) { duplicates++; continue; }
         if (existing >= 0) { doc.id = state.documents[existing].id; state.documents[existing] = doc; }
@@ -284,6 +328,7 @@
   document.addEventListener('click', event => {
     const target = event.target.closest('button, a'); if (!target) return;
     if (target.matches('[data-close]')) target.closest('dialog').close();
+    if (target.matches('#visitor-profile')) showVisitorSettings();
     if (target.matches('[data-guide]')) showGuide();
     if (target.matches('[data-source-details], #source-details-top')) showSourceDetails();
     if (target.matches('[data-upload]') && !busy) $('#transcript-files').click();
@@ -297,12 +342,14 @@
     if (target.matches('[data-backlog-compare]') && !busy) { PilotProjects.activateBacklog(state, target.dataset.backlogCompare); location.hash = '#workflow'; navigate(); save(); }
     if (target.matches('[data-open-decision]') && !busy) { state.draft = structuredClone(state.decisions.find(d => d.id === target.dataset.openDecision)); state.step = 4; location.hash = '#workflow'; navigate(); }
   });
+  $('#visitor-form').onsubmit = event => { event.preventDefault(); acceptVisitor($('#visitor-name').value); };
+  $('#visitor-guest').onclick = () => acceptVisitor('Guest visitor');
   $('#project-picker').onchange = event => switchProject(event.target.value);
   $('#mobile-project-picker').onchange = event => switchProject(event.target.value);
   $('#project-form').onsubmit = event => {
     event.preventDefault(); if (busy) return;
     const name = $('#project-name').value.trim(), objective = $('#project-objective').value.trim(); if (!name || !objective) return;
-    const project = PilotProjects.create(name, objective);
+    const project = PilotProjects.create(name, objective); project.createdByName = visitor.name; project.createdById = visitor.id;
     workspace.projects.push(project); $('#project-dialog').close(); event.target.reset(); switchProject(project.id);
     log(`Created project: ${name}.`); save(); location.hash = '#workflow'; navigate();
   };
@@ -354,7 +401,7 @@
   $('#paste-form').onsubmit = event => {
     event.preventDefault(); if (busy) return; const title = $('#transcript-title').value.trim(), text = $('#transcript-text').value.trim(); if (!title || !text) return;
     if (text.length > 250000) { toast('Split this transcript into documents under 250,000 characters.'); return; }
-    const doc = { id: `DOC-${crypto.randomUUID()}`, file: `${title}.txt`, title, format: 'TXT', text, modified: now(), owner: 'Added by Ralph Ugboko', origin: 'Pasted transcript', path: `Manual transcripts / ${title}.txt` };
+    const doc = { id: `DOC-${crypto.randomUUID()}`, file: `${title}.txt`, title, format: 'TXT', text, modified: now(), owner: `Added by ${visitor.name}`, ownerId: visitor.id, origin: 'Pasted transcript', path: `Manual transcripts / ${title}.txt` };
     state.documents.unshift(doc); state.included.push(doc.id); state.pasteDraft = null; invalidate(); log(`Added transcript: ${title}.`); save(); event.target.reset(); $('#paste-dialog').close(); navigate(); toast('Transcript added. Analyze it in Product workflow.');
   };
   const drop = $('#drop-zone');
@@ -405,20 +452,20 @@
       let fields = PilotDomain.draft(o, rationale);
       if (method === 'Cloudflare Workers AI') fields = await PilotAI.draft(state, structuredClone(o), rationale, fields);
       o.status = 'prioritized'; o.notes = rationale; o.updatedAt = now();
-      state.draft = { id: crypto.randomUUID(), projectId: state.id, projectName: state.name, createdAt: now(), opportunity: structuredClone(o), rationale, fields, method, reviewedAt: null };
+      state.draft = { id: crypto.randomUUID(), projectId: state.id, projectName: state.name, ownerId: visitor.id, ownerName: visitor.name, createdAt: now(), opportunity: structuredClone(o), rationale, fields, method, reviewedAt: null };
       state.decisions.unshift(structuredClone(state.draft)); log(`Saved product decision: ${o.title}.`); goStep(4);
     } catch (error) { toast(error.message); }
     finally { busy = false; $('#approve-decision').textContent = 'Save decision & draft requirements →'; updateChoice(); }
   };
   $('#prd-fields').oninput = event => {
     if (!event.target.matches('[data-prd]') || !state.draft) return;
-    state.draft.fields.find(field => field.key === event.target.dataset.prd).value = event.target.value; state.draft.reviewedAt = null; $('#review-confirm').checked = false; updateDraftHistory(); updateReviewStatus(); save();
+    state.draft.fields.find(field => field.key === event.target.dataset.prd).value = event.target.value; state.draft.lastEditedBy = visitor.name; state.draft.reviewedAt = null; state.draft.reviewedBy = null; $('#review-confirm').checked = false; updateDraftHistory(); updateReviewStatus(); save();
   };
   $('#review-confirm').onchange = updateReviewStatus;
   $('#mark-reviewed').onclick = () => {
     if (!state.draft || !$('#review-confirm').checked) return;
     if (state.draft.fields.some(field => ['title','problem','decision','solution'].includes(field.key) && !field.value.trim())) { toast('Complete the title, problem, rationale, and solution before marking the PRD reviewed.'); return; }
-    state.draft.reviewedAt = now(); updateDraftHistory(); log(`Reviewed PRD: ${state.draft.opportunity.title}.`); updateReviewStatus(); save(); toast('PRD reviewed. The decision log is updated.');
+    state.draft.reviewedAt = now(); state.draft.reviewedBy = visitor.name; updateDraftHistory(); log(`Reviewed PRD: ${state.draft.opportunity.title}.`); updateReviewStatus(); save(); toast('PRD reviewed. The decision log is updated.');
   };
   $('#export-prd').onclick = async () => {
     if (!state.draft) return;
@@ -434,7 +481,8 @@
   };
   $('#new-review').onclick = () => { if (busy) return; invalidate(); log('Started a new review. Research, opportunity backlog, and decisions retained.'); goStep(1); toast('New review started. Your research, backlog, and decisions are retained.'); };
   window.addEventListener('hashchange', navigate);
-  updateSelection(); navigate(); save();
+  renderVisitor(); updateSelection(); navigate(); save();
   PilotAI.connect();
+  if (!visitor.introduced) showVisitorPrompt('welcome');
 })();
 

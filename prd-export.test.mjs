@@ -43,7 +43,7 @@ test('export retains reviewed status, custom sections, and safely escapes user t
   assert.match(content, /Preserve user edits &lt;exactly&gt; &amp; include dependencies/);
   assert.match(content, /<w:t xml:space="preserve">Reviewed<\/w:t>/);
   assert.doesNotMatch(content, /Draft — needs review/);
-  assert.match(PilotPrdExport.filename(draft), /^ravugo-consulting-llc-.*\.docx$/);
+  assert.match(PilotPrdExport.filename(draft), /^elevate-consulting-.*\.docx$/);
 });
 test('previously saved drafts with older citation formatting still get a clean main body', () => {
   const source = `${evidence.docId} · ${evidence.location}: “${evidence.text}”`;

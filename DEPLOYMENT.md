@@ -28,7 +28,7 @@ Wait for the GitHub Pages deployment to complete before checking the public demo
 
 ## Current release
 
-The static app includes projects, a persistent opportunity backlog, RICE guidance and calculations, reviewed Word PRDs, and project/browser-specific totals. Live AI uses Cloudflare Workers AI; explicit local rules and starter drafts are available. There is no SharePoint connector or authenticated company-wide workspace. Text extraction runs locally; excerpts are transmitted only for selected AI operations. Project records remain in browser storage.
+The static app includes local visitor profiles, separate projects, a persistent opportunity backlog, RICE guidance and calculations, reviewed Word PRDs, and project/profile/browser-specific totals. The visual design uses a warm product studio layout with top navigation, ivory surfaces, ink text, violet accents, and an abstract path mark. Branding is Elevate Consulting. Live AI uses Cloudflare Workers AI; explicit local rules and starter drafts are available. There is no SharePoint connector or authenticated company-wide workspace. Text extraction runs locally; excerpts are transmitted only for selected AI operations. Visitor display names are not sent as account identity to the AI service. Project records remain in browser storage.
 
 ## Cloudflare Workers AI
 
