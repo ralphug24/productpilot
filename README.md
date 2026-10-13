@@ -22,7 +22,7 @@ The Overview, Research library, and Decision log pages display the current works
 
 ## Research sources
 
-The included library is backed by six TXT transcripts and `research/manifest.json`. These are synthetic interviews authored for the portfolio project. Ravugo Consulting LLC is the example company. The interface identifies the example workspace and explains provenance in Source details. No SharePoint connection, live customer feed, or real customer research is claimed.
+The included library is backed by six TXT transcripts and `research/manifest.json`. These are synthetic interviews authored for the portfolio project. Ravugo Consulting LLC is the workspace name. Dataset provenance is explained in Workspace details and Source details. No SharePoint connection, live customer feed, or real customer research is claimed.
 
 `research-data.js` is generated from the actual source files so the app can also work in a local file preview. To update the bundled library after editing transcripts:
 
