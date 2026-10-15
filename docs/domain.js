@@ -11,9 +11,10 @@
     return documents.flatMap(doc => {
       const sections = doc.sections?.length ? doc.sections : [{ text: doc.text }];
       return sections.flatMap((section, pageIndex) => {
-        const lines = section.text.split(/\r?\n/).map((text, line) => ({ text: text.trim(), line: line + 1 })).filter(x => x.text.length > 35);
-        const participants = lines.filter(x => /(?:^|\])\s*(?:participant|customer|respondent|user)(?:\s+\d+)?\s*:/i.test(x.text));
-        const candidates = participants.length ? participants : lines.filter(x => !/(?:^|\])\s*interviewer\s*:/i.test(x.text));
+        const lines = section.text.split(/\r?\n/).map((text, line) => ({ text: text.trim(), line: line + 1 })).filter(x => x.text);
+        const participantLabel = /(?:^|\])\s*(?:participant(?:\s+p?\d+)?|p\d+|(?:customer|respondent|user)(?:\s+\d+)?)\s*:\s*\S/i;
+        const participants = lines.filter(x => participantLabel.test(x.text));
+        const candidates = participants.length ? participants : lines.filter(x => x.text.length > 35 && !/(?:^|\])\s*(?:interviewer|moderator|researcher|facilitator)\s*:/i.test(x.text));
         return candidates.flatMap((x, index) => {
           const chunks = [];
           for (let offset = 0; offset < x.text.length; offset += 1600) {
