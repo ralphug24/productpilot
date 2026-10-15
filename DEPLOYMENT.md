@@ -6,6 +6,8 @@ Portfolio entry: https://ralphugboko.dev/projects
 
 Public demo: https://ralphugboko.dev/productpilot/
 
+Public researcher kit: https://ralphugboko.dev/productpilot/research-kit.html
+
 ## Hosting
 
 GitHub Pages publishes the generated `docs/` directory from this repository's `main` branch. The portfolio's Vercel configuration forwards `/productpilot/` and its asset paths to `https://ralphug24.github.io/productpilot/`. The ProductPilot repository is the source for app changes; the portfolio repository owns only the project case study and URL rewrites.
@@ -23,6 +25,8 @@ git push origin main
 ```
 
 The build regenerates the research index and copies an explicit list of runtime files plus the synthetic research library and licensed browser readers into `docs/`. Local transcripts imported by visitors remain in their browsers; they are never copied into the repository or deployment. Internal preview files, tests, authoring scripts, credentials, and local dependencies are excluded from the deployed directory.
+
+`research-kit.html` is a self-contained static page on the same Pages deployment and portfolio proxy. It needs no new backend or Cloudflare deployment. It contains the blank three-player WordRush study plan, moderator script, and browser note tool. Notes use a separate local storage key and move between devices only through Save backup file / Load backup file. Do not commit downloaded participant backups or exported evidence to this public repository.
 
 Wait for the GitHub Pages deployment to complete before checking the public demo. Portfolio descriptions or route changes require a separate commit in `portfolio-website`.
 

@@ -6,6 +6,20 @@ Live demo: https://ralphugboko.dev/productpilot/
 
 Source repository: https://github.com/ralphug24/productpilot
 
+WordRush researcher kit: https://ralphugboko.dev/productpilot/research-kit.html
+
+## WordRush group study
+
+The standalone research-kit page guides one researcher observing three participants playing together. Player 1 hosts and shares their screen; Players 2 and 3 join on their devices. The researcher does not play. The plan and moderator script explain the limits of one visible screen, peer assistance, individual debriefs, and reporting one group session with three participants.
+
+The note sheet separates observed actions, player reports, exact quotes, and researcher interpretations. Timing and technical details are optional and explained beside the fields. Anonymous codes and individual permission choices start blank. No participant findings are bundled with the kit.
+
+Records and unfinished note drafts autosave under `wordrush-group-research-v2` in the current browser when storage is available. **Save backup file** downloads all records as JSON; **Load backup file** restores them on another device without replacing differing existing records. There is no account or automatic synchronization. Clearing browser storage can remove local notes, so keep backups in a location you control. A public link publishes the blank tool, not notes entered by its visitors. Another person using the same browser profile can access that profile's records.
+
+Backups from the earlier `wordrush-first-game-research-v1` kit are supported as read-only individual records and retain their original protocol. They are not converted into group results. Changed record versions are retained as additional copies; counts must be checked manually before reporting a sample.
+
+Evidence exports are separate TXT files for quotes and observations. They require a completed session, anonymous codes/date, deidentification review, and recorded participation and AI-processing permission from the relevant people. Group notes require permission from all three. Interpretations and note drafts remain in backups only. Public quote permission is a separate field. Upload the resulting evidence files to the WordRush project in ProductPilot and explicitly choose AI research synthesis; the kit never automatically sends notes to WordRush, ProductPilot, or an AI service.
+
 This is an in-development portfolio project. Cloudflare Workers AI provides live research synthesis and PRD drafting; explicit local onboarding rules and editable starter drafts are also available. See [DEPLOYMENT.md](DEPLOYMENT.md) for hosting and update instructions.
 
 ## Open the app

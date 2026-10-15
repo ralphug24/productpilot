@@ -1,0 +1,301 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#f7f9ff"><title>WordRush Group Study Kit</title><style>
+:root{--blue:#294cb8;--action:#3564ee;--ink:#202a3a;--muted:#5f6b7c;--line:#dce2eb;--canvas:#f7f9ff;--orange:#a83d12;--soft:#fff4e8}
+*{box-sizing:border-box}body{margin:0;font:15px/1.65 "Segoe UI",Arial,sans-serif;color:var(--ink);background:var(--canvas)}a{color:var(--blue);text-underline-offset:3px}button,input,select,textarea{font:inherit}button,a,input,select,textarea,summary{outline-offset:4px}button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,summary:focus-visible{outline:2px solid var(--blue)}button{cursor:pointer}header{background:white;border-bottom:1px solid var(--line);padding:23px max(24px,calc((100vw - 1060px)/2));display:flex;align-items:center;gap:18px;justify-content:space-between}.wordmark{font-size:14px;font-weight:700;letter-spacing:.3px}.header-actions{display:flex;gap:10px;flex-wrap:wrap}.button,button{display:inline-block;border:1px solid var(--line);border-radius:6px;padding:9px 13px;text-decoration:none;background:white;color:var(--blue);font-size:13px}.primary{background:var(--action);color:#fff;border-color:var(--action)}.primary:hover{background:var(--blue);color:white}button:disabled{cursor:not-allowed;opacity:.65}.wrap{max-width:1108px;margin:auto;padding:36px 24px 55px}h1,h2,h3{color:#000;line-height:1.3}h1{font-size:34px;letter-spacing:-.8px;margin:10px 0 15px}h2{font-size:23px;letter-spacing:-.3px;margin:0 0 15px}h3{font-size:17px;margin:24px 0 10px}p{margin:8px 0 13px}.eyebrow{color:var(--orange);font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase}.lead{max-width:880px;color:var(--muted);font-size:17px}.meta{display:flex;gap:9px;flex-wrap:wrap;margin:20px 0}.meta span{padding:4px 9px;border:1px solid var(--line);background:white;border-radius:4px;font-size:12px}.nav{display:flex;gap:9px 19px;flex-wrap:wrap;padding:16px 0 25px}.nav a{font-size:13px;text-decoration:none}.section{margin:0 0 24px;padding:29px 31px;background:white;border:1px solid var(--line);border-radius:9px;scroll-margin-top:15px}.muted,small{color:var(--muted)}.small{font-size:13px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:22px}.grid h3{margin-top:8px}ul,ol{padding-left:22px;margin:9px 0 15px}li{margin-bottom:7px}.table-wrap{overflow:auto;margin:17px 0}table{border-collapse:collapse;width:100%;font-size:13px;line-height:1.55}th,td{border:1px solid #d9d9d9;padding:12px;vertical-align:middle;text-align:left}th{background:#eaf0ff;color:black;font-weight:650}tbody tr:nth-child(even){background:#fafbfe}.script{font-size:15px;line-height:1.8}.task{padding:0 0 20px;margin:20px 0;border-bottom:1px solid var(--line)}.task:last-child{border-bottom:0;padding-bottom:0}.task h3{margin-top:0}.prompt{font-weight:600}.success{font-size:13px;color:var(--muted)}.label{display:block;font-size:13px;font-weight:600;margin:13px 0 6px}input,select,textarea{max-width:100%;width:100%;border:1px solid #c9d3e0;border-radius:5px;padding:9px 10px;background:white;color:var(--ink);font-size:14px}textarea{resize:vertical;min-height:86px;line-height:1.65}input[type=checkbox]{width:auto;margin-right:8px;accent-color:var(--action)}.checks label{display:block;font-size:13px;margin:12px 0}.form-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}.session-toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:18px 0}.session-toolbar select{width:270px}.session-toolbar span{font-size:12px;color:var(--muted)}fieldset{border:0;border-top:1px solid var(--line);padding:18px 0 4px;margin:23px 0 0;min-width:0}legend{padding:0 12px 0 0;font-weight:650;font-size:16px;color:#000}.exports{display:flex;gap:10px;flex-wrap:wrap;margin:20px 0 9px}.source{font-size:12px;overflow-wrap:anywhere}.notice{color:var(--orange);font-size:13px}.copy-fields{font-family:"Segoe UI",Arial,sans-serif;white-space:pre-wrap;background:#fafbfe;padding:16px;border:1px solid var(--line);border-radius:5px;font-size:13px}.footer{font-size:12px;color:var(--muted);display:flex;justify-content:space-between;gap:18px;margin:25px 0}.status{font-size:12px;min-height:20px;color:var(--blue)}details{margin:14px 0}summary{cursor:pointer;color:var(--blue);font-size:13px}button.danger{color:#8c3030}#storage-warning{color:#8c3030}#session-summary{font-size:12px;color:var(--muted)}
+@media(max-width:720px){header{align-items:flex-start;flex-direction:column;padding:20px}.wrap{padding:25px 17px}.section{padding:23px 19px}.grid,.form-row{grid-template-columns:1fr}h1{font-size:28px}h2{font-size:21px}.table-wrap table{min-width:690px}.header-actions{gap:8px}.session-toolbar select{width:100%}}
+@media print{@page{size:letter portrait;margin:16mm}body{background:white;font-size:10.5pt}.wrap{max-width:none;padding:0}.header-actions,.nav,.session-toolbar,.exports,.screen-only,.footer{display:none!important}header{padding:0 0 15px;border:0}.wordmark{font-size:11pt}h1{font-size:25pt}h2{font-size:17pt;break-after:avoid}h3,legend{break-after:avoid}.section{border:0;border-radius:0;padding:0;margin:0 0 25px;break-before:page}.section:first-of-type{break-before:auto}p,li{orphans:3;widows:3}table{font-size:9pt}thead{display:table-header-group}tr{break-inside:avoid}th,td{padding:7px}.table-wrap{overflow:visible}.table-wrap table{min-width:0}a{color:black;text-decoration:none}.task{break-inside:avoid}.form-row{grid-template-columns:repeat(3,minmax(0,1fr))}fieldset{break-inside:avoid}textarea,input,select{font-size:10pt;border-color:#bbb}textarea{resize:none}.lead{font-size:12pt}.meta span{font-size:9pt}details{display:none}.grid{gap:16px}.notice{color:black}}
+
+
+.intro-grid,.player-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}.intro-grid>div{padding:15px 0}.intro-grid b{display:block;margin-bottom:5px}.intro-grid p{font-size:13px;color:var(--muted)}.storage-note{font-size:13px;line-height:1.7;margin:22px 0}.storage-note strong{color:var(--ink)}.toolbar{display:flex;gap:9px;align-items:center;flex-wrap:wrap;margin:20px 0}.toolbar select{width:min(350px,100%)}.player{border:1px solid var(--line);padding:18px;border-radius:7px;min-width:0}.player h3{margin:0 0 7px}.player .role{font-size:12px;color:var(--orange)}.help{display:block;font-size:12px;color:var(--muted);line-height:1.6;margin:5px 0 10px}.checks input{flex:none}.checks label{display:flex;align-items:flex-start;gap:5px;line-height:1.6}.checks input{margin-top:5px}.form-row.two{grid-template-columns:1fr 1fr}.phase{margin:24px 0;padding-top:20px;border-top:1px solid var(--line)}.phase h3{margin:0 0 9px}.phase .prompt{margin-top:12px}.optional{padding:12px 0;border-top:1px solid var(--line)}.note-editor{margin:15px 0;padding:18px;background:#fafbfe;border:1px solid var(--line);border-radius:7px}.note-editor textarea{min-height:115px}.note-item{padding:17px 0;border-bottom:1px solid var(--line)}.note-head{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:12px;color:var(--muted)}.note-head b{color:var(--ink)}.note-head button{margin-left:auto;padding:4px 8px;font-size:11px}.note-body{white-space:pre-wrap;overflow-wrap:anywhere;margin:9px 0;font-size:14px}.tag{display:inline-block;padding:3px 7px;background:#edf2ff;color:var(--blue);border-radius:4px;font-size:11px}.empty{font-size:13px;color:var(--muted);padding:15px 0}.inline-actions{display:flex;gap:10px;flex-wrap:wrap}.legacy-grid{display:grid;grid-template-columns:1fr 2fr;gap:10px;font-size:13px}.legacy-grid dt{font-weight:600}.legacy-grid dd{margin:0;white-space:pre-wrap;overflow-wrap:anywhere}.legend-list dt{font-weight:600;font-size:13px;margin-top:12px}.legend-list dd{font-size:13px;margin:4px 0 12px;color:var(--muted)}.screen-label{font-size:11px;text-transform:uppercase;letter-spacing:.8px;color:var(--orange)}[hidden]{display:none!important}#saved-count{font-size:12px;color:var(--muted)}.print-value{white-space:pre-wrap}.section>h2+small{display:block;margin-bottom:15px}.method-note{font-size:12px;color:var(--muted)}.save-state{font-size:12px;color:var(--muted)}
+@media(max-width:850px){.player-grid,.intro-grid{grid-template-columns:1fr}.form-row.two{grid-template-columns:1fr}.player{padding:17px}.toolbar{align-items:flex-start}.legacy-grid{grid-template-columns:1fr}.legacy-grid dd{margin-bottom:10px}}@media print{.storage-note,.toolbar,.note-editor,.inline-actions,#backup-file,.exports{display:none!important}.player-grid{grid-template-columns:1fr}.player{break-inside:avoid}.intro-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.note-item{break-inside:avoid}.optional{display:block}details.optional>*{display:block}.legacy-grid{display:block}.phase{break-inside:avoid}}
+</style></head><body>
+<header><div class="wordmark">WORDRUSH RESEARCH</div><div class="header-actions"><a class="button" href="https://wordrush.ralphugboko.dev/" target="_blank" rel="noopener">Open WordRush ↗</a><a class="button" href="https://ralphugboko.dev/productpilot/#overview" target="_blank" rel="noopener">Open ProductPilot ↗</a><button id="print">Print or save PDF</button></div></header>
+<main class="wrap">
+<div class="eyebrow">For the researcher</div><h1>WordRush group study kit</h1><p class="lead">Three participants play together. You observe, ask neutral questions, and record what happens. Keep this page open yourself; send the participants the WordRush game link.</p>
+<div class="meta"><span>3 players in one group</span><span>You moderate without playing</span><span>About 25 to 30 minutes</span><span>Participant findings pending</span></div>
+<nav class="nav" aria-label="Research kit sections"><a href="#plan">How to run the session</a><a href="#script">What to say</a><a href="#observations">Take notes</a><a href="#benchmarks">Competitor comparison</a><a href="#handoff">Use the evidence in ProductPilot</a></nav>
+<div class="storage-note"><strong>The page opens anywhere. Saved notes stay in this browser.</strong> To continue on another device, click <b>Save backup file</b>, transfer that file through a location you control such as OneDrive, then open this page there and click <b>Load backup file</b>. Publishing this page does not publish your notes. No notes are sent automatically to WordRush, ProductPilot, or an AI service.</div>
+<div class="inline-actions screen-only"><button class="primary" data-backup>Save backup file</button><button data-restore>Load backup file</button><span class="save-state" id="global-save">No notes saved yet on this device</span></div><input type="file" id="backup-file" accept=".json,application/json" hidden><p class="status" id="global-message" role="status"></p>
+
+<section class="section" id="plan"><h2>How to run the session</h2>
+<p><b>Study question</b> Can three first time players get into the same WordRush room and understand their first few rounds with little or no help from you?</p>
+<div class="intro-grid"><div><b>Player 1 hosts</b><p>They share their screen first, create a room, and invite the other two players.</p></div><div><b>Players 2 and 3 join</b><p>They use their own devices and the invitation from Player 1. Everyone plays as themselves.</p></div><div><b>You observe</b><p>Use the call to watch and listen. Keep the note sheet on your own screen and stay out of the game.</p></div></div>
+<h3>Before the call</h3><ol><li>Recruit three adults who have not played WordRush. Explain the study, permissions, and 25 to 30 minute time commitment. Keep names and contact details outside this sheet.</li><li>Ask each person to have the public game link ready. Agree which person will host; give everyone anonymous codes such as P01, P02, and P03.</li><li>Use a video call with screen sharing. The host shares first. Keep the game build stable across sessions and check its rules before the study.</li><li>Use the form below to record the group code, date, devices, and each participant's permission. Recording requires separate agreement; this kit does not record the call.</li></ol>
+<h3>During the call</h3><ol><li><b>Introductions and permission, about 5 minutes.</b> Read the opening script and ask for background information.</li><li><b>Create and join, about 5 minutes.</b> Give the shared task. The host sends the invitation and the other two join. Observe what they do before helping.</li><li><b>First rounds, about 5 to 10 minutes.</b> Ask them to begin when ready. Observe at least three rounds, including feedback and coordination.</li><li><b>Individual debrief, about 5 to 10 minutes.</b> Ask each person for their own reaction and ease rating, ideally privately in the call chat before they hear the others' ratings.</li></ol>
+<p><b>If they get stuck</b> After about five minutes on setup, offer help if necessary. Record the help and select the outcome that says help was needed. A time limit here is a practical session guide, not a performance target for the product.</p>
+<p><b>One shared screen shows one viewpoint.</b> You can see the host's actions and the lobby roster, but you may not see how joiners navigated their screens. Ask a joiner to share briefly if useful, or label their account as <b>The player told me this</b>. Seeing a player arrive in the host's lobby confirms arrival; it does not establish how they joined.</p>
+<p><b>How to report the study</b> Three players together are one group session with three participants. Group discussion and advice between players affect the experience. Record that assistance and avoid presenting the group as three independent usability sessions. For more evidence, repeat with another group. Optional host rotation is a learned second attempt and should be labelled separately.</p>
+<details><summary>Recruitment message you can copy</summary><p>I am researching WordRush, a browser word game I built. Would you join two other people for a 25 to 30 minute online session? You will play together while I observe and take notes. I want to understand what is clear and where people get stuck. No gaming experience is required, and participation is optional.</p></details>
+<p class="method-note">Keep observations separate from interpretations and exact quotes. This note taking approach follows the <a href="https://www.gov.uk/service-manual/user-research/analyse-a-research-session" target="_blank" rel="noopener">GOV.UK research analysis guidance</a>. The group format and its reporting limits above are the design of this exploratory WordRush study.</p>
+</section>
+
+<section class="section" id="script"><h2>What to say</h2>
+<h3>Opening</h3><p class="script">Thanks for helping. You will play WordRush together while I watch and take notes. Please use it as you normally would and tell me when something surprises you. You can skip a question or stop at any time. I built the game, and critical feedback is useful.</p>
+<p class="script">May I take written notes? Separately, may I use deidentified notes and quotes in ProductPilot, including analysis by Cloudflare Workers AI, to identify improvements? An anonymized quote in the public case study would need your separate agreement. Recording would also need separate permission.</p>
+<p class="small muted">Record these choices for each person. If someone declines written notes, stop collecting their data and arrange a suitable session. AI permission is optional; agreed notes can remain for manual review. Group notes require all three participants' AI permission before this kit will export them for AI analysis.</p>
+<h3>Background</h3><p>Ask each person: Have you used WordRush before? What device and browser are you using? How often do you play games with friends online?</p>
+<div class="phase"><h3>1 Get everyone into one room</h3><p class="prompt">Imagine you want to play WordRush together. Get all three of you into the same room.</p><p>Direct this to the agreed host without naming controls. Let participants coordinate. Record whether they help each other as well as any help you provide. Check the host's lobby roster for arrivals.</p></div>
+<div class="phase"><h3>2 Play the first rounds</h3><p class="prompt">Start when you think everyone is ready. Play the first few rounds as you normally would.</p><p>Watch at least three rounds if possible. Let the group play without continuous questions during time sensitive actions. Ask about surprises between rounds. If a joiner's screen is not visible, keep their later explanation labelled as a report.</p></div>
+<div class="phase"><h3>3 Ask each person separately</h3><ol><li>How easy was it to get into the game, from 1 very difficult to 7 very easy? What made you choose that number?</li><li>How do you think a player earns a point? Compare the explanation with the rules you checked for the mode used.</li><li>What was the most confusing moment for you?</li><li>What would you change first, and why?</li><li>Would you invite someone to play again? What would affect that choice?</li></ol></div>
+<h3>If a participant asks for help</h3><p>First ask “What would you expect to happen?” Record any instruction you eventually give. Also record instructions from another participant. Mark the setup outcome as assisted when navigation help was needed.</p>
+<h3>Close the session</h3><p>Thank everyone, check any quote publication permission, and save a backup file. Do not make a product decision while the evidence is still being collected.</p>
+</section>
+
+<section class="section" id="observations"><h2>Take notes</h2><p>One record below represents one group session. Start a new record for a different group. Use participant codes rather than names.</p>
+<div class="toolbar"><label for="records">Saved group or earlier record</label><select id="records" aria-label="Choose a saved research record"></select><button id="new-group">Start a new group session</button></div><p id="saved-count"></p>
+<details><summary>What do the fields and backup buttons mean?</summary><dl class="legend-list"><dt>Group code</dt><dd>Your label for the whole session, for example G01. P01, P02, and P03 identify the people within it.</dd><dt>Save backup file</dt><dd>Downloads all saved records from this browser in one .json file. You do not need to read its code. Keep the file so you can reload your notes later or on another device.</dd><dt>Load backup file</dt><dd>Choose a backup you previously saved. The kit restores those records. If a record differs from one already here, it keeps an additional copy so existing notes are retained.</dd><dt>Setup outcome</dt><dd>Record whether all three got into the same lobby and whether anyone needed navigation help. This is about what happened in the session.</dd><dt>Optional timing</dt><dd>Use a stopwatch if it is practical. Enter 1:35 for one minute and 35 seconds. Leave it blank if you were not timing.</dd><dt>Ease rating</dt><dd>Ask each participant for a number from 1 very difficult to 7 very easy. It is their opinion, not a score you assign.</dd><dt>Note type</dt><dd>Choose what you saw, what someone reported, an exact quote, or your own interpretation. These different kinds of evidence should remain distinguishable.</dd></dl></details>
+<div id="legacy-view" hidden></div>
+<div id="group-view"><form id="group-form" autocomplete="off">
+<div class="form-row"><div><label class="label" for="groupCode">Group code</label><input id="groupCode" name="groupCode" maxlength="30" pattern="[A-Za-z0-9_-]+" placeholder="For example G01"><small class="help">One label for these three players' session.</small></div><div><label class="label" for="sessionDate">Session date</label><input id="sessionDate" name="sessionDate" type="date"><small class="help">The date you actually ran this session.</small></div><div><label class="label" for="sharedScreen">Whose screen could you see?</label><select id="sharedScreen" name="sharedScreen"><option value="">Not recorded</option><option>Host shared throughout</option><option>Host then a joiner</option><option>A joiner shared</option><option>No shared screen</option></select><small class="help">Record changes in the note log as well.</small></div></div>
+<h3>The three players</h3><p class="small muted">Assign the host to Player 1. Codes are anonymous labels, not game accounts. The kit does not prefill participant details or permission choices.</p><div class="player-grid" id="players"></div>
+<div class="phase"><h3>What happened during setup?</h3><label class="label" for="setupResult">Did all three players reach the same lobby?</label><select id="setupResult" name="setupResult"><option value="">Not recorded</option><option>Yes without navigation help</option><option>Yes with help from me or another player</option><option>No setup was not completed</option><option>I could not observe or confirm it</option><option>Not attempted</option></select><small class="help">A visible lobby roster can confirm arrivals. Use the note log for details and who helped whom.</small><label class="label" for="playResult">How much gameplay did you observe?</label><select id="playResult" name="playResult"><option value="">Not recorded</option><option>At least three rounds</option><option>Fewer than three rounds</option><option>Game did not start</option><option>I could not observe gameplay</option><option>Not attempted</option></select>
+<details class="optional"><summary>Optional timing and game details</summary><div class="form-row two"><div><label class="label" for="firstRoundTime">Time to the first playable round</label><input id="firstRoundTime" name="firstRoundTime" placeholder="For example 1:35" pattern="[0-9]{1,3}:[0-5][0-9]"><small class="help">Start after the setup prompt when all can act. Stop when all three are present and the first round is visible. Enter minutes:seconds, or leave blank.</small></div><div><label class="label" for="gameMode">Game mode used</label><input id="gameMode" name="gameMode" placeholder="Record the actual mode"><small class="help">Useful when rules differ between modes.</small></div></div><label class="label" for="waiting">Waiting or technical issues</label><textarea id="waiting" name="waiting" placeholder="Record call interruptions, connection delays, or other context. Do not guess a duration."></textarea><label class="label" for="version">Game build or date and time checked</label><input id="version" name="version" placeholder="Optional release ID or date and time"><label class="label" for="rules">Your checked rules reminder</label><textarea id="rules" name="rules" placeholder="Write the scoring rules you verified before the session. Use this when judging the players' explanations."></textarea></details>
+</div>
+<div class="phase"><h3>Each player's quick debrief</h3><p class="small muted">Ask for individual answers before group discussion where practical. Record exact words in the note log rather than guessing what another player thought.</p><div class="player-grid" id="debriefs"></div></div>
+<div class="checks"><label><input type="checkbox" name="sessionFinished">This research session has finished, even if some tasks could not be completed.</label><label><input type="checkbox" name="deidentified">I checked the notes for names, contact details, room codes, and invitation links and removed them where needed.</label></div></form>
+<div class="phase"><h3>Add an observation or quote</h3><p class="small muted">Add one event at a time. The kit does not watch WordRush or record the call automatically.</p><form class="note-editor" id="note-form"><div class="form-row"><div><label class="label" for="notePhase">When did it happen?</label><select id="notePhase" name="phase"><option value="setup">Creating and joining</option><option value="play">Playing the first rounds</option><option value="debrief">Individual debrief</option><option value="rotation">Optional role rotation</option></select></div><div><label class="label" for="noteActor">Who is it about?</label><select id="noteActor" name="actor"><option value="">Choose a person or group</option><option value="p1">Player 1 host</option><option value="p2">Player 2 joiner</option><option value="p3">Player 3 joiner</option><option value="group">Whole group</option></select></div><div><label class="label" for="noteType">What kind of note is this?</label><select id="noteType" name="type"><option value="observed">I saw this on screen</option><option value="reported">The player told me this</option><option value="quote">Exact participant quote</option><option value="interpretation">My interpretation</option></select></div></div><label class="label" for="noteText">What happened or what was said?</label><textarea id="noteText" name="text" maxlength="12000" placeholder="Describe the actual event. For an exact quote, use the participant's own words."></textarea><small class="help" id="note-help">Describe only what was visible. If you did not see the person's screen, choose The player told me this.</small><label class="label" for="noteTime">Time in the call or recording optional</label><input id="noteTime" name="time" maxlength="40" placeholder="For example 05:20"><div class="exports"><button class="primary" type="submit" id="add-note">Add this note</button><button type="button" id="cancel-edit" hidden>Cancel edit</button></div><p class="status" id="note-status" role="status"></p></form><div id="note-list"></div></div></div>
+<div class="exports"><button class="primary" data-backup>Save backup file</button><button data-restore>Load backup file</button><button id="export-quotes">Export quotes for ProductPilot</button><button id="export-observations">Export observations for ProductPilot</button></div><p class="status" id="export-status" role="status"></p><p class="small muted">The backup includes your records and note drafts. Evidence exports include actual notes only, after the session is marked finished and deidentification is checked. Individual notes need that person's recorded participation and AI permission; whole group notes need permission from all three. Interpretations stay in the backup and are excluded from evidence exports. Public quote permission is separate.</p>
+</section>
+<section class="section" id="benchmarks"><h2>Initial competitor matrix</h2>
+<p>These are onboarding benchmarks for browser games with shared rooms. JKLM.fun includes word based party games; skribbl.io is an adjacent drawing and guessing game. Compare the shared room journey and distinguish differences in gameplay and audience.</p>
+<p class="small muted">Checked October 15 2026. WR01 is an expert walkthrough of WordRush setup steps one and two. JK01 and SK01 are public page text reviews. Room creation, invitation delivery, game completion, errors, and mobile behavior were not exercised in this review. A visible control establishes an option's presence rather than successful operation.</p>
+<div class="table-wrap"><table><thead><tr><th style="width:18%">Dimension</th><th style="width:28%">WordRush WR01</th><th style="width:27%">JKLM.fun JK01</th><th style="width:27%">skribbl.io SK01</th></tr></thead><tbody>
+<tr><td>Initial identity</td><td>Nickname and avatar in the first setup step.</td><td>Nickname input in public page text.</td><td>Name input on the landing page.</td></tr>
+<tr><td>Entry choices</td><td>Create and join options shown after the player step.</td><td>New room controls, public room listing, and private room code entry shown.</td><td>Play and private room creation options shown.</td></tr>
+<tr><td>Setup orientation</td><td>Player, Room, and Lobby progress indicator visible.</td><td>Room sections appear in page text. No equivalent progress indicator was established.</td><td>Landing choices are visible. A progress indicator was not established.</td></tr>
+<tr><td>Rules before entry</td><td>Short explanation emphasizes racing to spot or solve a word and earn a point. Full rule comprehension remains to be studied.</td><td>Detailed onboarding instructions for a selected game were not reviewed.</td><td>Public how to play instructions describe drawing, guessing, and points.</td></tr>
+<tr><td>Invitation context</td><td>Create option says the host invites friends and chooses a pack. The actual invitation mechanism remains to be reviewed.</td><td>Private room code entry is shown. Actual sharing and successful joining remain to be reviewed.</td><td>Copy invitation controls appear in page text. Actual delivery and successful joining remain to be reviewed.</td></tr>
+<tr><td>Recovery and device use</td><td>Not reviewed.</td><td>Not reviewed. Page extraction included an error message; no reliability conclusion is drawn.</td><td>Not reviewed. Public descriptions alone do not establish current mobile usability.</td></tr>
+</tbody></table></div>
+<h3>Source register</h3><ul class="source"><li><b>WR01</b> <a href="https://wordrush.ralphugboko.dev/" target="_blank" rel="noopener">WordRush home and first two setup steps</a>. Researcher entered a temporary nickname and inspected the create or join choice. No room was created.</li><li><b>JK01</b> <a href="https://jklm.fun/" target="_blank" rel="noopener">JKLM.fun official public page</a>. Room choices and nickname controls are visible in page text; dynamic flows remain unverified.</li><li><b>SK01</b> <a href="https://skribbl.io/" target="_blank" rel="noopener">skribbl.io official public page</a>. Landing choices, how to play text, and invitation controls are present in page text.</li></ul>
+<h3>Questions to investigate</h3><ul><li>Do players understand when to create a room and when to join one?</li><li>Can a host get a second player into the intended room without navigation help?</li><li>Do players recognize when the lobby is ready and how to begin?</li><li>Can players explain the rules after the first round?</li></ul><p class="small muted">These questions do not establish a competitive weakness. Prioritize an improvement only after participant evidence identifies a meaningful problem. Recheck competitor behavior and sources before publishing the final matrix.</p>
+</section>
+<section class="section" id="handoff"><h2>Use the evidence in ProductPilot</h2><p>Choose <b>WordRush — First-game experience</b> in ProductPilot. That project is saved in its current visitor profile and browser. You can create the same project in another browser and upload your exported evidence there.</p><ol><li>Run the group session. Use the kit yourself while the three participants use WordRush.</li><li>Review participant codes, permissions, observations, and quotes. Check which reports came from an unseen screen.</li><li>Click <b>Save backup file</b>. Keep that file in a location you control. To continue on another device, open this page there, click <b>Load backup file</b>, and select the file. The file extension .json is just the backup format; you do not have to read or edit it.</li><li>Export quotes and observations as separate TXT files. Use <b>Upload files</b> in the WordRush project and choose <b>AI research synthesis</b>.</li><li>Review the proposed opportunities and their exact source evidence. Check the counts manually: one group of three is one group session. Several notes from a person are not several users.</li><li>Prioritize one improvement, record your rationale, and draft a reviewed PRD. Establish a baseline before proposing a target, then evaluate a prototype in a later group session.</li></ol><p><b>Data flow</b> You observe WordRush → write notes here → save or export files → upload evidence to ProductPilot. The kit has no automatic WordRush data feed. ProductPilot sends selected excerpts to Cloudflare Workers AI only when you choose an AI operation.</p><p><b>Keep planning material separate</b> Do not upload this script, blank form, competitor matrix, or unverified hypotheses as participant research. The final case study should disclose your role as the game's creator, the group format, visible screens, help given, participant count, sample limits, and the permission for any published quote.</p><p class="small muted">An optional later host rotation can reveal a new role perspective, but participants have already learned the game. Keep that evidence labelled as a second attempt rather than another first time user.</p></section>
+<div class="footer"><span>WordRush group study kit · Updated October 15 2026</span><span>Public tool · Notes stay in your browser</span></div></main>
+<script>(() => {
+  'use strict';
+  const $ = selector => document.querySelector(selector);
+  const key = 'wordrush-group-research-v2';
+  const players = ['p1', 'p2', 'p3'];
+  const phaseLabels = {setup:'Creating and joining',play:'Playing the first rounds',debrief:'Individual debrief',rotation:'Optional role rotation — learned attempt'};
+  const typeLabels = {observed:'Observed on shared screen',reported:'Player report — not directly observed',quote:'Verbatim participant quote',interpretation:'Researcher interpretation — excluded from evidence'};
+  const help = {observed:"Describe only what was visible. If you did not see the person's screen, choose The player told me this.",reported:'Record this as a report, not something you directly observed. Use Exact participant quote only for their exact words.',quote:'Use only the exact words spoken by one identified participant. Do not reconstruct wording from memory.',interpretation:'Record your hypothesis or explanation. It stays in the backup and is not exported as participant evidence.'};
+  function node(tag, content, className) {const el=document.createElement(tag);if(content!==undefined)el.textContent=content;if(className)el.className=className;return el;}
+  for (const [index,p] of players.entries()) {
+    const role=index===0?'Host':'Joiner';
+    const card=node('div',undefined,'player');
+    card.innerHTML=`<span class="role">${role}</span><h3>Player ${index+1}</h3><label class="label" for="${p}Code">Participant code</label><input id="${p}Code" name="${p}Code" maxlength="20" pattern="[A-Za-z0-9_-]+" placeholder="For example P0${index+1}"><small class="help">Use a unique code instead of their name.</small><label class="label" for="${p}Device">Device and browser</label><input id="${p}Device" name="${p}Device" maxlength="300" placeholder="For example laptop and Chrome"><label class="label" for="${p}PriorUse">Previous WordRush use</label><select id="${p}PriorUse" name="${p}PriorUse"><option value="">Not recorded</option><option>First time</option><option>Previously played</option><option>Not established</option></select><div class="checks"><label><input type="checkbox" name="${p}NotesConsent">Agreed to participate and to written notes.</label><label><input type="checkbox" name="${p}AiConsent">Separately agreed to deidentified notes and quotes being processed by ProductPilot and Cloudflare Workers AI.</label><label><input type="checkbox" name="${p}PublishConsent">Separately agreed to an anonymized quote in the public case study.</label></div>`;
+    $('#players').append(card);
+    const debrief=node('div',undefined,'player');
+    debrief.innerHTML=`<h3>Player ${index+1} · ${role}</h3><label class="label" for="${p}Ease">Their setup ease rating</label><select id="${p}Ease" name="${p}Ease"><option value="">Not asked</option>${Array.from({length:7},(_,i)=>`<option value="${i+1}">${i+1}${i===0?' · Very difficult':i===6?' · Very easy':''}</option>`).join('')}</select><small class="help">Ask the person; do not choose a score for them.</small><label class="label" for="${p}Comprehension">Their explanation of scoring</label><select id="${p}Comprehension" name="${p}Comprehension"><option value="">Not assessed</option><option>Accurate against checked rules</option><option>Partly accurate</option><option>Inaccurate</option><option>Rules not verified</option></select><small class="help">Record their explanation in the note log. Leave unassessed if you have not checked the rules.</small>`;
+    $('#debriefs').append(debrief);
+  }
+  const form=$('#group-form'),noteForm=$('#note-form');
+  const controls=[...form.elements].filter(el=>el.name);
+  let store={schemaVersion:2,study:'wordrush-group',records:[],activeId:null};
+  let storageOK=true,editId=null;
+  const now=()=>new Date().toISOString();
+  const blank=()=>({id:crypto.randomUUID(),kind:'group',createdAt:now(),updatedAt:now(),fields:{},notes:[],draft:{}});
+  const object=value=>value!==null&&typeof value==='object'&&!Array.isArray(value);
+  const string=(value,max=12000)=>typeof value==='string'&&value.length<=max;
+  function validateLegacy(item) {
+    if(!object(item)||!string(item.id,200)||!item.id||!object(item.fields))throw Error('An earlier record is missing its ID or fields.');
+    if(Object.values(item.fields).some(v=>typeof v!=='boolean'&&!string(v,100000)))throw Error('An earlier record has an unsupported field.');
+    return {id:crypto.randomUUID(),kind:'legacy-individual',legacy:JSON.parse(JSON.stringify(item))};
+  }
+  function validateGroup(item) {
+    if(!object(item)||!string(item.id,200)||!item.id)throw Error('A record is missing its ID.');
+    if(item.kind==='legacy-individual') {const legacy=validateLegacy(item.legacy);legacy.id=item.id;return legacy;}
+    if(item.kind!=='group'||!object(item.fields)||!Array.isArray(item.notes)||item.notes.length>2000)throw Error('A group record has an unsupported structure.');
+    const fields={};
+    for(const el of controls) {
+      const value=item.fields[el.name];if(value===undefined)continue;
+      if(el.type==='checkbox') {if(typeof value!=='boolean')throw Error('A permission field is invalid.');fields[el.name]=value;}
+      else {
+        if(!string(value,100000))throw Error('A form field is too long or invalid.');
+        if(el.tagName==='SELECT'&&![...el.options].some(o=>o.value===value))throw Error('A form choice is not supported.');
+        fields[el.name]=value;
+      }
+    }
+    const noteIds=new Set();
+    function validateNote(note,isDraft=false) {
+      if(!object(note))throw Error('A note is invalid.');
+      if(!string(note.phase,30)||!Object.hasOwn(phaseLabels,note.phase)||!['',...players,'group'].includes(note.actor)||!string(note.type,30)||!Object.hasOwn(typeLabels,note.type)||!string(note.text,12000)||!string(note.time,40))throw Error('A note has invalid fields.');
+      const clean={phase:note.phase,actor:note.actor,type:note.type,text:note.text,time:note.time};
+      if(isDraft) {if(string(note.editId,200))clean.editId=note.editId;}
+      else {
+        if(!string(note.id,200)||!note.id||noteIds.has(note.id)||!note.actor||!note.text.trim()||(note.type==='quote'&&note.actor==='group'))throw Error('A saved note needs a unique ID, a person or group, and text. Quotes need an individual speaker.');
+        noteIds.add(note.id);clean.id=note.id;
+        if(string(note.createdAt,100))clean.createdAt=note.createdAt;
+        if(string(note.updatedAt,100))clean.updatedAt=note.updatedAt;
+      }
+      return clean;
+    }
+    const clean={id:item.id,kind:'group',fields,notes:item.notes.map(n=>validateNote(n)),draft:{}};
+    if(object(item.draft)&&Object.keys(item.draft).length)clean.draft=validateNote(item.draft,true);
+    for(const name of ['createdAt','updatedAt','importedCopyOf'])if(string(item[name],200))clean[name]=item[name];
+    return clean;
+  }
+  function readRecords(data) {
+    if(!object(data))throw Error('Choose a research kit backup file.');
+    let records;
+    if(data.schemaVersion===1&&Array.isArray(data.sessions)&&data.sessions.length<=200)records=data.sessions.map(validateLegacy);
+    else if(data.schemaVersion===2&&data.study==='wordrush-group'&&Array.isArray(data.records)&&data.records.length<=200)records=data.records.map(validateGroup);
+    else throw Error('This is not a supported WordRush research backup.');
+    if(new Set(records.map(r=>r.id)).size!==records.length)throw Error('The backup has duplicate record IDs. No records were loaded.');
+    return records;
+  }
+  try {
+    const raw=localStorage.getItem(key);
+    if(raw) {const saved=JSON.parse(raw);store.records=readRecords(saved);store.activeId=saved.activeId;}
+  } catch {storageOK=false;$('#global-message').textContent='Saved records could not be loaded. Keep any existing backup. New notes can stay in this tab; save a backup before closing.';}
+  let record=store.records.find(r=>r.id===store.activeId)||blank();
+  function fieldsNow() {return Object.fromEntries(controls.map(el=>[el.name,el.type==='checkbox'?el.checked:el.value]));}
+  function draftNow() {return {phase:$('#notePhase').value,actor:$('#noteActor').value,type:$('#noteType').value,text:$('#noteText').value,time:$('#noteTime').value,...(editId?{editId}:{})};}
+  function meaningful(item) {return item.kind!=='group'||item.notes.length||Object.values(item.fields).some(Boolean)||item.draft.text||item.draft.actor||item.draft.time;}
+  function selector() {
+    const select=$('#records');select.replaceChildren();
+    for(const r of store.records) {
+      const label=r.kind==='group'?`${r.fields.groupCode||'Untitled group'} · ${r.fields.sessionFinished?'finished':'in progress'}`:`${r.legacy.fields.code||'Unlabelled'} · earlier individual record`;
+      const option=node('option',label+(r.importedCopyOf?' · imported copy':''));option.value=r.id;select.append(option);
+    }
+    if(!store.records.some(r=>r.id===record.id)) {const option=node('option','New unsaved group session');option.value=record.id;select.append(option);}
+    select.value=record.id;
+    const groups=store.records.filter(r=>r.kind==='group').length;
+    $('#saved-count').textContent=`${groups} saved group records · ${store.records.length-groups} earlier individual records in this browser. Records and imported copies are not a validated count of distinct participants.`;
+  }
+  function saveStateLabel() {
+    $('#global-save').textContent=!storageOK?'Notes are in this tab only — save a backup before closing':store.records.length?'Saved in this browser — backup to move devices':'No notes saved yet on this device';
+  }
+  function writeStore() {
+    store.activeId=record.id;
+    try {localStorage.setItem(key,JSON.stringify(store));storageOK=true;}catch {storageOK=false;}
+    selector();saveStateLabel();
+  }
+  function persist() {
+    if(record.kind==='group') {
+      record.fields=fieldsNow();record.draft=draftNow();
+      if(meaningful(record)) {record.updatedAt=now();const index=store.records.findIndex(r=>r.id===record.id);if(index<0)store.records.push(record);else store.records[index]=record;}
+    }
+    writeStore();
+  }
+  function resetDraft() {noteForm.reset();editId=null;$('#cancel-edit').hidden=true;$('#add-note').textContent='Add this note';$('#note-help').textContent=help[$('#noteType').value];}
+  function showNotes() {
+    const list=$('#note-list');list.replaceChildren();
+    if(!record.notes.length) {list.append(node('p','No observations or quotes added yet. A note draft is backed up but is not exported as evidence.','empty'));return;}
+    for(const note of record.notes) {
+      const item=node('article',undefined,'note-item'),head=node('div',undefined,'note-head');
+      const actor=note.actor==='group'?'Whole group':record.fields[note.actor+'Code']||`Player ${Number(note.actor.slice(1))}`;
+      head.append(node('b',actor),node('span',phaseLabels[note.phase]),node('span',typeLabels[note.type],'tag'));
+      if(note.time)head.append(node('span',note.time));
+      const edit=node('button','Edit note');edit.type='button';edit.onclick=()=>{
+        persist();editId=note.id;
+        for(const name of ['phase','actor','type','text','time'])noteForm.elements.namedItem(name).value=note[name];
+        $('#add-note').textContent='Save note changes';$('#cancel-edit').hidden=false;$('#note-help').textContent=help[note.type];
+        $('#note-status').textContent='Editing an existing note. Save changes or cancel to retain the original.';persist();$('#noteText').focus();
+      };
+      head.append(edit);item.append(head,node('p',note.text,'note-body'));list.append(item);
+    }
+  }
+  const legacyLabels={code:'Participant code',date:'Session date',order:'Task order',device:'Device and browser',exposure:'Prior WordRush use',familiarity:'Browser game familiarity',version:'Game build or session time',mode:'Game mode',invitation:'Invitation format',rules:'Checked rule reminder',notesConsent:'Agreed to participation and written notes',aiConsent:'Agreed to AI processing',publishConsent:'Agreed to a public anonymized quote',sessionComplete:'Session marked complete',deidentified:'Deidentification reviewed',debrief:'Closing comments — paraphrased',interpretation:'Researcher interpretations — excluded from evidence'};
+  function showLegacy() {
+    const view=$('#legacy-view');view.replaceChildren(node('h3','Earlier individual study record'),node('p','This record came from the previous one-person protocol. It is preserved here for reading and backup; it has not been converted into a three-player group. Use the original kit if you need to edit it.'));
+    const dl=node('dl',undefined,'legacy-grid');
+    for(const [name,value] of Object.entries(record.legacy.fields)) {
+      if(value===''||value===undefined)continue;
+      dl.append(node('dt',legacyLabels[name]||name.replace(/([A-Z])/g,' $1')),node('dd',typeof value==='boolean'?(value?'Yes':'No'):String(value)));
+    }
+    view.append(dl);
+  }
+  function render() {
+    const legacy=record.kind==='legacy-individual';$('#group-view').hidden=legacy;$('#legacy-view').hidden=!legacy;
+    $('#export-status').textContent='';$('#note-status').textContent='';
+    if(legacy)showLegacy();
+    else {
+      form.reset();for(const el of controls) {if(el.type==='checkbox')el.checked=record.fields[el.name]===true;else el.value=record.fields[el.name]||'';}
+      resetDraft();
+      for(const name of ['phase','actor','type','text','time'])if(typeof record.draft[name]==='string')noteForm.elements.namedItem(name).value=record.draft[name];
+      editId=record.notes.some(n=>n.id===record.draft.editId)?record.draft.editId:null;
+      $('#add-note').textContent=editId?'Save note changes':'Add this note';$('#cancel-edit').hidden=!editId;$('#note-help').textContent=help[$('#noteType').value];showNotes();
+    }
+    selector();saveStateLabel();
+  }
+  form.addEventListener('submit',event=>event.preventDefault());
+  form.addEventListener('input',()=>{persist();showNotes();});
+  noteForm.addEventListener('input',()=>{persist();$('#note-help').textContent=help[$('#noteType').value];});
+  noteForm.addEventListener('submit',event=>{
+    event.preventDefault();const draft=draftNow(),status=$('#note-status');
+    if(!draft.actor||!draft.text.trim()) {status.textContent='Choose who the note is about and enter the actual observation or words.';return;}
+    if(draft.type==='quote'&&draft.actor==='group') {status.textContent='An exact quote needs one speaker. Select Player 1, 2, or 3.';return;}
+    const old=record.notes.find(n=>n.id===editId);
+    const note={id:old?.id||crypto.randomUUID(),phase:draft.phase,actor:draft.actor,type:draft.type,text:draft.text.trim(),time:draft.time.trim(),createdAt:old?.createdAt||now(),updatedAt:now()};
+    if(old)record.notes[record.notes.indexOf(old)]=note;else record.notes.push(note);
+    resetDraft();persist();showNotes();status.textContent=old?'Note updated.':'Note added. Save a backup after the session.';
+  });
+  $('#cancel-edit').onclick=()=>{resetDraft();persist();$('#note-status').textContent='Edit cancelled. The original note is retained.';};
+  $('#records').onchange=event=>{const id=event.target.value;persist();const next=store.records.find(r=>r.id===id);if(next){record=next;render();writeStore();}};
+  $('#new-group').onclick=()=>{persist();if(store.records.length>=200){$('#global-message').textContent='This browser has 200 saved records. Keep your backups and use another browser profile for a new collection.';return;}record=blank();render();writeStore();};
+  function download(content,name,type) {
+    const url=URL.createObjectURL(new Blob([content],{type})),link=node('a');link.href=url;link.download=name;document.body.append(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
+  }
+  document.querySelectorAll('[data-backup]').forEach(button=>button.onclick=()=>{
+    persist();download(JSON.stringify({schemaVersion:2,study:'wordrush-group',exportedAt:now(),records:store.records},null,2),`wordrush-research-backup-${now().slice(0,10)}.json`,'application/json');
+    $('#global-message').textContent='Backup downloaded. Keep the file somewhere you control, such as OneDrive. On another device, open this page and choose Load backup file. Backups contain your research records; do not upload them as transcripts.';
+  });
+  document.querySelectorAll('[data-restore]').forEach(button=>button.onclick=()=>$('#backup-file').click());
+  function sameContent(a,b) {
+    if(a.kind!==b.kind)return false;
+    return a.kind==='legacy-individual'?JSON.stringify(a.legacy)===JSON.stringify(b.legacy):JSON.stringify({fields:a.fields,notes:a.notes,draft:a.draft})===JSON.stringify({fields:b.fields,notes:b.notes,draft:b.draft});
+  }
+  $('#backup-file').onchange=async event=>{
+    try {
+      const file=event.target.files[0];if(!file)return;
+      if(file.size>20*1024*1024)throw Error('Choose a research backup smaller than 20 MB.');
+      const incoming=readRecords(JSON.parse(await file.text()));
+      const merged=[...store.records];let added=0,skipped=0,changed=0,last=null;
+      for(const item of incoming) {
+        const existing=merged.find(r=>r.id===item.id);
+        if(merged.some(r=>sameContent(r,item))) {skipped++;continue;}
+        if(existing) {item.importedCopyOf=item.id;item.id=crypto.randomUUID();changed++;}
+        merged.push(item);last=item;added++;
+      }
+      if(merged.length>200)throw Error('This browser would exceed 200 saved records. Keep separate backup files; no records were imported.');
+      persist();store.records=merged;if(last)record=last;render();writeStore();
+      $('#global-message').textContent=`Loaded ${added} records; ${skipped} unchanged copies skipped; ${changed} changed versions kept as additional copies. Existing records were retained. Check group and participant codes before counting people.`;
+    } catch(error) {$('#global-message').textContent=`No backup records loaded. ${error instanceof SyntaxError?'The file is not valid JSON. Choose a saved research kit backup.':error.message}`;}
+    finally {event.target.value='';}
+  };
+  const codeValid=value=>typeof value==='string'&&/^[A-Za-z0-9_-]+$/.test(value);
+  function exportEvidence(kind) {
+    persist();const status=$('#export-status');let passages=[],excluded=0,code,date;
+    if(record.kind==='legacy-individual') {
+      const f=record.legacy.fields;code=f.code;date=f.date;
+      if(!codeValid(code)||!date||f.notesConsent!==true||f.aiConsent!==true||f.sessionComplete!==true||f.deidentified!==true) {status.textContent='This earlier record needs its original participant code, date, completed session, written-note and AI permissions, and deidentification review before export. Edit it in the original kit, then load a new backup.';return;}
+      for(const [id,label] of [['host','Host setup'],['join','Join invitation'],['play','First round']]) {
+        const text=f[id+(kind==='quotes'?'Quotes':'Observed')];
+        if(typeof text==='string')for(const line of text.split(/\r?\n/).map(s=>s.trim()).filter(Boolean))passages.push(`${kind==='quotes'?'Participant':'Observer'}: [${code} | Earlier individual study | ${label} | ${kind==='quotes'?'Verbatim quote':'Recorded observation, not a quote'}] ${line}`);
+      }
+      if(kind==='observations'&&typeof f.debrief==='string'&&f.debrief.trim())passages.push(`Observer: [${code} | Earlier individual study | Closing comments paraphrased] ${f.debrief.trim()}`);
+    } else {
+      const f=record.fields;code=f.groupCode;date=f.sessionDate;
+      if(!form.reportValidity())return;
+      const codes=players.map(p=>f[p+'Code']);
+      if(!codeValid(code)||!date||!codes.every(codeValid)||new Set(codes.map(c=>c.toLowerCase())).size!==3||!f.sessionFinished||!f.deidentified) {status.textContent='Enter a group code, session date, and three distinct participant codes. Mark the actual session finished and check deidentification before exporting evidence.';return;}
+      for(const note of record.notes) {
+        if(kind==='quotes'?note.type!=='quote':!['observed','reported'].includes(note.type))continue;
+        const people=note.actor==='group'?players:[note.actor];
+        if(!people.every(p=>f[p+'NotesConsent']===true&&f[p+'AiConsent']===true)) {excluded++;continue;}
+        const actor=note.actor==='group'?`Group: ${codes.join(', ')}`:f[note.actor+'Code'];
+        const label=[code,actor,phaseLabels[note.phase],typeLabels[note.type],note.time].filter(Boolean).join(' | ');
+        passages.push(`${note.type==='quote'?'Participant':note.type==='reported'?'Player report':'Observer'}: [${label}] ${note.text.replace(/\r?\n/g,' ')}`);
+      }
+    }
+    if(!passages.length) {status.textContent=`No eligible ${kind} to export.${excluded?` ${excluded} notes were excluded because the relevant written-note or AI permission is not recorded.`:''} Add actual notes and check permissions; no evidence file was created.`;return;}
+    const head=[`WordRush ${code}`,`Date: ${date}`,`Evidence: ${kind}`,`Consent for AI: yes`].join('\n');
+    download(head+'\n\n'+passages.join('\n\n')+'\n',`wordrush-${code}-${kind}.txt`,'text/plain;charset=utf-8');
+    status.textContent=`Downloaded ${passages.length} evidence passages.${excluded?` Excluded ${excluded} notes without the relevant written-note or AI permission.`:''} Interpretations and unsaved note drafts are excluded. Review the file, then upload it to the WordRush project in ProductPilot. Quote publication still needs separate permission.`;
+  }
+  $('#export-quotes').onclick=()=>exportEvidence('quotes');$('#export-observations').onclick=()=>exportEvidence('observations');
+  $('#print').onclick=()=>window.print();
+  render();
+})();
+</script></body></html>
