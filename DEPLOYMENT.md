@@ -28,6 +28,8 @@ The build regenerates the research index and copies an explicit list of runtime 
 
 `research-kit.html` is a self-contained static page on the same Pages deployment and portfolio proxy. It needs no new backend or Cloudflare deployment. It contains the blank three-player WordRush study plan, moderator script, and browser note tool. Notes use a separate local storage key and move between devices only through Save backup file / Load backup file. Do not commit downloaded participant backups or exported evidence to this public repository.
 
+The kit also captures baseline/follow-up stage, game version, group first-round readiness, blockers, and timing reliability. Its measurements JSON export is a manual handoff with explicit participant permission, not a live Decision Lab connection. Existing records stay compatible and do not receive assumed stages or new permissions. No real study records are bundled with the deployment.
+
 Wait for the GitHub Pages deployment to complete before checking the public demo. Portfolio descriptions or route changes require a separate commit in `portfolio-website`.
 
 ## Current release
