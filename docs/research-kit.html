@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>WordRush Research Kit</title>
-  <link rel="stylesheet" href="research-kit.css?v=20261016-tasks1">
-  <script defer src="research-kit.js?v=20261016-tasks1"></script>
+  <link rel="stylesheet" href="research-kit.css?v=20261016-tasks2">
+  <script defer src="research-kit.js?v=20261016-tasks2"></script>
 </head>
 <body>
 <header class="page-header">
@@ -21,7 +21,8 @@
   <div id="group-view">
   <section class="panel study-panel" id="prepare" role="tabpanel" aria-labelledby="prepare-tab">
     <section class="task-plan" id="task-plan" aria-labelledby="task-plan-title">
-      <p class="eyebrow">Read these tasks to the group</p><h2 id="task-plan-title">Three tasks. You observe; they play.</h2>
+      <p class="eyebrow" id="task-plan-eyebrow">Read these tasks to the group</p><h2 id="task-plan-title">Three tasks. You observe; they play.</h2>
+      <div class="prompt-box" id="task-plan-notice" hidden><p class="help" id="task-plan-notice-text"></p><button type="button" id="start-task-session">Start a session with these tasks →</button></div>
       <div class="task-cards">
         <article><span class="task-number">Task 1</span><h3>Create & join a room</h3><p>One of you creates a room. The other two join it.</p></article>
         <article><span class="task-number">Task 2 · Word Search</span><h3>Play Medium, then Hard</h3><p><b>2a.</b> Pick one Word Search game and play it on <b>Medium</b>.</p><p><b>2b.</b> Pick a different Word Search game and play it on <b>Hard</b>.</p></article>
@@ -39,7 +40,7 @@
       <details><summary>Optional background or different form links</summary><p class="help">The Microsoft Forms above are already connected. Replace these links only if you use different forms. Leave blank to keep the included forms. Responses stay in Microsoft Forms.</p><label for="preFormUrl">Different consent & pre-study form · optional</label><input id="preFormUrl" name="preFormUrl" type="url" placeholder="Use the included Microsoft Form"><label for="postFormUrl">Different post-study form · optional</label><input id="postFormUrl" name="postFormUrl" type="url" placeholder="Use the included Microsoft Form"><div id="background-fields"></div></details>
       <details><summary>Use a different task plan · optional</summary><p class="help">Leave blank for the three tasks above. A custom prompt replaces that plan for this session. Keep the same tasks for a later comparison.</p><label for="taskGoal">Custom task prompt</label><textarea id="taskGoal" name="taskGoal" maxlength="2000" placeholder="Leave blank to use room setup, Word Search Medium/Hard, and Scramble Rush Medium/Hard."></textarea></details>
     </form>
-    <div class="prompt-box"><span class="eyebrow">Give the tasks, then let them try</span><p id="task-prompt">Create and join a room, then play two Word Search games and two Scramble Rush games: one Medium and one different game on Hard in each mode.</p><p id="earlier-task-hint" class="help" hidden>This saved session keeps its original task. Choose + New session to use the updated three-task plan.</p><p class="help">Explain the study and tasks. Give product instructions when help is needed and log them. Routine study instructions and neutral questions are different from teaching someone which control to use.</p></div>
+    <div class="prompt-box"><span class="eyebrow">Your session instructions</span><p id="task-prompt">Create and join a room, then play two Word Search games and two Scramble Rush games: one Medium and one different game on Hard in each mode.</p><p class="help">Explain the study and tasks. Give product instructions when help is needed and log them. Routine study instructions and neutral questions are different from teaching someone which control to use.</p></div>
     <div class="panel-footer"><p class="help">Start the recording after consent. You can use your normal opening script.</p><button class="primary" data-go="during">Ready to observe →</button></div>
   </section>
 

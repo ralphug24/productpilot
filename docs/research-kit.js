@@ -161,10 +161,11 @@
   function updateContext() {
     const f=record.fields;
     const planned=standardPlan();
-    $('#task-plan').hidden=!planned;
+    $('#task-plan-eyebrow').textContent=planned?'Read these tasks to the group':'Updated task plan';
+    $('#task-plan-notice').hidden=planned;
+    $('#task-plan-notice-text').textContent=f.taskGoal?.trim()?'This session uses your custom instructions, shown below. You can start a separate session with the three tasks here.':'This saved session uses the earlier task instructions. The updated tasks are shown here for reference. Start a new session to use them; your existing notes stay with the earlier session.';
     $('#completion-task-hint').hidden=!planned;
     $('#task-prompt').textContent=planned?'Ask the group to complete the three tasks above. Let them choose different games for Medium and Hard in each mode.':taskPrompt();
-    $('#earlier-task-hint').hidden=f.taskPlan===measurementProtocol||!!f.taskGoal?.trim();
     $('#noteTask').disabled=!planned&&!editId;
     if(!planned&&!editId)$('#noteTask').value='';
     const selectedTask=tasks.find(task=>task.id===$('#noteTask').value);
@@ -265,6 +266,7 @@
   $('#cancel-edit').onclick=()=>{resetDraft();persist();updateContext();$('#note-status').textContent='Edit cancelled. The original note is retained.';};
   $('#records').onchange=event=>{const id=event.target.value;persist();const next=store.records.find(r=>r.id===id);if(next){record=next;render();writeStore();}};
   $('#new-group').onclick=()=>{persist();if(store.records.length>=200){$('#global-message').textContent='This browser has 200 saved records. Keep your backups and use another browser profile for a new collection.';return;}record=blank();render();writeStore();showStep('prepare');};
+  $('#start-task-session').onclick=()=>$('#new-group').click();
   function download(content,name,type) {
     const url=URL.createObjectURL(new Blob([content],{type})),link=node('a');link.href=url;link.download=name;document.body.append(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
   }
