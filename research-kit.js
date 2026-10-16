@@ -5,8 +5,18 @@
   const previousKey = 'wordrush-group-research-v2';
   const players = ['p1', 'p2', 'p3'];
   const stageLabels = {baseline:'Baseline','follow-up':'Follow-up',exploratory:'Exploratory'};
-  const measurementProtocol = 'wordrush-complete-journey-v1';
-  const defaultTask = 'Get all three of you into the same WordRush room, play one complete game in the chosen mode, and reach its end or results screen.';
+  const measurementProtocol = 'wordrush-three-tasks-v1';
+  const previousTask = 'Get all three of you into the same WordRush room, play one complete game in the chosen mode, and reach its end or results screen.';
+  const tasks = [
+    {id:'1',label:'Task 1 · Create & join a room',prompt:'One of you creates a room. The other two join it.'},
+    {id:'2a',label:'Task 2a · Word Search — Medium',prompt:'Pick one Word Search game and play it on Medium.'},
+    {id:'2b',label:'Task 2b · Word Search — Hard',prompt:'Pick a different Word Search game and play it on Hard.'},
+    {id:'3a',label:'Task 3a · Scramble Rush — Medium',prompt:'Pick one Scramble Rush game and play it on Medium.'},
+    {id:'3b',label:'Task 3b · Scramble Rush — Hard',prompt:'Pick a different Scramble Rush game and play it on Hard.'}
+  ];
+  const defaultTask = tasks.map(task=>`${task.label}: ${task.prompt}`).join('\n');
+  const standardPlan = () => record.fields.taskPlan===measurementProtocol&&!record.fields.taskGoal?.trim();
+  const taskPrompt = () => record.fields.taskGoal?.trim()||(record.fields.taskPlan===measurementProtocol?defaultTask:previousTask);
   const studyFormLinks = {preFormUrl:'https://forms.cloud.microsoft/r/EE28D6hUzT',postFormUrl:'https://forms.cloud.microsoft/r/M5e82FHNWR'};
   const eventLabels = {confusion:'Confusion','moderator-help':'Researcher gave help','peer-help':'Peer help',bug:'Bug / error',positive:'Worked well',bookmark:'Bookmark'};
   const phaseLabels = {session:'Study session',setup:'Creating and joining',play:'Playing',results:'Ending / results',debrief:'Group discussion',rotation:'Optional role rotation — learned attempt'};
@@ -27,7 +37,7 @@
   let store={schemaVersion:3,study:'wordrush-group',records:[],activeId:null};
   let storageOK=true,editId=null,editCategory=null;
   const now=()=>new Date().toISOString();
-  const blank=()=>({id:crypto.randomUUID(),kind:'group',createdAt:now(),updatedAt:now(),fields:{},notes:[],draft:{}});
+  const blank=()=>({id:crypto.randomUUID(),kind:'group',createdAt:now(),updatedAt:now(),fields:{taskPlan:measurementProtocol},notes:[],draft:{}});
   const object=value=>value!==null&&typeof value==='object'&&!Array.isArray(value);
   const string=(value,max=12000)=>typeof value==='string'&&value.length<=max;
   function validateLegacy(item) {
@@ -59,6 +69,7 @@
       if(!object(note))throw Error('A note is invalid.');
       if(!string(note.phase,30)||!Object.hasOwn(phaseLabels,note.phase)||!['',...players,'group'].includes(note.actor)||!string(note.type,30)||!Object.hasOwn(typeLabels,note.type)||!string(note.text,12000)||!string(note.time,40))throw Error('A note has invalid fields.');
       const clean={phase:note.phase,actor:note.actor,type:note.type,text:note.text,time:note.time};
+      if(note.task!==undefined) {if(note.task!==''&&!tasks.some(task=>task.id===note.task))throw Error('A note has an unsupported task label.');clean.task=note.task;}
       if(note.category!==undefined) {if(!Object.hasOwn(eventLabels,note.category))throw Error('An event marker is invalid.');clean.category=note.category;}
       if(note.timeSource!==undefined) {if(!['recording-clock','manual','not-recorded'].includes(note.timeSource))throw Error('A timestamp source is invalid.');clean.timeSource=note.timeSource;}
       if(isDraft) {if(string(note.editId,200))clean.editId=note.editId;}
@@ -94,8 +105,8 @@
   } catch {storageOK=false;$('#global-message').textContent='Saved records could not be loaded. Keep any existing backup. New notes can stay in this tab; save a backup before closing.';}
   let record=store.records.find(r=>r.id===store.activeId)||blank();
   function fieldsNow() {return {...record.fields,...Object.fromEntries(controls.map(el=>[el.name,el.type==='checkbox'?el.checked:el.value]))};}
-  function draftNow() {return {phase:$('#notePhase').value,actor:$('#noteActor').value,type:$('#noteType').value,text:$('#noteText').value,time:$('#noteTime').value,...(editId?{editId}:{}),...(editCategory?{category:editCategory}:{})};}
-  function meaningful(item) {return item.kind!=='group'||item.notes.length||Object.values(item.fields).some(Boolean)||item.clock?.started||item.draft.text||item.draft.actor&&item.draft.actor!=='group'||item.draft.time;}
+  function draftNow() {return {task:$('#noteTask').value,phase:$('#notePhase').value,actor:$('#noteActor').value,type:$('#noteType').value,text:$('#noteText').value,time:$('#noteTime').value,...(editId?{editId}:{}),...(editCategory?{category:editCategory}:{})};}
+  function meaningful(item) {return item.kind!=='group'||item.notes.length||Object.entries(item.fields).some(([name,value])=>name!=='taskPlan'&&value)||item.clock?.started||item.draft.task||item.draft.text||item.draft.actor&&item.draft.actor!=='group'||item.draft.time;}
   function selector() {
     const select=$('#records');select.replaceChildren();
     for(const r of store.records) {
@@ -149,7 +160,15 @@
   document.querySelectorAll('[data-go]').forEach(button=>button.onclick=()=>{showStep(button.dataset.go,true);history.replaceState(null,'',`#${button.dataset.go}`);$('.step-bar').scrollIntoView({block:'start'});});
   function updateContext() {
     const f=record.fields;
-    $('#task-prompt').textContent=f.taskGoal?.trim()||defaultTask;
+    const planned=standardPlan();
+    $('#task-plan').hidden=!planned;
+    $('#completion-task-hint').hidden=!planned;
+    $('#task-prompt').textContent=planned?'Ask the group to complete the three tasks above. Let them choose different games for Medium and Hard in each mode.':taskPrompt();
+    $('#earlier-task-hint').hidden=f.taskPlan===measurementProtocol||!!f.taskGoal?.trim();
+    $('#noteTask').disabled=!planned&&!editId;
+    if(!planned&&!editId)$('#noteTask').value='';
+    const selectedTask=tasks.find(task=>task.id===$('#noteTask').value);
+    $('#current-task-prompt').textContent=selectedTask?selectedTask.prompt:planned?"Choose the part you're observing. New events will carry that task label; selecting a task does not mark it complete.":taskPrompt();
     for(const p of players)$('#noteActor').querySelector(`option[value="${p}"]`).textContent=`${f[p+'Code']||`Player ${p.slice(1)}`} · ${p==='p1'?'host':'joiner'}`;
     document.querySelectorAll('[data-form-link]').forEach(link=>{
       let valid=false;try{const url=new URL(f[link.dataset.formLink]||studyFormLinks[link.dataset.formLink]);valid=['http:','https:'].includes(url.protocol);if(valid)link.href=url.href;}catch{}
@@ -183,13 +202,14 @@
       const item=node('article',undefined,'note-item'),content=node('div',undefined,'note-content'),head=node('div',undefined,'note-head');
       const actor=note.actor==='group'?'Whole group':record.fields[note.actor+'Code']||`Player ${Number(note.actor.slice(1))}`;
       head.append(node('b',note.category?eventLabels[note.category]:'Note'),node('span',actor));
+      if(note.task)head.append(node('span',tasks.find(task=>task.id===note.task).label,'tag'));
       if(note.phase!=='session')head.append(node('span',phaseLabels[note.phase]));
       if(note.type!=='observed')head.append(node('span',typeLabels[note.type],'tag'));
       const edit=node('button',note.text?'Edit':'Add detail');edit.type='button';edit.onclick=()=>{
         persist();editId=note.id;editCategory=note.category||null;
-        for(const name of ['phase','actor','type','text','time'])noteForm.elements.namedItem(name).value=note[name];
+        for(const name of ['task','phase','actor','type','text','time'])noteForm.elements.namedItem(name).value=note[name]||'';
         $('#add-note').textContent='Save note changes';$('#cancel-edit').hidden=false;$('#note-help').textContent=help[note.type];
-        $('#note-status').textContent='Editing this event. Save changes or cancel to retain the original.';persist();showStep('during');$('#noteText').focus();
+        $('#note-status').textContent='Editing this event. Save changes or cancel to retain the original.';persist();updateContext();showStep('during');$('#noteText').focus();
       };
       head.append(edit);content.append(head,node('p',note.text||'Marker only — review the recording and add detail later.',note.text?'note-body':'help'));item.append(node('time',note.time||'Untimed','note-stamp'),content);list.append(item);
     }
@@ -212,7 +232,7 @@
     else {
       form.reset();for(const el of controls) {if(el.type==='checkbox')el.checked=record.fields[el.name]===true;else el.value=record.fields[el.name]||'';}
       resetDraft();
-      for(const name of ['phase','actor','type','text','time'])if(typeof record.draft[name]==='string')noteForm.elements.namedItem(name).value=record.draft[name];
+      for(const name of ['task','phase','actor','type','text','time'])if(typeof record.draft[name]==='string')noteForm.elements.namedItem(name).value=record.draft[name];
       editId=record.notes.some(n=>n.id===record.draft.editId)?record.draft.editId:null;
       editCategory=editId?record.draft.category||null:null;
       $('#add-note').textContent=editId?'Save changes':'Add note';$('#cancel-edit').hidden=!editId;$('#note-help').textContent=help[$('#noteType').value];showNotes();updateContext();
@@ -226,6 +246,7 @@
     persist();showNotes();updateContext();
   }));
   noteForm.addEventListener('input',()=>{persist();$('#note-help').textContent=help[$('#noteType').value];});
+  $('#noteTask').addEventListener('change',()=>{persist();updateContext();});
   function saveNote(category=null) {
     const draft=draftNow(),status=$('#note-status');
     category=category||editCategory;
@@ -235,13 +256,13 @@
     const old=record.notes.find(n=>n.id===editId);
     if(!old&&record.notes.length>=2000){status.textContent='This session has reached 2,000 events. Save a backup before starting another session record.';return;}
     const seconds=clockSeconds(),manual=draft.time.trim(),time=manual||(old?'':seconds===null?'':formatTime(seconds));
-    const note={id:old?.id||crypto.randomUUID(),phase:draft.phase,actor:draft.actor,type:draft.type,text:draft.text.trim(),time,timeSource:old&&manual===old.time?old.timeSource||'manual':manual?'manual':time?'recording-clock':'not-recorded',createdAt:old?.createdAt||now(),updatedAt:now(),...(category?{category}:{})};
+    const note={id:old?.id||crypto.randomUUID(),task:draft.task,phase:draft.phase,actor:draft.actor,type:draft.type,text:draft.text.trim(),time,timeSource:old&&manual===old.time?old.timeSource||'manual':manual?'manual':time?'recording-clock':'not-recorded',createdAt:old?.createdAt||now(),updatedAt:now(),...(category?{category}:{})};
     if(old)record.notes[record.notes.indexOf(old)]=note;else record.notes.push(note);
-    const actor=draft.actor,phase=draft.phase;resetDraft();$('#noteActor').value=actor;$('#notePhase').value=phase;persist();showNotes();updateContext();status.textContent=old?'Event updated.':`${category?eventLabels[category]:'Note'} saved${time?` at ${time}`:' without a timestamp'}.`;
+    const actor=draft.actor,phase=draft.phase,task=draft.task;resetDraft();$('#noteActor').value=actor;$('#notePhase').value=phase;$('#noteTask').value=task;persist();showNotes();updateContext();status.textContent=old?'Event updated.':`${category?eventLabels[category]:'Note'} saved${time?` at ${time}`:' without a timestamp'}.`;
   }
   noteForm.addEventListener('submit',event=>{event.preventDefault();saveNote();});
   document.querySelectorAll('[data-event]').forEach(button=>button.onclick=()=>saveNote(button.dataset.event));
-  $('#cancel-edit').onclick=()=>{resetDraft();persist();$('#note-status').textContent='Edit cancelled. The original note is retained.';};
+  $('#cancel-edit').onclick=()=>{resetDraft();persist();updateContext();$('#note-status').textContent='Edit cancelled. The original note is retained.';};
   $('#records').onchange=event=>{const id=event.target.value;persist();const next=store.records.find(r=>r.id===id);if(next){record=next;render();writeStore();}};
   $('#new-group').onclick=()=>{persist();if(store.records.length>=200){$('#global-message').textContent='This browser has 200 saved records. Keep your backups and use another browser profile for a new collection.';return;}record=blank();render();writeStore();showStep('prepare');};
   function download(content,name,type) {
@@ -286,8 +307,8 @@
     if(f.moderatorGuidance==='none'&&helpMarkers){status.textContent='The log contains a researcher-help marker, but closeout says no product guidance. Review the marker or outcome before exporting.';return;}
     const completed=f.journeyCompletion==='completed';
     const unassisted=completed?(f.moderatorGuidance==='none'?true:f.moderatorGuidance==='given'?false:null):['partial','not-completed'].includes(f.journeyCompletion)?false:null;
-    const packet={schema:'wordrush-moderated-group-measurements',schemaVersion:2,exportedAt:now(),
-      protocol:{id:measurementProtocol,unit:'three-player group session',task:f.taskGoal?.trim()||defaultTask,primaryOutcome:'Completion of the agreed full task without researcher product guidance',peerHelp:'Part of the natural group experience; recorded separately',recordingClockIsTaskDuration:false,studyDesign:'Moderated group usability study and shared focus-group discussion',decisionLabImportAvailable:false},
+    const packet={schema:'wordrush-moderated-group-measurements',schemaVersion:3,exportedAt:now(),
+      protocol:{id:standardPlan()?measurementProtocol:f.taskGoal?.trim()?'wordrush-custom-task':'wordrush-complete-journey-v1',unit:'three-player group session',task:taskPrompt(),tasks:standardPlan()?tasks:[],primaryOutcome:'Completion of the agreed full task without researcher product guidance',peerHelp:'Part of the natural group experience; recorded separately',recordingClockIsTaskDuration:false,studyDesign:'Moderated group usability study and shared focus-group discussion',decisionLabImportAvailable:false},
       group:{recordId:record.id,importedCopyOf:record.importedCopyOf||null,sessionCode:f.groupCode,sessionDate:f.sessionDate,stage:f.studyStage||null,gameVersion:f.version?.trim()||null,gameMode:f.gameMode?.trim()||null,sharedScreen:f.sharedScreen||null,journeyCompletion:f.journeyCompletion,moderatorGuidance:f.moderatorGuidance,completedWithoutResearcherGuidance:unassisted,sessionFinished:true,deidentificationReviewed:true,allPlayersAgreedToMeasurementUse:true},
       players:players.map((p,index)=>({participantCode:f[p+'Code'],role:index===0?'host':'joiner',deviceAndBrowser:f[p+'Device']?.trim()||null,priorWordRushUse:f[p+'PriorUse']||null})),
       eventMarkerCounts:Object.fromEntries(Object.keys(eventLabels).map(category=>[category,record.notes.filter(note=>note.category===category).length])),
@@ -317,7 +338,7 @@
         const people=note.actor==='group'?players:[note.actor];
         if(!people.every(p=>(f.consentConfirmed===true||f[p+'NotesConsent']===true)&&(f.allAiConsent===true||f[p+'AiConsent']===true))) {excluded++;continue;}
         const actor=note.actor==='group'?`Group: ${codes.join(', ')}`:f[note.actor+'Code'];
-        const label=[code,stageLabels[f.studyStage]||'Study stage not recorded',f.version?`Build: ${f.version}`:'',actor,phaseLabels[note.phase],typeLabels[note.type],note.time].filter(Boolean).join(' | ');
+        const label=[code,stageLabels[f.studyStage]||'Study stage not recorded',f.version?`Build: ${f.version}`:'',actor,note.task?tasks.find(task=>task.id===note.task).label:'',phaseLabels[note.phase],typeLabels[note.type],note.time].filter(Boolean).join(' | ');
         passages.push(`${note.type==='quote'?'Participant':note.type==='reported'?'Player report':'Observer'}: [${label}] ${note.text.replace(/\r?\n/g,' ')}`);
       }
     }
